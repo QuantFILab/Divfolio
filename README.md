@@ -1,3 +1,3 @@
-# divfolio
+# Divfolio
 
-<b>sscssc<b>
+Difolio is a solfware for portfolio divestment 
