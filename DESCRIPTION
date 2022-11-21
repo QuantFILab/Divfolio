@@ -1,0 +1,6 @@
+Package: Divfolio
+Type: Package
+Title: R Shiny App for Green Finance Divestment
+Version: 0.0.1
+RoxygenNote: 7.2.2
+Encoding: UTF-8
