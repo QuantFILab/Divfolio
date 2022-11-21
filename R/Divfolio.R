@@ -11,9 +11,8 @@ divfolio_run <- function(){
   
   if(!require("shinypop")){
     remotes::install_github("dreamRs/shinypop")
-    library("shinypop")
   }
-  
+  library("shinypop")
   
   box <- shinydashboard::box
   
