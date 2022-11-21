@@ -2059,7 +2059,7 @@ divfolio_run <- function(){
   #######################################Start Shiny###################################
   options(shiny.sanitize.errors = FALSE)
   
-  ui <- dashboardPage(
+  ui <- shinydashboard::dashboardPage(
     preloader = list(html = tagList(spin_1(), "Loading ..."), color = "#3c8dbc"),
     dashboardHeader(title = shinyDashboardLogo(
       theme = "blue_gradient",
