@@ -6,7 +6,6 @@
 #' @import plotly
 #' @import htmltab
 #' @import shinycustomloader
-#' @import shinydashboardPlus
 #' @import waiter
 #' @import shinyWidgets
 #' @import dashboardthemes
