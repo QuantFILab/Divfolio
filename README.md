@@ -18,6 +18,8 @@ If you are interested in downloading historical data from Divfolio, you will nee
 
 ## Workflow
 
+DivFolio App tool comprises two core components as will be detailed in the panels below. The first component involves a set of sequential STEPs that users undertake consisting of STEP 1 through to STEP 5, which must be performed sequentially. The second component involves a collection of three independent optional STEPs that can be performed individually. For the optional steps, so long as the user has the relevant data prepared in CSV format already, for instance as output from STEPS 1 to 5 in Component 1, then they can upload this directly into any of the STEPS in Component 2 instead of generating them again from the tool. For more details please see user guide on the apllication. 
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/daig.jpg?raw=true)
 
 ## Examples 1: Generate Portfolio on Application 
