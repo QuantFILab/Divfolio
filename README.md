@@ -40,7 +40,7 @@ Option I: For comparing more than two portfolios, generating divestment schedule
 
 Option II: Clustering portfolio according to their risk profile, and exporting to local machine png.
 
-Option III: Proveing ghaph LASSO to portfolios over time to investigate covarience between assets during divestment, and exporting to local machine png.
+Option III: Providing graph LASSO to portfolios over time to investigate covarience between assets during divestment, and exporting to local machine png.
 
 ## Examples 1: Generate Portfolio on Application 
 
