@@ -22,6 +22,20 @@ DivFolio App tool comprises two core components as will be detailed in the panel
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/daig.jpg?raw=true)
 
+
+## Functions in Divolio
+
+STEP 1: Accessing the ESG scores and some profiles of the individual company.
+STEP 2: Downloading ESG scores of the selected companies, and exporting to local machine in csv and png.
+STEP 3: Downloading historical returns of the selected companies, comparing the performances, and exporting to local machine in csv and png.
+STEP 4: Generating portfolio from the selected companies, rebalancing portfolio, summarising the performances and exporting to local machine in csv and png.
+STEP 5: Generating divestment schedule, divesting portfolio, rebalancing portfolio, summarising and comparing the performances and exporting to local machine in csv and png.
+
+
+Option I: For comparing more than two portfolios, generating divestment schedule, divesting portfolio, rebalancing portfolio, summarising and comparing the performances, and exporting to local machine in csv and png.
+Option II: Clustering portfolio according to their risk profile, and exporting to local machine png.
+Option III: Proveing ghaph LASSO to portfolios over time to investigate covarience between assets during divestment, and exporting to local machine png.
+
 ## Examples 1: Generate Portfolio on Application 
 
 
