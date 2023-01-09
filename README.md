@@ -42,6 +42,9 @@ Option II: Clustering portfolio according to their risk profile, and exporting t
 
 Option III: Providing graph LASSO to portfolios over time to investigate covarience between assets during divestment, and exporting to local machine png.
 
+You don't have to run all steps. For example, if you want only ESG scores, you can stop at STEP 2.
+
+
 ## Examples 1: Generate Portfolio on Application 
 
 
