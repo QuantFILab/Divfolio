@@ -4,7 +4,7 @@ The primary objective of the software is to facilitate the creation and evaluati
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/openpage.png?raw=true)
 
-On the tab on the left, the <b> User Guide </b> provides detailed instructions on how to use this application. The application's functions are documented in <b> Divestment Plan </b>. Our contact information can be found in <b> Our Team </b>. We welcome the opportunity to collaborate with scholars and industry professionals interested in relevant issues and comparable Shiny applications.
+On the tab on the left, the <b> User Guide </b> provides detailed instructions on how to use this application. The application's functions are documented in <b> Divestment Plan </b>. Our contact information can be found in <b> Our Team </b>. We welcome the opportunity to collaborate with scholars and industry professionals interested in relevant issues and comparable Shiny applications. To report technical problem, please contact Pasin Marupanthorn at pm122@hw.ac.uk.
 
 ## Original Research Papers related to Divfolio
 
