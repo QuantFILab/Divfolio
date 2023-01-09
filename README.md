@@ -11,10 +11,9 @@ On the tab on the left, the <b> User Guide </b> provides detailed instructions o
 Divfolio is baed on the research results from two papers. Preprint versions of both papers are open access available on SSRN. First, the methodology paper explains all mathematical details in portfolio optimization, [Mechanisms to Incentivise Fossil Fuel Divestment and Implications on Portfolio Risk and Returns](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4131449). Secondly, the software paper explains how to use Divolio aloge with an example in FTSE100 divestment to improve ESG scores, [DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4131449).
 
 
-
-## Section I in Paper
-
 ## Where to find ticker?
+
+If you are interested in downloading historical data from Divfolio, you will need the Yahoo! Finance ticker. You may find the tickers [here](https://finance.yahoo.com/screener/new). Note that the ESG scores are available for certain stocks. The ESG scores are not available for others assets, but the historical data may be available.
 
 ## Examples 1: Generate Portfolio on Application 
 
