@@ -18,7 +18,7 @@ If you are interested in downloading historical data from Divfolio, you will nee
 
 ## Workflow
 
-
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/daig.jpg?raw=true)
 
 ## Examples 1: Generate Portfolio on Application 
 
