@@ -16,7 +16,7 @@ Divfolio is baed on the research results from two papers. Preprint versions of b
 If you are interested in downloading historical data from Divfolio, you will need the Yahoo! Finance ticker. You may find the tickers [here](https://finance.yahoo.com/screener/new). Note that the ESG scores are available for certain stocks. The ESG scores are not available for others assets, but the historical data may be available.
 
 
-## Functions in Divolio
+## Workflow
 
 
 
