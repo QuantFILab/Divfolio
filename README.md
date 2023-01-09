@@ -2,7 +2,9 @@
 
 Difolio is a solfware for portfolio divestment 
 
-## Refer to two papers
+## Original Research Papers related to Divfolio
+
+![alt text](https://github.com/QunatFILab/Divfolio/blob/Master/openpage.png?raw=true)
 
 ## Section I in Paper
 ## Where to find ticker?
