@@ -26,7 +26,7 @@ library(shiny)
 shiny::runGitHub('QuantFILab/Divfolio')
 ```
 
-We recommend R version 4.2.2 or later. The older R version may cause an error on the package dependency. The version of all packages included in application are list in the table below.
+We recommend **R version 4.2.2** or later. The older R version may cause an error on the package dependency. The version of all packages included in application are list in the table below.
 
 <!-- html table generated in R 4.2.2 by xtable 1.8-4 package -->
 <!-- Mon Jan 23 21:14:12 2023 -->
