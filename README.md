@@ -84,7 +84,7 @@ To get the ESG data and Company's sector
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
-The results are in figure below.
+The results are in figure below. You can download the table to you local machine. The last table shows percentage of the improvment ESG score after divestment.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_page.png?raw=true)
 
