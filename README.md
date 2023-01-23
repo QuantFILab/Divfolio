@@ -1,6 +1,6 @@
 # Table of Contents
 
-- [Divfolio](#divfolio)
+  * [Divfolio](#divfolio)
   * [How to Access Divfolio](#how-to-access-divfolio)
     + [By Shinyapps.io](#by-shinyappsio)
     + [By runing the code on Github via RStudio](#by-runing-the-code-on-github-via-rstudio)
@@ -22,7 +22,7 @@
     + [Option III  Graph Structure Correlation Analysis](#option-iii--graph-structure-correlation-analysis)
 
 
-# Divfolio
+## Divfolio
 
 The primary objective of the software is to facilitate the creation and evaluation of portfolios that take into account decarbonization and ESG investing and divestment practices in line with climate change prevention trends emerging in wealth management. The software enables the creation of divestment plans and sustainable portfolios, as well as the comparison of the corresponding risk/return profiles, ESG scores, and bespoke portfolio variables, such as carbon intensity. The evaluation is based on simulations that collect and include pertinent historical market data before and after divestment, while also taking into account varying divestment planning rates. The software permits the user to implement these evaluations on publicly traded equities assets, exchange-traded funds (ETFs), exchange-traded notes (ETNs), and Depositary Receipts (DR). Alternatively, Divfolio can be used for general proposes, such as portfolio comparison, gathering ESG scores, and downloading historical return data.
 
