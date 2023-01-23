@@ -1,5 +1,5 @@
 require(remotes)
-remotes::install_github("dreamRs/shinypop")
+remotes::install_github("dreamRs/shinypop", force = TRUE)
 require(shinypop)
 require(httr)
 require(tidyverse)
