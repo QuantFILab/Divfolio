@@ -147,12 +147,22 @@ For STEP 2 to STEP 5, if you already have CSV files in the given form (see in ap
 
 ## Examples 3: Using Multiple Comparison in Option I to Option III
 
-These options required CSV files see example in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files).
+These options required CSV files, see example in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files). Here, we use a small portfolio in which the constituents selected from FTSE100 as an example.
 
 ### Option I  Multiple Portfolios Comparison
 
+First upload required files F5
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionI_setup.png?raw=true)
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionI_page.png?raw=true)
 
 ### Option II Stability Analysis via Clustering
 
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionII_setup.png?raw=true)
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionII_page.png?raw=true)
 
 ### Option III  Graph Structure Correlation Analysis
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionIII_setup1.png?raw=true)
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionIII_setup2.png?raw=true)
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionIII_page.png?raw=true)
