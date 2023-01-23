@@ -4,7 +4,7 @@ The primary objective of the software is to facilitate the creation and evaluati
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/openpage.png?raw=true)
 
-On the tab on the left, the <b> User Guide </b> provides detailed instructions on how to use this application. The application's functions are documented in <b> Divestment Plan </b>. Our contact information can be found in <b> Our Team </b>. We welcome the opportunity to collaborate with scholars and industry professionals interested in relevant issues and comparable Shiny applications. To report technical problem, please contact Pasin Marupanthorn at pm122@hw.ac.uk.
+On the tab on the left, the <b> User Guide </b> provides detailed instructions on how to use this application. The application's functions are documented in <b> Divestment Plan </b>. Our contact information can be found in <b> Our Team </b>. We welcome the opportunity to collaborate with scholars and industry professionals interested in relevant issues and comparable Shiny applications. To report technical problem, please contact Pasin MarupanthoCancel changesrn at pm122@hw.ac.uk.
 
 ## Original Research Papers related to Divfolio
 
@@ -56,9 +56,17 @@ To see the ESG score and past performance of the company (If you already have co
 2. Tpye company's ticker in the box
 3. Click on submit button
 
-![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_select.png?raw=true)
 
 The results are shown below.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_page.png?raw=true)
+
+To pick company stocks to portfolio (Required)
+1. Click on Cart icon to open the input window
+2. Tpye company' ticker
+3. Chick "Add" button
+4. You need to add one by one the ticker
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
 ## Examples 2: Uploeading CSV. file
