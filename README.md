@@ -64,9 +64,9 @@ The results are shown below.
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_page.png?raw=true)
 
 To pick company stocks to portfolio (Required)
-1. Click on Cart icon to open the input window
-2. Tpye company's ticker
-3. Chick "add" button
+1. Click on Cart icon to open the input window.
+2. Tpye company's ticker.
+3. Chick "add" button.
 
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
@@ -75,7 +75,12 @@ You need to add one by one the ticker. Here, input  BAC, CRM, GOOGL,	INTC,	MSFT,
 
 ### STEP 2
 
-The tickers selected in STEP1 will be appear in the box of "potential assets". We need to assign a divestment status to each asset by drug and drop them to the box of "Investablw assets" and "Divestable assets" like in the figure below.
+The tickers selected in STEP1 will be appear in the box of "Potential Assets". We need to assign a divestment status to each asset by drag and drop them to the box of "Investable Assets" and "Divestable Assets" like in the figure below.
+
+To get the ESG data and Company's sector
+1. Drop tickers you want to invest in "Investable Assets" (If you want only ESG data, you can drop all assets to this box).
+2. Drop tickers you want to divest in "Divestable Assets".
+3. Click on "summary" button and Click on "update summary" when you make a change on the divestment status or add more assets to potential list.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
