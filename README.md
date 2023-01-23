@@ -84,4 +84,14 @@ To get the ESG data and Company's sector
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
+The results are in figure below.
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_page.png?raw=true)
+
+### STEP 3
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_setdate.png?raw=true)
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_page.png?raw=true)
+
 ## Examples 2: Uploeading CSV. file
