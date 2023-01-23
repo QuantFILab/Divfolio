@@ -124,13 +124,21 @@ Te results will shown the ESG score and risk profiles of portfolio as in figure 
 
 ### STEP 5 Divestment
 
-To generate portfolio wieght
-1. Click on Carlendar icon
+To generate divestment schedule and divested portfolio
+
+1. Click on Minus icon.
+2. Select the divestment schedule (Here, we use linear (gradually) divestment).
+3. Set the last date of divestment when the divestable assets will be divested completly.
+4. Set the divestment schedule parameter
+5. Click on "preview" button to preview divestment schedule 
+6. If you are line the current schedule click "submit" to process
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step5_setdiv.png?raw=true)
 
+THe results show a comparison of the original portfolio in STEP4 and the divested portfolio in STEP5
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step5_page.png?raw=true)
 
+Looking at the last boxplots, they tell us that with this divestment schedule the return dropped significaintly whereas the enivironment score improved a little. Therefore, this divestment strategy may not suit for profit seeker. You can try differnt typr of portfolio or divestment schedule for comparison.
 
 ## Examples 2: Uploeading CSV. file
