@@ -58,5 +58,7 @@ To see the ESG score and past performance of the company (If you already have co
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
 
+The results are shown below.
 
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_page.png?raw=true)
 ## Examples 2: Uploeading CSV. file
