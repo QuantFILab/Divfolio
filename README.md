@@ -1,3 +1,30 @@
+# Table of Contents
+
+- [Divfolio](#divfolio)
+  * [How to Access Divfolio](#how-to-access-divfolio)
+    + [By Shinyapps.io](#by-shinyappsio)
+    + [By runing the code on Github via RStudio](#by-runing-the-code-on-github-via-rstudio)
+    + [By downloading an exucutable package from the Github](#by-downloading-an-exucutable-package-from-the-github)
+  * [Original Research Papers related to Divfolio](#original-research-papers-related-to-divfolio)
+  * [Where to find the ticker?](#where-to-find-the-ticker-)
+  * [Workflow](#workflow)
+  * [Functions in Divolio](#functions-in-divolio)
+  * [Examples 1: Generate Portfolio on Application using Online Data](#examples-1--generate-portfolio-on-application-using-online-data)
+    + [STEP 1 Asset Performance Investigation](#step-1-asset-performance-investigation)
+    + [STEP 2 Selecting Divestable and Investable Assets](#step-2-selecting-divestable-and-investable-assets)
+    + [STEP 3 Batching Historical Data](#step-3-batching-historical-data)
+    + [STEP 4 Constructing Investment Portfolio](#step-4-constructing-investment-portfolio)
+    + [STEP 5 Divestment](#step-5-divestment)
+  * [Examples 2: Uploading CSV files](#examples-2--uploading-csv-files)
+  * [Examples 3: Using Multiple Comparison in Option I to Option III](#examples-3--using-multiple-comparison-in-option-i-to-option-iii)
+    + [Option I  Multiple Portfolios Comparison](#option-i--multiple-portfolios-comparison)
+    + [Option II Stability Analysis via Clustering](#option-ii-stability-analysis-via-clustering)
+    + [Option III  Graph Structure Correlation Analysis](#option-iii--graph-structure-correlation-analysis)
+
+<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
+
+
+
 # Divfolio
 
 The primary objective of the software is to facilitate the creation and evaluation of portfolios that take into account decarbonization and ESG investing and divestment practices in line with climate change prevention trends emerging in wealth management. The software enables the creation of divestment plans and sustainable portfolios, as well as the comparison of the corresponding risk/return profiles, ESG scores, and bespoke portfolio variables, such as carbon intensity. The evaluation is based on simulations that collect and include pertinent historical market data before and after divestment, while also taking into account varying divestment planning rates. The software permits the user to implement these evaluations on publicly traded equities assets, exchange-traded funds (ETFs), exchange-traded notes (ETNs), and Depositary Receipts (DR). Alternatively, Divfolio can be used for general proposes, such as portfolio comparison, gathering ESG scores, and downloading historical return data.
