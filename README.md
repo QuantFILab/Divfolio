@@ -1,4 +1,4 @@
-#DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management 
+# DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management 
 ## Table of Contents
 
   * [Divfolio](#divfolio)
