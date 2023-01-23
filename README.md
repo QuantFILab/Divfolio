@@ -22,7 +22,7 @@ The simplest way, just click on the link below
 
 ### By downloading an exucunable package from the Github
 
-We offer the electron-exucunable package on the Github that you can be downloaded on the foulder name ""
+We offer the electron-exucunable package on the Github that you can be downloaded on the foulder name ["Executable Package"]()
 
 
 ## Original Research Papers related to Divfolio
