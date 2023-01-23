@@ -31,7 +31,7 @@ The primary objective of the software is to facilitate the creation and evaluati
 On the tab on the left, the <b> User Guide </b> provides detailed instructions on how to use this application. The application's functions are documented in <b> Divestment Plan </b>. Our contact information can be found in <b> Our Team </b>. We welcome the opportunity to collaborate with scholars and industry professionals interested in relevant issues and comparable Shiny applications. To report technical problem, please contact Pasin MarupanthoCancel changesrn at pm122@hw.ac.uk.
 
 
-## How to access Divfolio
+## How to Access Divfolio
 
 we offer three options to access the application.
 
