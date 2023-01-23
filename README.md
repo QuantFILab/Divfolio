@@ -6,9 +6,24 @@ The primary objective of the software is to facilitate the creation and evaluati
 
 On the tab on the left, the <b> User Guide </b> provides detailed instructions on how to use this application. The application's functions are documented in <b> Divestment Plan </b>. Our contact information can be found in <b> Our Team </b>. We welcome the opportunity to collaborate with scholars and industry professionals interested in relevant issues and comparable Shiny applications. To report technical problem, please contact Pasin MarupanthoCancel changesrn at pm122@hw.ac.uk.
 
+
+## How to Access Divfolio
+
+we offer three options to access the application.
+
+### By Shinyapps.io
+
+The simplest way, just click on the link below
+
+[https://quantfilab.shinyapps.io/divfolioserveri/](https://quantfilab.shinyapps.io/divfolioserveri/)
+
+
+
+
 ## Original Research Papers related to Divfolio
 
 Divfolio is baed on the research results from two papers. Preprint versions of both papers are open access available on SSRN. First, the methodology paper explains all mathematical details in portfolio optimization, [Mechanisms to Incentivise Fossil Fuel Divestment and Implications on Portfolio Risk and Returns](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4131449). Secondly, the software paper explains how to use Divolio aloge with an example in FTSE100 divestment to improve ESG scores, [DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4131449).
+
 ## Where to find the ticker?
 
 If you are interested in downloading historical data from Divfolio, you will need the Yahoo! Finance ticker. You may find the tickers [here](https://finance.yahoo.com/screener/new). Note that the ESG scores are available for certain stocks. The ESG scores are not available for others assets, but the historical data may be available.
