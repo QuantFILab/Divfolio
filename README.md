@@ -147,6 +147,12 @@ For STEP 2 to STEP 5, if you already have CSV files in the given form (see in ap
 
 ## Examples 3: Using Multiple Comparison in Option I to Option III
 
+These options required CSV files see example in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files).
+
 ### Option I  Multiple Portfolios Comparison
+
+
 ### Option II Stability Analysis via Clustering
+
+
 ### Option III  Graph Structure Correlation Analysis
