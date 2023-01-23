@@ -21,8 +21,10 @@ The simplest way, just click on the link below
 
 This option is suited for R users who already have R and RStudio on the local machine. How fast the calcualtion process depended on your local machine speed. You can run Divfolio by the following command lines.
 
+```r
 library(shiny)
 shiny::runGitHub('QuantFILab/Divfolio')
+```
 
 We recommend R version 4.2.2 or later. The older R version may cause an error on the package dependency.
 
