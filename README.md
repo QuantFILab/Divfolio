@@ -48,11 +48,14 @@ You don't have to run all steps. For example, if you want only ESG scores, you c
 ## Examples 1: Generate Portfolio on Application using Online Data
 
 Let set up the portfolio by divesting from big energy companies to best ESG scoring companies in   
-
-[Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/)
+[Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/). 
 
 ### STEP 1 
-![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/firststep.png?raw=true)
+To see the ESG score and past performance of the company (If you already have companies in mind, you can script this)
+1. Chick to the Gear icon to open the input window
+2. Tpye th company's ticker
+3. Click on submit button
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
 
 
 ## Examples 2: Uploeading CSV. file
