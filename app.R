@@ -1,58 +1,38 @@
-###Version 0 Beta
-###Pasin Maruphanthorn
+require(remotes)
+remotes::install_github("dreamRs/shinypop")
+require(shinypop)
+require(httr)
+require(tidyverse)
+require(rvest)
+require(jsonlite)
+require(plotly)
+require(BatchGetSymbols)
+require(shinydashboard)
+require(shiny)
+require(shinycustomloader)
+require(shinydashboardPlus)
+require(waiter)
+require(shinyWidgets)
+require(dashboardthemes)
+require(quantmod)
+require(PerformanceAnalytics)
+require(reshape2)
+require(viridis)
+require(shinyjqui)
+require(DT)
+require(BatchGetSymbols)
+require(lubridate)
+require(robustbase)
+require(shinyBS)
+require(cluster)
+require(huge)
+require(qgraph)
+require(magic)
+require(shinyFeedback)
+require(tmap)
+source('FunctionsR')
 
-#require inline
 
-#library(remotes)
-#remotes::install_github("dreamRs/shinypop")
-library(httr)
-library(tidyverse)
-library(rvest)
-library(jsonlite)
-library(plotly)
-library(BatchGetSymbols)
-library(shinydashboard)
-library(shiny)
-#library(htmltab)
-#library(fmsb)
-#library(shinyanimate) #cannot use with shinycustomloader
-library(shinycustomloader)
-library(shinydashboardPlus)
-library(waiter)
-library(shinyWidgets)
-library(dashboardthemes)
-library(quantmod)
-library(PerformanceAnalytics)
-#library(PortfolioAnalytics)
-library(reshape2)
-library(viridis)
-library(shinyjqui)
-#library(shinymaterial)
-#library(rsconnect)
-library(DT)
-library(BatchGetSymbols)
-library(lubridate)
-library(robustbase)
-#library(Rmpfr)
-library(shinyBS) #Tooltip
-library(cluster)
-#library(shinyalert)
-library(huge)
-library(qgraph)
-library(magic)
-library(shinyFeedback)
-library(shinypop)
-library(tmap)
-
-#library(shinyscreenshot)
-#library("webshot")
-#library(fontawesome)
-
-###########################Function Definition###########################
-#setwd('D://PhD Heriot-Watt//Publiplication//Portfolio Divestisfiacation//Package//ShinyApp')
-
-source('FunctionGolbalVariable.R')
-#######################################Start Shiny###################################
 options(shiny.sanitize.errors = FALSE)
 
 ui <- dashboardPage(
@@ -103,8 +83,6 @@ ui <- dashboardPage(
               HTML('<script src="https://climateclock.world/widget-v2.js" async></script><climate-clock />'),
               
               ),
-             
-              #HTML('<embed src="https://www.esgtoday.com/category/esg-news/" style="width:500px; height: 500px;">')),
 
       tabItem(tabName = "userguide",
               tabBox(width = 12,
@@ -396,42 +374,6 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
                      ),
                      box(
                        title = h4("Seleacting Assets from World Major Indices"),
-#                        HTML('<!-- TradingView Widget BEGIN -->
-# <div class="tradingview-widget-container">
-#   <div class="tradingview-widget-container__widget"></div>
-#   <div class="tradingview-widget-copyright"><a href="https://www.tradingview.com" rel="noopener" target="_blank"><span class="blue-text">Quotes</span></a> by TradingView</div>
-#   <script type="text/javascript" src="https://s3.tradingview.com/external-embedding/embed-widget-tickers.js" async>
-#   {
-#   "symbols": [
-#     {
-#       "proName": "FOREXCOM:SPXUSD",
-#       "title": "S&P 500"
-#     },
-#     {
-#       "description": "NASDAQ",
-#       "proName": "SKILLING:NASDAQ"
-#     },
-#     {
-#       "description": "FTSE",
-#       "proName": "SPREADEX:FTSE"
-#     },
-#     {
-#       "description": "Shanghai",
-#       "proName": "SSE:950082"
-#     },
-#     {
-#       "description": "EGX 30",
-#       "proName": "EGX:EGX30"
-#     }
-#   ],
-#   "colorTheme": "light",
-#   "isTransparent": false,
-#   "showSymbolLogo": true,
-#   "locale": "en"
-# }
-#   </script>
-# </div>
-# <!-- TradingView Widget END -->'),
                        pickerInput(
                          inputId = "selindex",
                          label = "Select Index", 
@@ -1500,12 +1442,8 @@ tabPanel(title  = "Option III",
 )
 )
 
-#box(width = 7, solidheader = TRUE, check.names = FALSE, status = "primary", title = "Sustainable Score", 
-
 
 server <- function(input, output, session) {
-
-########Panel A###############
 data_yahoo  <- eventReactive(input$submit, {get_data(input$ticker)})
 data_stock <- eventReactive(input$submit, {get_stock_profile(input$ticker)})
 candel_stock <- eventReactive(input$submit, {candlestick_plot(data_yahoo(),input$ticker)})
@@ -1513,11 +1451,6 @@ perf_stock <- eventReactive(input$submit, {performance_plot(data_yahoo(),input$t
 re_ticker <- eventReactive(input$add, {
   main_port <<- unique(c(main_port,toupper(as.character(input$ticker_sel))))
   main_port})
-
-
-
-#####Render
-
 output$lev_esg <- renderValueBox({
   valueBox(
     value = tags$p(data_stock()[4], style = "font-size: 70%;"),
@@ -1554,11 +1487,6 @@ output$g_score <- renderValueBox({
     icon = icon('handshake')
   )})
 
-
-
-
-
-#######Panel B; File 1######### 
 table_esg <- eventReactive(input$subesg, {
   port <- unique(c(as.character(input$source),as.character(input$divt)));
   tab_esg <- sapply(seq_along(port), function(i) get_esg_profile(port[i])) %>% t() %>% data.frame() %>% `colnames<-`(c("Name","Ticker","Sector","Subsector","ESG Level","ESG","Enironment","Social","Governance"));
@@ -1568,16 +1496,6 @@ table_esg <- eventReactive(input$subesg, {
   output$ui_esg_table <- DTtable(file1_Status)
   file1_Status
 })
-
-
-
-#######Panel B; File 2######### 
-
-
-
-
-#assets_allocation_weight <-  eventReactive(input$subcalport, {assets_allocation(batch()[[2]],file1_Status,as.character(input$portw))})
-
 
 observeEvent(input$subup, {
   if(is.null(file1_Status)){
@@ -1607,8 +1525,6 @@ observeEvent(input$subup, {
     output$ui_esg_table <- DTtable(file1_Status)
   }
   })
-
-
 
 observeEvent(input$fileticker, {
   File <- input$fileticker
@@ -1771,12 +1687,8 @@ observeEvent(input$subman, {
  
   }})
   
-#,
-  #####Render Radar Chart
   output$candel <- renderPlotly(candel_stock())
   
-  
-  #####Render Boxlot of Assset Returns
   
   observeEvent(input$file2,{
     updatePickerInput(session, "rankby", choices =list("Ticker","Return", "Volatility", "Sharpe", "MDD", "Sortino", "Return.cumulative", "VaR"))
@@ -1796,8 +1708,6 @@ observeEvent(input$subman, {
     output$boxasset <- renderPlotly(boxplot_assets(file2_Historical, as.character(input$rankby)))
     })
 
-  
-############################Panel B: File 3####################################
 
   observeEvent(input$file3, {
     File <- input$file3
@@ -1833,9 +1743,7 @@ observeEvent(input$subman, {
       output$weight <- DTtable(file3_Weight)
     }
   }, ignoreNULL = FALSE)
-  
-  
-  ###Calculate Weight
+
   get_weight <- eventReactive(list(input$subweight,input$file3), {
   shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     if(is.null(file1_Status)||is.null(file2_Historical)){
@@ -1849,9 +1757,7 @@ observeEvent(input$subman, {
         reb <- as.integer(input$reb)
         lim <- as.integer(input$limselect)*as.numeric(input$shortlim)
         filew <- NULL
-        #One Column Matrix
         one <- as.matrix(rep(1,ncol(x)-1))
-        # Set Date
         first <- head(x[-(1:tau),],1)$Date
         last <- tail(x[-(1:tau),],1)$Date
         
@@ -1910,7 +1816,6 @@ observeEvent(input$subman, {
       })
   })
   
-  #reb
   
   output$weight <- DTtable(NULL) #For render
   
@@ -1921,26 +1826,20 @@ observeEvent(input$subman, {
   }) #For update
   
   
-  
-  ###Render Asset Weight Plot (Dummy)
   output$plotw3 <- renderPlotly(NULL)  #For render
-  
-  ###Render Asset Weight Plot
+
   shiny_asset_weight_plot <- eventReactive(input$selcom, asset_weight_plot(get_weight()[[1]],as.character(input$selcom)))
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     updatePickerInput(session, "selcom", choices = colnames(get_weight()[[1]])[-1])
-    }) #For update choice
+    }) 
   observeEvent(input$selcom, output$plotw3 <- renderPlotly(shiny_asset_weight_plot())) #For update plot
-  
-  ###Render Fundamental (Dummy)
+
   output$plotw3F <- renderPlotly(NULL)  #For render
   output$plotw3Fshort <- renderPlotly(NULL)  #For render
   output$plotw3Flong <- renderPlotly(NULL)  #For render
   output$plotw3Ftab <- renderDT(NULL)  #For render
   
-  
-  ###Render Fundamental
   shiny_plot_fundamental <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     plot_fundamental(get_weight()[[1]],file1_Status)})
@@ -1950,13 +1849,11 @@ observeEvent(input$subman, {
     output$plotw3Fshort <- renderPlotly(shiny_plot_fundamental()[[3]])
     output$plotw3Flong <- renderPlotly(shiny_plot_fundamental()[[2]])
     output$plotw3Ftab <- DTtable(shiny_plot_fundamental()[[4]])
-    }) #For update plot
+    }) 
 
-  
-  ###Render Asset Weight Plot (Dummy)
+ 
   output$plotw3port <- renderPlotly(NULL)  #For render
   
-  ###Render Asset Weight Plot
   shiny_plot_portfolio_weight <- eventReactive(list(input$subweight,input$file3), plot_portfolio_weight(get_weight()[[1]],file1_Status,as.character(input$selcat),as.Date(input$seldate)))
   observeEvent(list(input$subweight,input$file3), {
     output$plotw3Ftab <- DTtable(shiny_plot_fundamental()[[4]])
@@ -1966,28 +1863,22 @@ observeEvent(input$subman, {
   observeEvent(input$selcat, output$plotw3pOort  <- renderPlotly(plot_portfolio_weight(get_weight()[[1]],file1_Status,as.character(input$selcat),as.Date(input$seldate)))) #For update plot
   observeEvent(input$seldate, output$plotw3port  <- renderPlotly(plot_portfolio_weight(get_weight()[[1]],file1_Status,as.character(input$selcat),as.Date(input$seldate)))) #For update plot
   
-  
-  ###Calculate Risk Profiles
-  
+
   risk <- eventReactive(list(input$subweight,input$file3),{
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     all_performance_table(file2_Historical, file3_Weight)})
-  
-  ###Render Risk Profiles (Dummy)
+
   output$plotw3risk <- DTtable(NULL)  #For render
   
-  ###Render Risk Profiles
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     output$plotw3risk <- DTtable({tabr <- risk();
   tabr[,sapply(tabr, class) %in% c('numeric','integer')] <- round(tabr[,sapply(tabr, class) %in% c('numeric','integer')],6);
   tabr})}) #For update plot
   
-  
-  ###Render Risk Profiles Plot (Dummy)
+
   output$plotw3riskplot <- renderPlotly(NULL)  #For render
-  
-  ###Render Risk Profiles Plot
+ 
   shiny_plot_performance_table <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     plot_performance_table(risk())})
@@ -1995,11 +1886,8 @@ observeEvent(input$subman, {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     output$plotw3riskplot <- renderPlotly(shiny_plot_performance_table())}) #For update plot
   
-  
-  ###Render Radar Plot (Dummy)
   output$radar <- renderPlotly(NULL)  #For render
   
-  ###Render Risk Profiles Plot
   shiny_plot_radar <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     plot_radar(risk())})
@@ -2007,11 +1895,9 @@ observeEvent(input$subman, {
   observeEvent(list(input$subweight,input$file3) , {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     output$radar <- renderPlotly(plot_radar(risk()))}) #For update plot
-  
-  ###Render Efficiency Frontier (Dummy)
+
   output$eff <- renderPlotly(NULL)  #For render
   
-  ###Render Efficiency Frontier
   shiny_efficient_fontier <- eventReactive(input$subeff, efficient_fontier(file2_Historical,file3_Weight))
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
@@ -2020,8 +1906,6 @@ observeEvent(input$subman, {
   observeEvent(input$seldateff, output$eff  <- renderPlotly(plot_efficient_fontier(shiny_efficient_fontier()[[1]],file2_Historical,shiny_efficient_fontier()[[2]],input$seldateeff))) #For update plot
   
 
-  ############################Panel B: File 4####################################
-  
   observeEvent(input$file4, {
     File <- input$file4
     shiny::validate(
@@ -2054,28 +1938,21 @@ observeEvent(input$subman, {
       noty(text ="Require Uploading Files in Step 2, 3 and 4 before", type = "warning")
     }else{
     file4_Schedule <<- div_schedule(as.integer(input$rate), c(as.numeric(input$m),as.numeric(input$a)),file3_Weight,as.Date(input$lastdate))}})
-  
- 
-  ###Update End Date Selection
+
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     updatePickerInput(session, "lastdate", choices = as.character(unlist(get_weight()[[1]]$Date)[-1], use.names = FALSE))}) #For update choice
   
-  ###Render Divestment Schedule (Dummy)
   output$plot4divtab <- DTtable(NULL)  #For render
-  
-  ###Render Divestment Schedule
   
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((!is.null(file3_Weight)),""))
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$plot4divtab <- DTtable({file4_Schedule})}) #For update plot
   
-  ###Render Divestment Table (Dummy)
   output$plot4divtabsum <- DTtable(NULL)  #For render
   
   
-  ###Render Divestment Preview
   output$plot4divpreview <- DTtable(NULL) 
   observeEvent(input$subdivpreview,{ 
     shiny::validate(need((!is.null(file3_Weight)),""))
@@ -2083,7 +1960,6 @@ observeEvent(input$subman, {
     output$plot4divpreview <- renderPlotly(div_preview(as.integer(input$rate), c(as.numeric(input$m),as.numeric(input$a)),as.Date(input$lastdate),file3_Weight, file1_Status))
   })
   
-  ###Render Divestment Table
   shiny_div_weight <- eventReactive(list(input$subdiv,input$file4),{ 
                                     shiny::validate(need((!is.null(file3_Weight)),""))
                                     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
@@ -2152,45 +2028,31 @@ observeEvent(input$subman, {
     shiny::validate(need((!is.null(file3_Weight)),""))
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$plot4divtabsum <- DTtable({tab <- shiny_div_weight(); file5_Weight_Div <<- tab;
-  tab[,2:ncol(tab)] <- round(tab[,2:ncol(tab)],6); tab})}) #For update plot
+  tab[,2:ncol(tab)] <- round(tab[,2:ncol(tab)],6); tab})}) 
  
-  
-  
-  
-  #input$test1 | input$test2
-  
-  ###Render In-Div Sum (Dummy)
-  output$plotw3InDiv1 <- renderPlotly(NULL)  #For render
-  output$plotw3InDiv2 <- renderPlotly(NULL)  #For render
-  
-  ###Render In-Div Sum
+  output$plotw3InDiv1 <- renderPlotly(NULL)  
+  output$plotw3InDiv2 <- renderPlotly(NULL)  
+
   shiny_plot_div_Sch <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_div_Sch(file3_Weight,file1_Status,file4_Schedule, file5_Weight_Div)})
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
-    output$plotw3InDiv1 <- renderPlotly(shiny_plot_div_Sch()[[1]])}) #For update plot
+    output$plotw3InDiv1 <- renderPlotly(shiny_plot_div_Sch()[[1]])}) 
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
-     output$plotw3InDiv2 <- renderPlotly(shiny_plot_div_Sch()[[2]])}) #For update plot
-  
-  
-  
-  ###
-  ###Render Asset Weight Plot (Dummy)
-  output$plotw3div <- renderPlotly(NULL)  #For render
-  
-  ###Render Asset Weight Plot
+     output$plotw3InDiv2 <- renderPlotly(shiny_plot_div_Sch()[[2]])}) 
+
+  output$plotw3div <- renderPlotly(NULL) 
+
   shiny_asset_weight_plot_div <- eventReactive(input$selcomdiv, asset_weight_plot_div(file3_Weight,file5_Weight_Div,as.character(input$selcomdiv)))
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
-    updatePickerInput(session, "selcomdiv", choices = colnames(shiny_div_weight())[-1])}) #For update choice
-  observeEvent(input$selcomdiv, output$plotw3div <- renderPlotly(shiny_asset_weight_plot_div())) #For update plot
-  
-  ###Render Asset Weight Plot (Dummy)
-  output$plotw3portdiv <- renderPlotly(NULL)  #For render
-  
-  ###Render Asset Weight Plot
+    updatePickerInput(session, "selcomdiv", choices = colnames(shiny_div_weight())[-1])}) 
+  observeEvent(input$selcomdiv, output$plotw3div <- renderPlotly(shiny_asset_weight_plot_div())) 
+
+  output$plotw3portdiv <- renderPlotly(NULL)  
+
   shiny_plot_portfolio_weight_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_portfolio_weight_div(file3_Weight,shiny_div_weight(),file1_Status,as.character(input$selcatdiv),as.Date(input$seldatediv))
@@ -2198,55 +2060,45 @@ observeEvent(input$subman, {
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     updatePickerInput(session, "selcatdiv", choices = colnames(file1_Status))
-    updatePickerInput(session, "seldatediv", choices = as.character(unlist(shiny_div_weight()$Date), use.names = FALSE))}) #For update choice
+    updatePickerInput(session, "seldatediv", choices = as.character(unlist(shiny_div_weight()$Date), use.names = FALSE))}) 
 
   observeEvent(input$selcatdiv, output$plotw3portdiv  <- renderPlotly(plot_portfolio_weight_div(file3_Weight, shiny_div_weight(),file1_Status,as.character(input$selcatdiv),as.Date(input$seldatediv)))) #For update plot
   observeEvent(input$seldatediv, output$plotw3portdiv  <- renderPlotly(plot_portfolio_weight_div(file3_Weight, shiny_div_weight(),file1_Status,as.character(input$selcatdiv),as.Date(input$seldatediv)))) #For update plot
   
   
-  ###Calculate Risk Profiles
-  
   riskdiv <- eventReactive(list(input$subdiv,input$file4),{
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     all_performance_table(file2_Historical, shiny_div_weight())})
+ 
+  output$plotw3riskdiv <- DTtable(NULL)  
   
-  ###Render Risk Profiles (Dummy)
-  output$plotw3riskdiv <- DTtable(NULL)  #For render
-  
-  ###Render Risk Profiles
+
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$plotw3riskdiv <- DTtable({tabr <- riskdiv();
   tabr[,sapply(tabr, class) %in% c('numeric','integer')] <- round(tabr[,sapply(tabr, class) %in% c('numeric','integer')],6);
-  tabr})}) #For update plot
+  tabr})}) 
   
-  
-  ###Render Risk Profiles Plot (Dummy)
-  output$plotw3riskplotdiv <- renderPlotly(NULL)  #For render
-  
-  ###Render Risk Profiles Plot
+
+  output$plotw3riskplotdiv <- renderPlotly(NULL) 
+
   shiny_plot_performance_table_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_performance_table_div(risk(),riskdiv())})
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
-    output$plotw3riskplotdiv <- renderPlotly(shiny_plot_performance_table_div())}) #For update plot
+    output$plotw3riskplotdiv <- renderPlotly(shiny_plot_performance_table_div())}) 
   
-  ###Render Fundamental (Dummy)
-  ###Render Asset Weight Plot
   shiny_asset_weight_plot <- eventReactive(input$selcom, asset_weight_plot(get_weight()[[1]],as.character(input$selcom)))
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
-    updatePickerInput(session, "selcom", choices = colnames(get_weight()[[1]])[-1])}) #For update choice
-  observeEvent(input$selcom, output$plotw3 <- renderPlotly(shiny_asset_weight_plot())) #For update plot
-  
-  ###Render Fundamental (Dummy)
-  output$plotw3Fdiv <- renderPlotly(NULL)  #For render
-  output$plotw3Fshortdiv <- renderPlotly(NULL)  #For render
-  output$plotw3Flongdiv <- renderPlotly(NULL)  #For render
-  output$plotw3Ftabdiv <- renderDT(NULL)  #For render
-  
-  ###Render Fundamental
+    updatePickerInput(session, "selcom", choices = colnames(get_weight()[[1]])[-1])})
+  observeEvent(input$selcom, output$plotw3 <- renderPlotly(shiny_asset_weight_plot())) 
+  output$plotw3Fdiv <- renderPlotly(NULL)  
+  output$plotw3Fshortdiv <- renderPlotly(NULL)  
+  output$plotw3Flongdiv <- renderPlotly(NULL)  
+  output$plotw3Ftabdiv <- renderDT(NULL) 
+
   shiny_plot_fundamental_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_fundamental_div(file3_Weight, file5_Weight_Div, file1_Status)})
@@ -2256,31 +2108,18 @@ observeEvent(input$subman, {
                output$plotw3Fshortdiv <- renderPlotly(shiny_plot_fundamental_div()[[3]])
                output$plotw3Flongdiv <- renderPlotly(shiny_plot_fundamental_div()[[2]])
                output$plotw3Ftabdiv <- DTtable(shiny_plot_fundamental_div()[[4]])
-               }) #For update plot
+               }) 
 
-  
- 
-  
-  
-  ###Render Radar Plot (Dummy)
   output$radardiv <- renderPlotly(NULL)  #For render
   
-  ###Render Risk Profiles Plot
   shiny_plot_radar_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_radar(risk(),riskdiv())})
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$radardiv <- renderPlotly(plot_radar_div(risk(),riskdiv()))}) #For update plot
-  
-  
-  ###Render Different Table (Dummy)
   output$plotdiftable <- renderDT(NULL)  #For render
-  
-  ###Render Different Table (Dummy)
   output$plotdifboxplot <- renderPlotly(NULL)  #For render
-  
-  ###Render Different Table 
   shiny_diff_summary <- eventReactive(input$sub.ly.st5, {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     diff_summary(risk(),riskdiv(),shiny_plot_fundamental()[[4]],shiny_plot_fundamental_div()[[4]],as.numeric(input$ly.st5))})  
@@ -2289,18 +2128,6 @@ observeEvent(input$subman, {
     output$plotdiftable <- DTtable(cbind(shiny_diff_summary()[[1]][,1],round(shiny_diff_summary()[[1]][,-1],6)))
     output$plotdifboxplot <- renderPlotly(shiny_diff_summary()[[2]])}) #For update plot
 
-  
-  # output$tablefile <- renderTable({
-  #   File <- input$fileticker
-  #   shiny::validate(
-  #     need(File != "", "No data has been uploaded")
-  #   )
-  #   read.csv(File$datapath, header = TRUE, check.names = FALSE)
-  # })
-  
-  
-  ################################################################################
-  ########################File 5 Optional#########################################
   
   output$div_dynamic <- DTtable(NULL)
   output$hist_return  <- DTtable(NULL)
@@ -2339,7 +2166,6 @@ observeEvent(input$subman, {
     shiny::validate(
       need(File != "", "No data has been uploaded")
     )
-    #change name
     f7 <- read.csv(File$datapath, header = TRUE, check.names = FALSE)
     cons <- req.cons.file(f7,c("Ticker","Status"))
     
@@ -2366,8 +2192,7 @@ observeEvent(input$subman, {
     shiny::validate(
       need(File != "", "No data has been uploaded")
     )
-    #change name
-    
+
     f8 <- read.csv(File$datapath, header = TRUE, check.names = FALSE)
     cons <- req.cons.file(f8,c("Date"))
     
@@ -2389,29 +2214,18 @@ observeEvent(input$subman, {
     }
   }, ignoreNULL = FALSE)
 
-
-###Render Different Table (Dummy)
 output$plotcom1 <- renderPlotly(NULL)  #For render
 
-
-###Render Different Table 
 observeEvent(input$subcomp, updatePickerInput(session, "selcomcom", choices = colnames(file6_Div_Dynamic)[-c(1,ncol(file6_Div_Dynamic))])) #For update choice
 observeEvent(input$subcomp, output$plotcom1 <- renderPlotly(multicomp(file6_Div_Dynamic,as.character(input$selcomcom)))) #For update plot
 
-
-
-###Render Different Table (Dummy)
 output$plotcom2 <- renderPlotly(NULL)  #For render
 output$plotcom3 <- renderPlotly(NULL)  #For render
 
-###Render Different Table 
 shiny_plot_div_Sch_comp <- eventReactive(input$subcomp, plot_div_Sch_comp(file6_Div_Dynamic,file7_Attribute)) 
 observeEvent(input$subcomp, output$plotcom2 <- renderPlotly(shiny_plot_div_Sch_comp()[[1]])) #For update plot
 observeEvent(input$subcomp, output$plotcom3 <- renderPlotly(shiny_plot_div_Sch_comp()[[2]])) #For update plot
 
-
-
-###Render Different Table (Dummy)
 output$plotcom4 <- renderPlotly(NULL)  #For render
 output$plotcom5 <- renderPlotly(NULL)  #For render
 output$plotcom6 <- renderPlotly(NULL)  #For render
@@ -2429,18 +2243,11 @@ observeEvent(input$subcomp, output$plotcom8 <- renderPlotly(shiny_compareplot()[
 observeEvent(input$subcomp, output$tab1 <- DTtable(round_tab(shiny_compareplot()[[1]])))
 observeEvent(input$subcomp, output$tab2 <- DTtable(round_tab(shiny_compareplot()[[2]])))
 
-####BoxPlot
-#output$tabben.op1 <- DTtable(NULL)
-#output$plotben.op1 <- renderPlotly(NULL)
 observeEvent(input$subcomp, updatePickerInput(session, inputId = 'selben.op1', choices = unique(file6_Div_Dynamic$PORTNAME)))
 shiny_diff_summary_mul <- eventReactive(input$submul, {diff_summary_mul(shiny_compareplot()[[1]],shiny_compareplot()[[2]],as.character(input$selben.op1), as.numeric(input$ly.opt1)) })
-observeEvent(input$submul, output$tabben.op1 <- DTtable(round_tab(shiny_diff_summary_mul()[[1]]))) #For update plot
-observeEvent(input$submul, output$plotben.op1 <- renderPlotly(shiny_diff_summary_mul()[[2]])) #For update plot
+observeEvent(input$submul, output$tabben.op1 <- DTtable(round_tab(shiny_diff_summary_mul()[[1]]))) 
+observeEvent(input$submul, output$plotben.op1 <- renderPlotly(shiny_diff_summary_mul()[[2]])) 
 
-##############################Option II#################################
-
-####Input File
-#output$tab.op3 <- DTtable(NULL)
 
 observeEvent(input$file6.op2, {
   File <- input$file6.op2
@@ -2478,7 +2285,6 @@ observeEvent(input$file8.op2, {
   shiny::validate(
     need(File != "", "No data has been uploaded")
   )
-  #change name
   f6 <- read.csv(File$datapath, header = TRUE, check.names = FALSE)
   cons <- req.cons.file(f6,c("Date"))
   
@@ -2501,8 +2307,6 @@ observeEvent(input$file8.op2, {
 
 }, ignoreNULL = FALSE)
 
-
-####
 shiny_clust.option <-  eventReactive(input$subclust, clust.option(file6_Div_Dynamic, file8_Return, as.numeric(input$tau.op2), as.numeric(input$sept.op2)))
 
 output$op2graph <- renderPlotly(NULL)
@@ -2512,14 +2316,9 @@ observeEvent(input$subclust, {
   output$op2hm <- renderPlotly(shiny_clust.option()[[4]])
   output$op2tab1 <- renderDT(round_tab(shiny_clust.option()[[1]]))
   output$op2tab2 <- renderDT(round_tab(shiny_clust.option()[[2]]))
-}) #For update plot
+}) 
 
 
-
-##############################Option III#################################
-
-####Input File
-#output$tab.op3 <- DTtable(NULL)
 
 observeEvent(input$file6.op3, {
   File <- input$file6.op3
@@ -2547,8 +2346,6 @@ observeEvent(input$file6.op3, {
     output$tab.op3 <- DTtable(round_tab(file6_Div_Dynamic))
   }
   
-
-  ####Update Picker
   updatePickerInput(session,inputId = "gdate1", choices = as.list(1:length(unique(file6_Div_Dynamic$Date))) %>% `names<-`(unique(file6_Div_Dynamic$Date)))
   updatePickerInput(session,inputId = "gdate2", choices = as.list(1:length(unique(file6_Div_Dynamic$Date))) %>% `names<-`(unique(file6_Div_Dynamic$Date)))
   updatePickerInput(session,inputId = "gdate3", choices = as.list(1:length(unique(file6_Div_Dynamic$Date))) %>% `names<-`(unique(file6_Div_Dynamic$Date)))
@@ -2576,7 +2373,6 @@ observeEvent(input$file7.op3, {
     file7_Attribute  <<- read.csv(File$datapath, header = TRUE, check.names = FALSE)
     output$tab.op3.1 <- DTtable(round_tab(file7_Attribute))
   }
-  #change name
 
 }, ignoreNULL = FALSE)
 
@@ -2606,10 +2402,6 @@ observeEvent(input$file8.op3, {
   }
 }, ignoreNULL = FALSE)
 
-####Plot Network
-#output$op3.1 <- renderPlot(NULL)
-#output$op3.2 <- renderPlot(NULL)
-#output$op3.3 <- renderPlot(NULL)
 shiny_get.graph.1 <-  eventReactive(input$subgdate1, {
     updateProgressBar(id = 'pbg1', value = 0, total = 100, title = "Processing")
     div_dynamic <- file6_Div_Dynamic
@@ -2675,7 +2467,6 @@ observeEvent(input$subgdate1, output$op3.1 <- renderPlot(shiny_get.graph.1())) #
 observeEvent(input$subgdate2, output$op3.2 <- renderPlot(shiny_get.graph.2())) #For update plot
 observeEvent(input$subgdate3, output$op3.3 <- renderPlot(shiny_get.graph.3())) #For update plot
 
-######New
 
 shiny_index_map <- eventReactive(input$selindex, map_index(input$selindex))
 observeEvent(input$selindex, output$map <- renderPlot(shiny_index_map()[[1]]))
@@ -2684,19 +2475,6 @@ observeEvent(input$subindex, {
   updateOrderInput(session,inputId = "source", items = (shiny_index_map()[[2]]), item_class = 'info')
 })
 
-
-
-#############Progreesion Bar###########################################
-
-
-
 }
 
 shinyApp(ui, server, options = list(launch.browser = T))
-
-# F100 <- read_csv('ESG_FTSE100.csv') %>% drop_na()
-# F100 <- F100 %>% dplyr::filter(Sector %in% c('Energy','Utilities','Healthcare'))
-# F100$Status <- ifelse(F100$Sector %in% c('Energy','Utilities'), "Divest", 'Invest')
-# write_csv(F100, 'File1_Case1.csv')
-
-
