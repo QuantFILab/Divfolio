@@ -140,7 +140,13 @@ Looking at the last boxplots, they tell us that with this divestment schedule, t
 
 ## Examples 2: Uploading CSV files
 
-For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files)), you can upload those files without retrieving data online by Clicking on the "Check" icon and upload a file like in the figure below. the files need to be uploaded sequentially. For example, F2 can not be uploaded unless F1 was updated. For matching of files and STEPs please look at the diagram in **work flow**.
-
+For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files)), you can upload those files without retrieving data online by Clicking on the "Check" icon and upload a file like in the figure below. the files need to be uploaded sequentially. For example, F2 can not be uploaded unless F1 was updated. For matching of files and STEPs please look at the diagram in **Workflow**.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Check.png?raw=true)
+
+
+## Examples 3: Using Multiple Comparison in Option I to Option III
+
+### Option I  Multiple Portfolios Comparison
+### Option II Stability Analysis via Clustering
+### Option III  Graph Structure Correlation Analysis
