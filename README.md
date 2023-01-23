@@ -45,9 +45,11 @@ DivFolio App tool comprises two core components as will be detailed in the panel
 You don't have to run all steps. For example, if you want only ESG scores, you can stop at STEP 2.
 
 
-## Examples 1: Generate Portfolio on Application 
+## Examples 1: Generate Portfolio on Application using Online Data
 
+Let set up the portfolio by divesting from big energy companies to best ESG scoring companies in   
 
+![alt text](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/)
 
 ### STEP 1 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/firststep.png?raw=true)
