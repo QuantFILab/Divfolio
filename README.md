@@ -54,7 +54,7 @@ Let set up the portfolio by divesting from big energy companies to best ESG scor
 To see the ESG score and past performance of the company (If you already have companies in mind, you can script this)
 1. Chick to the Gear icon to open the input window
 2. Tpye company's ticker in the box
-3. Click on submit button
+3. Click on "submit" button
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_select.png?raw=true)
 
@@ -65,8 +65,13 @@ The results are shown below.
 To pick company stocks to portfolio (Required)
 1. Click on Cart icon to open the input window
 2. Tpye company' ticker
-3. Chick "Add" button
-4. You need to add one by one the ticker
+3. Chick "add" button
+
+You need to add one by one the ticker. The result will be shown in STEP 2.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
+
+
+### STEP 2
+
 ## Examples 2: Uploeading CSV. file
