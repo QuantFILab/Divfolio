@@ -26,7 +26,41 @@ library(shiny)
 shiny::runGitHub('QuantFILab/Divfolio')
 ```
 
-We recommend R version 4.2.2 or later. The older R version may cause an error on the package dependency.
+We recommend R version 4.2.2 or later. The older R version may cause an error on the package dependency. The version of all packages included in application are list in the table below.
+
+<!-- html table generated in R 4.2.2 by xtable 1.8-4 package -->
+<!-- Mon Jan 23 21:14:12 2023 -->
+<table border=1>
+<tr> <th> Package </th> <th> Version </th>  </tr>
+  <tr> <td> BatchGetSymbols </td> <td> 2.6.4 </td> </tr>
+  <tr> <td> cluster </td> <td> 2.1.4 </td> </tr>
+  <tr> <td> dashboardthemes </td> <td> 1.1.6 </td> </tr>
+  <tr> <td> DT </td> <td> 0.26 </td> </tr>
+  <tr> <td> huge </td> <td> 1.3.5 </td> </tr>
+  <tr> <td> jsonlite </td> <td> 1.8.4 </td> </tr>
+  <tr> <td> lubridate </td> <td> 1.9.0 </td> </tr>
+  <tr> <td> magic </td> <td> 1.6.1 </td> </tr>
+  <tr> <td> PerformanceAnalytics </td> <td> 2.0.4 </td> </tr>
+  <tr> <td> plotly </td> <td> 4.10.1 </td> </tr>
+  <tr> <td> qgraph </td> <td> 1.9.3 </td> </tr>
+  <tr> <td> quantmod </td> <td> 0.4.20 </td> </tr>
+  <tr> <td> reshape2 </td> <td> 1.4.4 </td> </tr>
+  <tr> <td> robustbase </td> <td> 0.95.0 </td> </tr>
+  <tr> <td> rvest </td> <td> 1.0.3 </td> </tr>
+  <tr> <td> shiny </td> <td> 1.7.4 </td> </tr>
+  <tr> <td> shinyBS </td> <td> 0.61.1 </td> </tr>
+  <tr> <td> shinycustomloader </td> <td> 0.9.0 </td> </tr>
+  <tr> <td> shinydashboard </td> <td> 0.7.2 </td> </tr>
+  <tr> <td> shinydashboardPlus </td> <td> 2.0.3 </td> </tr>
+  <tr> <td> shinyFeedback </td> <td> 0.4.0 </td> </tr>
+  <tr> <td> shinyjqui </td> <td> 0.4.1 </td> </tr>
+  <tr> <td> shinypop </td> <td> 0.1.1 </td> </tr>
+  <tr> <td> shinyWidgets </td> <td> 0.7.5 </td> </tr>
+  <tr> <td> tidyverse </td> <td> 1.3.2 </td> </tr>
+  <tr> <td> tmap </td> <td> 3.3.3 </td> </tr>
+  <tr> <td> viridis </td> <td> 0.6.2 </td> </tr>
+  <tr> <td> waiter </td> <td> 0.2.5 </td> </tr>
+   </table>
 
 ### By downloading an exucunable package from the Github
 
