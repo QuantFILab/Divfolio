@@ -102,4 +102,27 @@ You will get a table of the historical return calculated from the close price an
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_page.png?raw=true)
 
+
+### STEP 4
+
+To generate portfolio wieght
+1. Click on Carlendar icon
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step4_seteport.png?raw=true)
+
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step4_page.png?raw=true)
+
+
+### STEP 5
+
+To generate portfolio wieght
+1. Click on Carlendar icon
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step5_setdiv.png?raw=true)
+
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step5_page.png?raw=true)
+
+
 ## Examples 2: Uploeading CSV. file
