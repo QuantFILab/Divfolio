@@ -51,7 +51,7 @@ Let set up the portfolio by divesting from big energy companies to best ESG scor
 [Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/). We will invest in BAC, CRM, GOOGL,	INTC,	and MSFT that have a good environment score. Then, we divest from COP, CVM, and XOM which have poor environmental score.
 
 
-### STEP 1 
+### STEP 1 Asset Performance Investigation
 To see the ESG score and past performance of the company (If you already have companies in mind, you can script this)
 1. Chick to the Gear icon to open the input window
 2. Tpye company's ticker in the box
@@ -73,7 +73,7 @@ To pick company stocks to portfolio (Required)
 
 You need to add one by one the ticker. Here, input  BAC, CRM, GOOGL,	INTC,	MSFT, COP, CVM, and XOM. The result will be shown in STEP 2.
 
-### STEP 2
+### STEP 2 Selecting Divestable and Investable Assets
 
 The tickers selected in STEP1 will be appear in the box of "Potential Assets". We need to assign a divestment status to each asset by drag and drop them to the box of "Investable Assets" and "Divestable Assets" like in the figure below.
 
@@ -88,7 +88,7 @@ The results are in figure below. You can download the table to you local machine
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_page.png?raw=true)
 
-### STEP 3
+### STEP 3 Batching Historical Data
 
 To get the historical data of the assets passed from STEP2
 1. Click on Carlendar icon
@@ -103,18 +103,26 @@ You will get a table of the historical return calculated from the close price an
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_page.png?raw=true)
 
 
-### STEP 4
+### STEP 4 Constructing Investment Portfolio
 
-To generate portfolio wieght
+To generate portfolio weights
+
 1. Click on Carlendar icon
+2. Select type of portfolio (Here we use GMV with leverage 1.3)
+3. Switch on option to limit short position
+4. Select number of days each time rebalancing (Here we rebalance portfolio monthly)
+5. Select window of covaraince history (Usually equal to number of days each time rebalancing)
+6. Click on "submit" button
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step4_seteport.png?raw=true)
+
+Te results will shown the ESG score and risk profiles of portfolio as in figure below.
 
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step4_page.png?raw=true)
 
 
-### STEP 5
+### STEP 5 Divestment
 
 To generate portfolio wieght
 1. Click on Carlendar icon
