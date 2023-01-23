@@ -118,12 +118,21 @@ get_stock_profile <- function(ticker){
   ticker <- toupper(ticker)
   comp_data <- key_detail(ticker)
   esg_data <- current_esg(ticker) 
-  prof <- modules_data(ticker,'assetProfile')
+  prof <- tryCatch(
+    {modules_data(ticker,'assetProfile')},
+    error = function(cond){
+      NULL
+    })
   comn <- comp_data$longName
   
   if(identical(comn, character(0))||(comn == "")||(is.na(comn))){re <- rep('-',14); re[1] <- 'Unavailable'; re[5] <- 'black'}else{
-    sector <- prof$sector
-    subsector <- prof$industry
+    if(is.null(prof)){
+      sector <- NA
+      subsector <- NA
+    }else{
+      sector <- prof$sector
+      subsector <- prof$industry
+    }
     market <- paste0(comp_data$exchange, "currency in ",comp_data$currency)
     esg <- rep("-",7)
     com_name <- paste0(comn," (", comp_data$symbol,")")
@@ -151,13 +160,16 @@ get_stock_profile <- function(ticker){
         esg[2] <- "blue"
         esg[1] <- "Negligible"
       }
+    }else{
+      esg <- rep("-",7)
     }
     re <- c(com_name,sector,subsector,esg,comp_data$marketCap,comp_data$trailingPE,comp_data$trailingAnnualDividendRate, market)
   }
   
   return(re)
 }
-
+                                                     
+                                                     
 get_esg_profile <- function(ticker){
   ticker <- toupper(ticker)
   comp_data <- key_detail(ticker)
@@ -165,10 +177,19 @@ get_esg_profile <- function(ticker){
     fin <- rep(NA,9)
   }else{
     esg_data <- current_esg(ticker) 
-    prof <- modules_data(ticker,'assetProfile')
+    prof <- tryCatch(
+      {modules_data(ticker,'assetProfile')},
+      error = function(cond){
+        NULL
+      })
     comn <- comp_data$longName
-    sector <- prof$sector
-    subsector <- prof$industry
+    if(is.null(prof)){
+      sector <- NA  
+      subsector <- NA
+    }else{
+      sector <- prof$sector
+      subsector <- prof$industry
+    }
     esg <- rep("-",5)
     com_name <- paste0(comn," (", comp_data$symbol,")")
     if(!is.null(esg_data)){
