@@ -159,10 +159,12 @@ The results are the comparison of the ESG scores and risk profiles of the input 
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionI_page.png?raw=true)
 
+Looking at the last panel in boxplots, the instant divestment yielded the most improvement (distribution) of the environmental score but it costs by dropping in return and other ESG scores both social and governance. If you mind the return and other scores rather than the E score, you shouldn't select this strategy. In contrast, if you mind the E score the hyperbolic divestment seems to be suited for you. The best divestment strategy depended on you final goal. 
+
 ### Option II Stability Analysis via Clustering
 
 1. Upload the required files, F5 
-2. Upload the required files, F5 
+2. Upload the required files, F2
 3. Set the window of the smoothing risk profiles (Here we set 20 days)
 4. Set the window of clustering (Here we set 20 days)
 5. Click on "submit".
@@ -173,8 +175,21 @@ The results are the smoothed rsik profiles and the clustering results.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionII_page.png?raw=true)
 
+Looking at the last plots of the heatmap, you will see the different colors on the time series of the cluster label of the divested portfolio and the benchmarks. That indicates the divestment changes the relative behavior of that risk profile. The linear divestment seems to be the best tracking on the benchmark as the labels of the clusters are quite similar to the benchmark while the other divested portfolio yields the series of diferent labels.
+
 ### Option III  Graph Structure Correlation Analysis
 
+1. Upload file F5.
+2. Upload file F6 as an option (can be replaced by F1).
+3. Upload file F2.
+4. Select the date of rebalancing you want to see the correlation structure.
+5. Click on "submit" to process. The process is time-consuming as an optimization of the regularization parameter. Please be patient. 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionIII_setup1.png?raw=true)
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionIII_setup2.png?raw=true)
+
+The results are the robust correlation structure of the portfolio at the given time. We allow three cross-sectional graphs for comparison as the limit of visualization.  
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionIII_page.png?raw=true)
+
+Here, the linear and hyperbolic divestments do not change the correlation structure of the portfolio in the early states. The correlation structure will be changed at the terminal states when some assets were divested completely. 
+
