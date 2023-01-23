@@ -21,9 +21,6 @@
     + [Option II Stability Analysis via Clustering](#option-ii-stability-analysis-via-clustering)
     + [Option III  Graph Structure Correlation Analysis](#option-iii--graph-structure-correlation-analysis)
 
-<small><i><a href='http://ecotrust-canada.github.io/markdown-toc/'>Table of contents generated with markdown-toc</a></i></small>
-
-
 
 # Divfolio
 
