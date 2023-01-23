@@ -1,7 +1,3 @@
-######Function and Golbal Variable###############
-
-
-
 box <- shinydashboard::box
 
 #Request Conditions
@@ -58,47 +54,6 @@ everyother <- function(x){
   return(y)
   }
 
-# academic_profile_box <- function(guser,title = NULL,subtitle= NULL,picture= NULL){
-#   url <- paste0("https://scholar.google.com/citations?hl=en&user=",guser)
-#   page <- read_html(url)
-#   name <- ifelse(is.null(title),page %>% html_nodes(xpath = '//*[@id="gsc_prf_in"]') %>% html_text(),title)
-#   subt <- ifelse(is.null(subtitle),page %>% html_nodes(xpath = '//*[@id="gsc_prf_i"]/div[2]') %>% html_text(),subtitle)
-#   gbox <- userBox(
-#     width = 6,
-#     title = userDescription(
-#       title = HTML(paste("<p style='color:white'>",name,"</p>")),
-#       subtitle = HTML(paste("<p style='color:white'>",subt,"</p>")),
-#       backgroundImage = "https://cdn.statically.io/img/wallpaperaccess.com/full/1119564.jpg",
-#       image = ifelse(is.null(picture),paste0("https://scholar.googleusercontent.com/citations?view_op=view_photo&user=",guser,"&citpid=1"),picture),
-#       type = 2
-#     ),
-#     status = "teal",
-#     boxToolSize = "xl",
-#     footer = "The footer here!"
-#   )
-#   return(gbox)
-# }
-
-# google_scholar_box <- function(guser){
-#   url <- paste0("https://scholar.google.com/citations?hl=en&user=",guser)
-#   page <- read_html(url)
-#   name <- page %>% html_nodes(xpath = '//*[@id="gsc_prf_in"]') %>% html_text()
-#   subt <- page %>% html_nodes(xpath = '//*[@id="gsc_prf_i"]/div[2]') %>% html_text()
-#   gbox <- userBox(
-#     width = 6,
-#     title = userDescription(
-#       title = HTML(paste("<p style='color:white'>",name,"</p>")),
-#       subtitle = HTML(paste("<p style='color:white'>",subt,"</p>")),
-#       backgroundImage = "https://cdn.statically.io/img/wallpaperaccess.com/full/1119564.jpg",
-#       image = paste0("https://scholar.googleusercontent.com/citations?view_op=view_photo&user=",guser,"&citpid=1"),
-#       type = 2
-#     ),
-#     status = "teal",
-#     boxToolSize = "xl",
-#     footer = "The footer here!"
-#   )
-#   return(gbox)
-# }
 
 check <- function(ticker){
   ticker <- toupper(ticker)
@@ -512,21 +467,7 @@ sep_pos_neg <- function(w){
   return(list(wp,wn))
 }
 
-# corr_plot <- function(returnmat,rebdate,datesel){
-#   inx <- which(rebdate == datesel)
-#   selcor <- cor(returnmat[[inx]])
-#   z <- melt(replace(selcor, lower.tri(selcor, TRUE), NA), na.rm = TRUE) 
-#   z$Date <- rebdateadd[inx]
-#   colnames(z) <- c('X', 'Y', 'Corr','Date')
-#   p <- plot_ly(x=colnames(selcor), y= rev(rownames(selcor)), 
-#                z = selcor[,rev(rownames(selcor))], 
-#                type = "heatmap", 
-#                colorscale= "Viridis",
-#                showscale = T) %>%
-#     layout(margin = list(l=120),title = "Correlation of Return of Assets in Portfolio",
-#            legend = list(title=list(text='<b> Correlatio </b>')))
-#   return(p)
-# }
+
 
 asset_weight_plot <- function(w,selcom){
   sel <- w[,c('Date',selcom)]
@@ -603,22 +544,6 @@ plot_performance_table <- function(pertab){
   return(fig)
 }
 
-# plot_radar <- function(pertab){
-#   last_row <- pertab[nrow(pertab),-c(1,ncol(pertab))]
-#   tabnew <- pertab[-nrow(pertab),-c(1,ncol(pertab))]
-#   radar <- bind_rows(apply(tabnew,2,max), apply(tabnew,2,min), last_row) %>% data.frame() %>% round(4) 
-#   colnames(radar) <- sapply(1:ncol(radar), function(i) paste0(colnames(radar)[i]," = ",radar[3,i]) )
-#   par(xpd = TRUE)
-#   p <- radarchart(radar,
-#              cglty = 1,       # Grid line type
-#              cglcol = "gray", # Grid line color
-#              pcol = 4,
-#              title = "Overall Performance",
-#              plwd = 3,        # Width for each line
-#              plty = 1,        # Line type for each line
-#              pfcol = rgb(0.1490196, 0.5098039, 0.5568627, 0.5))   # Color of the areas  
-#   return(p)
-# }
 
 plot_radar <- function(pertab){
   last_row <- pertab[nrow(pertab),-c(1,ncol(pertab))]
@@ -664,7 +589,6 @@ ex_var_efficient <- function(invc,mu){
   vartan <- c/b^2
   covgmvtan <- 1/a
   
-  #Combination of Efficient Portfolio is Invarant
   asig <- vartan - vargmv 
   csig  <- vargmv + 0.001
   
@@ -677,8 +601,6 @@ ex_var_efficient <- function(invc,mu){
 }
 
 efficient_fontier <- function(x,y){
-
-  #w,returnmat,covmat,rebdate
   rebdate <- unique(c(x$Date[1],y$Date))
   returnmat <- lapply(seq_along(rebdate)[-length(rebdate)], function(i) {rowtoday <- which(x$Date == as.Date(rebdate[i]));
   rowfuture <- which(x$Date == as.Date(rebdate[i+1])) - 1; x[(rowtoday):(rowfuture),-1]}) %>% lapply(function(m) {m[is.na(m)] <- 0; m}) %>% lapply(function(m) {ifelse(length(m[m == 0]) == 0, m <- m,m[m == 0] <- rnorm(length(m[m == 0]),0.0001,0.0001)); m}) 
@@ -686,12 +608,10 @@ efficient_fontier <- function(x,y){
   wmat <- lapply(1:nrow(y), function(i) as.matrix(returnmat[[i]])%*%t(as.matrix(y[i,-1]))) %>% lapply(function(m) {mm <- data.frame(mean(m),sd(m)) %>% `colnames<-`(c('Mu','SD')); mm}) %>% bind_rows()
   wmat$Date <- y$Date
     
-  
     
   covmat <- lapply(returnmat, function(y) {cov(y)})
   invcov <- lapply(covmat, function(y) {solve(y,tol = 1E-100)}) 
   
-  #Check Accuracy
   crit <- sapply(seq_along(covmat), function(i) sum(covmat[[i]]%*%invcov[[i]]))
   if(sum((crit >= (ncol(x)-1) - 1E-10)&&(crit <= (ncol(x)-1) + 1E-10)) != 1){
   covmat <- lapply(returnmat, function(y) {covr <- as.matrix(covOGK(y,sigmamu = s_mad)$cov); dimnames(covr) <- list(colnames(x)[-1],colnames(x)[-1]); covr})
@@ -703,7 +623,6 @@ efficient_fontier <- function(x,y){
 
 
 plot_efficient_fontier <- function(ef,w,wmat,seldate){
-  #pertab is forward testing!!!
   wmat$Date <- as.character(wmat$Date)
   wmatsub <- subset(wmat, Date %in% seldate) %>% `colnames<-`(c('exeff','sdeff','Date'))
   efsub <- subset(ef, Date %in% seldate)
@@ -711,14 +630,10 @@ plot_efficient_fontier <- function(ef,w,wmat,seldate){
   p <- ggplot(efsub,aes(x = sdeff,y = exeff, colour = Date)) +
     geom_point() +
     scale_colour_viridis_d()+
-    #scale_fill_viridis(discrete = FALSE) +
     geom_point(data = wmatsub, shape = 8, size =4) +
-    #aes(shape = Date)
-    #geom_point(aes(x =sqrt(vartan),y= extan), colour="black", size =4) +
     labs(x = "Standard Deviation",
          y = "Expected Return",
          colour = 'Portfolio'
-         #shape = 'Portfolio'
          ) +
     theme_bw() +
     theme(text = element_text(family = 'Fira Sans'),
@@ -728,23 +643,16 @@ plot_efficient_fontier <- function(ef,w,wmat,seldate){
 }
 
 
-#Table
-#Not equal Ticker? Acceptable?
 
 plot_fundamental <- function(w,found){
   common <- intersect(colnames(w),found$Ticker)
   w <- w[,c('Date',common)]
-  #char_factor <- found[, sapply(found, class) == 'character', drop=FALSE] 
   num_factor <- found[, sapply(found, class) %in% c('numeric','integer'), drop=FALSE]
- 
-  #coverage_char <- apply(char_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
   coverage_num <- apply(num_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
-
   posw <- w[,-1]
   posw[posw < 0] <- 0 
   negw <- w[,-1]
   negw[negw >= 0] <- 0
-  
   poswa <- NULL
   for(j in 1:ncol(num_factor)){
     poswa <- rbind(poswa,sapply(1:nrow(posw), function(i) {x <- num_factor[,j]; y <- posw[i,];
@@ -772,7 +680,6 @@ plot_fundamental <- function(w,found){
     geom_bar(data = subset(meltplogt, Position == "Short"), 
              aes(y = -Score), stat = "identity", position = "dodge", color="black", fill="#FDE725FF", alpha = 0.5) + 
     geom_hline(yintercept = 0,colour = "grey90") +
-    #facet_grid(Factor~.,  scales = "free", space = "free", shrink = TRUE) +
     labs(x = "Date",
          y = "Score") +
     theme_bw() +
@@ -790,7 +697,6 @@ plot_fundamental <- function(w,found){
     ppos <- ggplot(meltpos, aes(x= factor(0), y=Score, fill=Factor)) +
       geom_boxplot(alpha=0.7) +
       geom_violin(width=1.4, alpha=0.3) +
-      #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
       stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
       scale_fill_viridis(discrete = TRUE) +
       labs(x = " ",
@@ -815,7 +721,6 @@ plot_fundamental <- function(w,found){
     pneg <- ggplot(meltneg, aes(x= factor(0), y=Score, fill=Factor)) +
       geom_boxplot(alpha=0.7) +
       geom_violin(width=1.4, alpha=0.3) +
-      #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
       stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
       scale_fill_viridis(discrete = TRUE) +
       labs(x = " ",
@@ -861,7 +766,6 @@ plot_portfolio_weight <- function(w,found,selcat,seltime){
     scale_fill_viridis(discrete = bool, name = selcat) +
     theme_bw() +
     theme(text = element_text(family = 'Fira Sans'),
-          #legend.position= 'none',
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
     
   fig <- ggplotly(p) 
@@ -897,7 +801,6 @@ div_preview <- function(typesc, para, enddate = NULL, w, found){
              aes(y = Weight, fill = Position), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
     geom_bar(data = subset(divestsum, Position == "Short"),
              aes(y = Weight, fill = Position), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
-    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
     geom_line(data = subset(divestsum, Position == "Long"),
               aes(y = Bound, group = 1), color="black", size = 1) +
@@ -957,27 +860,18 @@ plot_indiv <- function(w,found){
 
 
 div_weight <- function(w,Schedule,found){
-  
   Invest_List <- found %>% dplyr::filter(Status == 'Invest') %>% .$Ticker
-  
   Divest_List <- found %>% dplyr::filter(Status == 'Divest') %>% .$Ticker
-  
   Bound <- unlist(Schedule$Bound,use.names =  FALSE)
-  
   final_frame <- c()
-
   for(k in 1:nrow(w)){
-    
     Invest <- w[,Invest_List][k,]
     Divest <- w[,Divest_List][k,]
  
     Long_Divest <- Divest[which(Divest >= 0)] 
     Short_Divest <- Divest[which(Divest < 0)]
     if(length(Short_Divest)==0){Short_Divest <- NULL}
-    
-    #Sum
     Long_Divest_Sum <- if (length(Long_Divest)==0) {0} else sum(Long_Divest)
-    #Prevent Long only Port
     Short_Divest_Sum <- if (length(Short_Divest)==0) {0} else -sum(Short_Divest)
     
     if((Long_Divest_Sum > Bound[k]) || (Short_Divest_Sum > Bound[k])){
@@ -1017,12 +911,10 @@ div_weight <- function(w,Schedule,found){
 
 
 plot_div_Sch <- function(w,found, Schedule, div_w){
-  
   divasset <- (found %>% dplyr::filter(Status == "Divest"))$Ticker
   divw <- w[,divasset]
   divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
   divestsum$Status <- 'Before-Divest'
-  
   
   divestsum$Bound <- c(Schedule$Bound,-(Schedule$Bound))
   
@@ -1055,7 +947,6 @@ plot_div_Sch <- function(w,found, Schedule, div_w){
              aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
     geom_bar(data = subset(melt_frame_div, Position == "Short"),
              aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
-    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
     geom_line(data = subset(divestsum, Position == "Long"),
               aes(y = Bound, group = 1), color="black", size = 0.7) +
@@ -1070,14 +961,11 @@ plot_div_Sch <- function(w,found, Schedule, div_w){
   
   fig1 <- ggplotly(p)
   
-  #melt_frame_inv$Date <- as.Date(melt_frame_inv$Date)
-  
   p <- ggplot(melt_frame_inv %>% arrange(desc(Weight)), aes(x = Date)) + 
     geom_bar(data = subset(melt_frame_inv, Position == "Long"),
     aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
     geom_bar(data = subset(melt_frame_inv, Position == "Short"),
     aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
-    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
     labs(x = "Date",
          y = "Sum of Weights") +
@@ -1094,8 +982,6 @@ plot_div_Sch <- function(w,found, Schedule, div_w){
   
 }
 
-
-##################################Comparison-Div##########################
 
 asset_weight_plot_div <- function(w,w_div,selcom){
   selben <- w[,c('Date',selcom)]
@@ -1153,33 +1039,6 @@ plot_portfolio_weight_div <- function(w,w_div,found,selcat,seltime){
   
 }
 
-
-# plot_radar_div <- function(pertab,pertabdiv){
-#   last_row <- pertab[nrow(pertab),-c(1,ncol(pertab))]
-#   last_row_div <- pertabdiv[nrow(pertabdiv),-c(1,ncol(pertabdiv))]
-#   tabnew <- rbind(pertab[-nrow(pertab),-c(1,ncol(pertab))],pertabdiv[-nrow(pertabdiv),-c(1,ncol(pertabdiv))])
-#   radar <- bind_rows(apply(tabnew,2,max), apply(tabnew,2,min), last_row, last_row_div) %>% data.frame() %>% round(4) %>%
-#     dplyr::select(-Return.cumulative,-MDD)
-#   colnames(radar) <- sapply(1:ncol(radar), function(i) paste0(colnames(radar)[i]," = ",radar[3,i]," (Non) ",radar[4,i]," (Div)") )
-#   
-#   vc <- viridis_pal()(10)[c(2,9)]
-#   
-#   colors_border=c(vc[1], vc[2])
-#   colors_in= alpha(colors_border,0.3)
-#   
-#   par(xpd = TRUE)
-#   p <- radarchart(radar,
-#                   cglty = 1,       # Grid line type
-#                   cglcol = "gray", # Grid line color
-#                   pcol=colors_border,
-#                   title = "Overall Performance",
-#                   plwd = 3,        # Width for each line
-#                   plty = 1,        # Line type for each line
-#                   pfcol = colors_in)   # Color of the areas  
-#   legend(x=0.7, y=1, legend = c('Before-Divest','Divest'), bty = "n", pch=20 , col=colors_in , text.col = "black", cex=1.2, pt.cex=3)
-#   return(p)
-# }
-
 plot_radar_div <- function(pertab,pertabdiv){
 
   tabnew <- pertab[-nrow(pertab),-ncol(pertab)]
@@ -1194,7 +1053,6 @@ plot_radar_div <- function(pertab,pertabdiv){
     
   p <- ggplot(tabnewmeltall, aes(x= Status, y=value, fill=variable, group = Status)) +
     geom_boxplot(alpha=0.7) +
-    #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=variable), alpha=0.6) +
     geom_violin(width=1.4, alpha=0.3) +
     stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
     scale_fill_viridis(discrete = TRUE) +
@@ -1215,7 +1073,6 @@ plot_radar_div <- function(pertab,pertabdiv){
 }
 
 plot_performance_table_div <- function(pertab,pertabdiv){
-  #Delete OVerall
   pertab <- pertab[-nrow(pertab),]
   pertab$Status <- 'Before-Divest'
   
@@ -1246,10 +1103,6 @@ plot_performance_table_div <- function(pertab,pertabdiv){
           legend.text = element_text(size=15),
           legend.title = element_text(size=17))
   fig <- ggplotly(p, width = 1000, height=1000)
-  
-  #scale_x_continuous(breaks = scales::pretty_breaks(n = 10))
-  #one col
-  
   return(fig)
 }
 
@@ -1259,17 +1112,12 @@ plot_fundamental_div <- function(w,w_div,found){
   w <- w[,c('Date',common )]
   w_div <- w_div[,c('Date',common)]
   w_all <- rbind(w,w_div)
-  #char_factor <- found[, sapply(found, class) == 'character', drop=FALSE] 
   num_factor <- found[, sapply(found, class) %in% c('numeric','integer'), drop=FALSE]
-  
-  #coverage_char <- apply(char_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
   coverage_num <- apply(num_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
-  
   posw <- w_all[,-1]
   posw[posw < 0] <- 0 
   negw <- w_all[,-1]
   negw[negw >= 0] <- 0
-  
   poswa <- NULL
   for(j in 1:ncol(num_factor)){
     poswa <- rbind(poswa,sapply(1:nrow(posw), function(i) {x <- num_factor[,j]; y <- posw[i,];
@@ -1319,7 +1167,6 @@ plot_fundamental_div <- function(w,w_div,found){
   ppos <- ggplot(meltpos, aes(x= Status, y=Score, fill=Factor, group = Status)) +
     geom_boxplot(alpha=0.7) +
     geom_violin(width=1.4, alpha=0.3) +
-    #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
     stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
     
     scale_fill_viridis(discrete = TRUE) +
@@ -1339,7 +1186,6 @@ plot_fundamental_div <- function(w,w_div,found){
   pneg <- ggplot(meltneg, aes(x= Status, y=Score, fill=Factor, group = Status)) +
     geom_boxplot(alpha=0.7) +
     geom_violin(width=1.4, alpha=0.3) +
-    #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
     stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
     
     scale_fill_viridis(discrete = TRUE) +
@@ -1368,7 +1214,6 @@ plot_fundamental_div <- function(w,w_div,found){
   return(list(fig,figpos,figneg,tabfig))
 }
 
-#Order of the list
 diff_summary <- function(pertab,pertabdiv,tabfig,tabfigdiv,ly){
   diff_per <- 100*(pertabdiv[-nrow(pertabdiv),-c(1,ncol(pertabdiv))] - pertab[-nrow(pertab),-c(1,ncol(pertab))])/pertab[-nrow(pertab),-c(1,ncol(pertab))]
   diff_per$Date <- as.Date(pertab$Date[-nrow(pertab)])
@@ -1421,8 +1266,6 @@ DTtable <- function(tab){
                       )))
 }
 
-
-#############################Optional###########################
 
 multicomp <- function(div_dynamic,selcom){
   sel <- div_dynamic %>% select(Date, selcom, PORTNAME)
@@ -1480,7 +1323,6 @@ plot_div_Sch_comp <- function(div_dynamic,found){
              aes(y = Long, fill =PORTNAME), position = "dodge", stat = "identity", color="black") +
     geom_bar(data = divw %>% select(-Long), 
              aes(y = Short, fill =PORTNAME), position = "dodge", stat = "identity", color="black") + 
-    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
     scale_fill_viridis(discrete = TRUE) +
     labs(x = "Date",
@@ -1498,7 +1340,6 @@ plot_div_Sch_comp <- function(div_dynamic,found){
              aes(y = Long, fill =PORTNAME), position = "dodge", stat = "identity", color="black") +
     geom_bar(data = invw %>% select(-Long), 
              aes(y = Short, fill =PORTNAME), position = "dodge", stat = "identity", color="black") + 
-    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
     scale_fill_viridis(discrete = TRUE) +
     labs(x = "Date",
@@ -1547,14 +1388,12 @@ compareplot <- function(hist_return,div_dynamic, found){
             strip.placement = "outside",
             strip.background = element_blank(),
             panel.spacing.y = unit(1, "lines")) 
-    
-    #fig1 <- ggplotly(p1, width = 1000, height=500)
+
     fig1 <- ggplotly(p1,width = 500, height = 700) 
     
     pertabm2 <- pertabm  %>% `colnames<-`(c('Date','Status','Risk','Value'))
     
     p2 <- ggplot(pertabm2, aes(x= Date,y= Value)) + 
-      #geom_area(alpha=0.5, position = "identity") +
       geom_line(size= 0.5, position = "identity",aes(group = Status)) +
       guides(group = 'none') +
       geom_point(size=2, position = "identity", aes(shape=Status, fill=Status)) +
@@ -1574,26 +1413,13 @@ compareplot <- function(hist_return,div_dynamic, found){
             legend.key.size = unit(7, 'cm'),
             legend.title = element_text(size=12))+
       scale_x_discrete(breaks = everyother) 
-    fig2 <- ggplotly(p2, width = 1000, height=900) 
-    #fig2 <- ggplotly(p2)
-
-    
-    #char_factor <- found[, sapply(found, class) == 'character', drop=FALSE] 
+    fig2 <- ggplotly(p2, width = 1000, height=900)
     num_factor <- found[, sapply(found, class) %in% c('numeric','integer'), drop=FALSE]
-    
-    #coverage_char <- apply(char_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
     coverage_num <- apply(num_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
-    
-    #posw <- lapply(list_port, function(x) {y <- x[-1,]; y[y < 0] <- 0; y})
-    #negw <- lapply(list_port, function(x) {y <- x[-1,]; y[y  >= 0] <- 0; y})
-    
     posw <- div_dynamic[,c(-1,-ncol(div_dynamic))]
     posw[posw < 0] <- 0 
     negw <- div_dynamic[,c(-1,-ncol(div_dynamic))]
     negw[negw >= 0] <- 0
-    
-    
-    
     poswa <- NULL
     for(j in 1:ncol(num_factor)){
       poswa <- rbind(poswa,sapply(1:nrow(posw), function(i) {x <- num_factor[,j]; y <- posw[i,];
@@ -1603,20 +1429,15 @@ compareplot <- function(hist_return,div_dynamic, found){
     parti <- split(1:ncol(poswa), ceiling(1:ncol(poswa)/nrow(list_port[[1]])))
     meltpos <- bind_rows(lapply(seq_along(parti), function(i) {x <- melt(poswa[,parti[[i]]]); x$port <- nameport[i]; x})) %>% `colnames<-`(c('Factor','Date','Score', 'Port'))
     meltpos$Position <- 'Long'
-    
-    
     negwa <- NULL
     for(j in 1:ncol(num_factor)){
       negwa <- rbind(negwa,sapply(1:nrow(negw), function(i) {x <- num_factor[,j]; y <- negw[i,];
       x <- x[!is.na(x)]; y <- y[!is.na(x)]; sum(x*y)/sum(y)}))
     }
     negwa <- round(negwa,2) %>% `colnames<-`(div_dynamic$Date) %>% `rownames<-`(names(coverage_num))
-    
     meltneg <- bind_rows(lapply(seq_along(parti), function(i) {x <- melt(negwa[,parti[[i]]]); x$port <- nameport[i]; x})) %>% `colnames<-`(c('Factor','Date','Score', 'Port'))
     meltneg$Position <- 'Short'
-    
     meltplogt <- rbind(meltpos,meltneg)
-    
     meltplogt$Port <- factor(meltplogt$Port, levels = nameport)
     
     p <- ggplot(meltplogt, aes(x = Date,y = Score, fill = Port)) + 
@@ -1648,7 +1469,6 @@ compareplot <- function(hist_return,div_dynamic, found){
       
     ppos <- ggplot(meltpos, aes(x= Port, y=Score, fill=Factor, group = Port)) +
       geom_boxplot(alpha=0.7) +
-      #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
       geom_violin(width=1.4, alpha=0.3) +
       stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
       facet_wrap(. ~ Factor, scales="free_y", ncol = 1, strip.position = 'right') +
@@ -1665,14 +1485,12 @@ compareplot <- function(hist_return,div_dynamic, found){
             panel.spacing.y = unit(1, "lines")) 
     
     figpos <- ggplotly(ppos, width = 500, height = 700) 
-    #Wddd
     meltneg$Score[is.nan(meltneg$Score)] <- 0
     meltneg$Port <- factor(meltneg$Port, levels = nameport)
     
     pneg <- ggplot(meltneg, aes(x= Port, y=Score, fill=Factor, group = Port)) +
       geom_boxplot(alpha=0.7) +
       geom_violin(width=1.4, alpha=0.3) +
-      #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
       stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
       facet_wrap(. ~ Factor, scales="free_y", ncol = 1, strip.position = 'right') +
       scale_fill_viridis(discrete = TRUE) +
@@ -1690,16 +1508,12 @@ compareplot <- function(hist_return,div_dynamic, found){
   
     
     tabf <- rbind(meltneg,meltpos)
-    #tabfn$Port <- factor(tabfn$Port, levels = unique(div_dynamic$PORTNAME))
-    tabfn <- spread(tabf,Factor,Score) %>% dplyr::arrange(Port,Position,Date) #dcast one column
+    tabfn <- spread(tabf,Factor,Score) %>% dplyr::arrange(Port,Position,Date) 
 
     return(list(pertab,tabfn,fig1,fig2,fig,figpos,figneg))
 }
-
- ###############
  
   diff_summary_mul <- function(pertab,tabfn,ben.port,ly){
-    #ben.port <- c('PEW')
     name.port <- unique(pertab$Port)
     pertab$Port <- factor(pertab$Port, levels = name.port)
     list.perf <- pertab %>% dplyr::filter(Date != 'Overall')%>% group_split(Port)
@@ -1715,19 +1529,16 @@ compareplot <- function(hist_return,div_dynamic, found){
     d <- 1
     for(i in 1:(length(ben.index)-1)){
       for(j in (ben.index[i]+1):(ben.index[i+1]-1)){
-        #perf
         ben.perf.dum <- list.perf[[ben.index[i]]][,sapply(list.perf[[ben.index[i]]], class) %in% c('numeric','integer')] 
         perf.dum <-list.perf[[j]][,sapply(list.perf[[j]], class) %in% c('numeric','integer')]
         re.perf <- 100*(perf.dum - ben.perf.dum)/ben.perf.dum
         re.perf[re.perf== 'NaN'] <- 0
         re.perf$Port <- rem.port[d]
         dif.perf <- append(dif.perf,list(re.perf))
-        #att
         ben.att.dum <- list.att[[ben.index[i]]][,sapply(list.att[[ben.index[i]]], class) %in% c('numeric','integer')] 
         att.dum <-list.att[[j]][,sapply(list.att[[j]], class) %in% c('numeric','integer')]
         re.att <- 100*(att.dum - ben.att.dum)/ben.att.dum
         re.att[re.att== 'NaN'] <- 0
-        #re.att$Port <- rem.port[d]
         dif.att <- append(dif.att,list(re.att))
         d <- d + 1
       }
@@ -1743,12 +1554,9 @@ compareplot <- function(hist_return,div_dynamic, found){
       
     boxchange <- ggplot(melttab, aes(x= Factor, y=Value, fill=Factor)) +
       geom_boxplot(alpha=0.7) +
-      #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
       stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
       scale_fill_viridis(discrete = TRUE) +
       coord_cartesian(clip = "off", ylim = ylim.set) +
-      #ylim(-40, 40) + 
-      #facet_wrap(. ~ Port, scales="free_y", strip.position = 'right', ncol = 1) +
       facet_wrap(. ~ Port, strip.position = 'right', ncol = 1) +
       labs(x = " ",
            y = "Percentage of Relative Change") +
@@ -1767,30 +1575,7 @@ compareplot <- function(hist_return,div_dynamic, found){
     return(list(cbind(Date,final.tab),fig))
   }
   
-# Div_Dynamic <- file6_Div_Dynamic
-# ben.sel <- 'benchmark'
-# 
-# Div_Dynamic %>% filter(PORTNAME %in% ben.sel) %>% group_split(PORTNAME)
 
-  #Table of Performance
-  
-  #Box Plot of Performance
-  
-  #Table of ESG
-  
-  #Box Plot of ESG
-  
-  #Bar Weights
-  
-  #Excess Return
-
-#################################Optional II: Clustering #######################
-
-#
-
-
-
-#Portfolio mean return
 pmr <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else mean(portreturn[i:(i-tau+1)]))
   return(x[!is.na(x)])
@@ -1801,31 +1586,25 @@ pmrcum <- function(portreturn,tau){
   return(x[!is.na(x)])
 }
 
-#Portfolio Risk
 prisk <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else sd(portreturn[i:(i-tau+1)]))
   return(x[!is.na(x)])
 }
 
-#Portfolio Sharpe Ratio
 sharpe <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else (mean(portreturn[i:(i-tau+1)])-0)/sd(portreturn[i:(i-tau+1)]))
   return(x[!is.na(x)])
 }
 
-#VaR
 pVaR <- function(portreturn,tau,conf){
   x <- sapply(seq_along(portreturn),function(i) if (i < tau) NA else quantile(portreturn[i:(i-tau+1)], conf))
   return(x[!is.na(x)])
 }
 
-#Max draw-down
-
 MDD <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else (min(portreturn[i:(i-tau+1)])-max(portreturn[i:(i-tau+1)]))/(max(portreturn[i:(i-tau+1)])))
   return(x[!is.na(x)])
 }
-
 
 SR <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else (mean(portreturn[i:(i-tau+1)]) - 0)/sqrt(((1/(tau-1))*sum((portreturn[i:(i-tau+1)]-mean(portreturn[i:(i-tau+1)]))^2*((portreturn[i:(i-tau+1)]- 0) < 0)))))
@@ -1879,12 +1658,10 @@ Matrix_Cluster <- function(X,Perf,Best_Cluster_Year, sept){
     Final_Tab <- rbind(Final_Tab,Tab_Clus)
   }
   rownames(Final_Tab) <- ben.date
-  #Melt
   meltmap <- as.data.frame(Final_Tab) %>% rownames_to_column('Date') %>% melt(id.vars='Date')
   meltmap$Performance <- Perf 
   return(meltmap)
 }
-
 
 
 plot.hm <- function(each.perf,best.clus,sept){
@@ -1959,21 +1736,7 @@ clust.option <- function(Div_Dynamic,Return,tau,sept){
 }
 
 
-
-
-
-
-
-
-
-
-#################################Optional III: Graph Structure #######################
-
-
-
-
 sturcture.cov <- function(return_mat){
-  #ret_gl is recieve from another function
   ret_gl <- return_mat
   all.ticker <- colnames(ret_gl)
   cols <- colSums(ret_gl) 
@@ -1988,11 +1751,8 @@ sturcture.cov <- function(return_mat){
   out.op = huge(X.npn, lambda =h, method = "glasso",cov.output=TRUE)
   op.adj <- out.op$path[[1]]
   op.cov <- out.op$cov[[1]]
-  #op.cor <- cov2cor(op.cov)
   adj.cov <- op.adj*op.cov
   dimnames(adj.cov) <- list(colnames(ret_gl),colnames(ret_gl))
- 
-  
   if(!identical(cols[cols == 0],numeric(0))){
   zeros.add <- matrix(0,length(all.ticker) - ncol(adj.cov), length(all.ticker) - ncol(adj.cov))
   adj.cov.add <- adiag(adj.cov,zeros.add )
@@ -2009,28 +1769,23 @@ plot.qgraph <- function(adj.cov, title, found = NULL){
   dimnames(adj.cov) <- list(1:ncol(adj.cov),1:ncol(adj.cov))
   if(!is.null(found)){
     st <- found %>% select(Ticker,Status) %>% column_to_rownames('Ticker')
-    #gst <- unlist(st,use.names = F)
     st$Status[st$Status=='Invest'] <- "#31688EFF"
     st$Status[st$Status=='Divest'] <- '#FDE725FF'
     colors <- unlist(st,use.names = F)
-    
   }else{
     colors <- NULL
-    #gst <- NULL
   }
   q <- qgraph(adj.cov,esize=8,title = title,label.scale = T,label.prop = 0.9, shape= "circle", border.width = 3, label.cex = 0.8, posCol= "darkgreen", negCol="darkred", layout="groups", vsize=8, colors = colors,
-              legend.cex = 0.8, # scalar of the legend
+              legend.cex = 0.8,
               legend.mode = 'style2',
               nodeNames = name.cov, 
               font = 2,
-              curveAll = T, # logical indicating if all edges should be curved
+              curveAll = T, 
               curveDefault = 0.5,
               title.cex = 1.7
-              #groups = gst
               ) 
   return(q)
 }
-
 
 
 get.graph <- function(div_dynamic, return_mat, data.index, found = NULL){
@@ -2038,25 +1793,13 @@ get.graph <- function(div_dynamic, return_mat, data.index, found = NULL){
   div_dynamic$PORTNAME <- factor(div_dynamic$PORTNAME,levels = unique(nameport))
   w_list <- div_dynamic %>% group_split(PORTNAME) %>% lapply(function(x) {x %>% dplyr::select(-PORTNAME) %>% multipywtoreturn(return_mat)})
   names(w_list) <- nameport
-  #date <- return_mat$Date[return_mat$Date >= unique(div_dynamic$Date)[1]]
-  # title.date <- names(w_list[[1]])[data.index]
-  # name.plot <- c()
-  # for(i in title.date){
-  #   for(j in nameport){
-  #     name.plot <- c(name.plot, paste0(j," at ",i))
-  # }
-  # }
-  
   sel.port <- lapply(w_list, function(x) x[data.index]) %>% unlist(recursive=FALSE)
   list.cov <- sel.port %>% lapply(sturcture.cov)
-  
   return({
-  #windows(width = 500, height = 1000)
   par(mfrow=c(length(nameport),1))
   sapply(seq_along(list.cov), function(i) plot.qgraph(list.cov[[i]],names(sel.port)[i],found))
   })
 }
-
 
 
 
@@ -2077,20 +1820,6 @@ map_index <- function(index_choice_input){
 }
 
 
-  
-
-
-
-# eudismat <- unlist(lapply(seq_along(mat1), function(i) sqrt(sum((mat1[[i]] - mat2[[i]])^2))))
-# 
-# 
-# euplot <- data.frame(list(x = seq_along(eudismat), dist = eudismat))
-# p <- ggplot(data = euplot, aes(x = x, y = dist, group = 1)) +
-#   geom_line(size= 0.5, position = "identity") +
-#   geom_point(size=1.5, position = "identity")
-
-
-#################################Container#######################
 data(World)
 all.tick <- read_csv("update_suggest.csv")
 tidy.tick <- all.tick %>% select(Country, Index) %>% distinct(Country, Index, .keep_all = TRUE) %>% mutate(paste0(Index, " (",Country,")")) %>% `colnames<-`(c("Country", "Index", "CwithI"))
@@ -2109,16 +1838,8 @@ file1_Status <- NULL
 file2_Historical <- NULL
 file3_Weight <- NULL
 file4_Schedule <- NULL
-
 file5_Weight_Div <- NULL
-
 file6_Div_Dynamic <- NULL
 file7_Attribute <- NULL
 file8_Return <- NULL
-
 validcol <- c("red", "yellow", "aqua", "blue", "light-blue", "green", "navy", "teal", "olive", "lime", "orange", "fuchsia", "purple", "maroon", "black")
- # n <- 10
- # barplot(1:n, col=scales::viridis_pal()(n))
- # scale_x_continuous(breaks = scales::pretty_breaks(n = 10))
- 
-
