@@ -75,6 +75,8 @@ You need to add one by one the ticker. Here, input  BAC, CRM, GOOGL,	INTC,	MSFT,
 
 ### STEP 2
 
+The tickers selected in STEP1 will be appear in the box of "potential assets". We need to assign a divestment status to each asset by drug and drop them to the box of "Investablw assets" and "Divestable assets" like in the figure below.
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
 ## Examples 2: Uploeading CSV. file
