@@ -431,7 +431,7 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
 tabPanel(title = "Step 3",
         fixedRow(
           column(1,
-                 dropdown(dateInput("stdate", "From:", value = ymd(as.Date(Sys.time())) %m-% months(1)),
+                 dropdown(dateInput("stdate", "From:", value = ymd(as.Date(Sys.time())) %m-% years(1)),
                           dateInput("enddate", "To:", value = as.Date(Sys.time())),
                           style = "unite", icon = icon("calendar"),
                           status = "primary", width = "300px",
