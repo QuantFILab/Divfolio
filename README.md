@@ -19,10 +19,16 @@ The simplest way, just click on the link below
 
 ### By runing the code on Github via RStudio 
 
+This option is suited for R users who already have R and RStudio on the local machine. How fast the calcualtion process depended on your local machine speed. You can run Divfolio by the following command lines.
+
+library(shiny)
+shiny::runGitHub('QuantFILab/Divfolio')
+
+We recommend R version 4.2.2 or later. The older R version may cause an error on the package dependency.
 
 ### By downloading an exucunable package from the Github
 
-We offer the electron-executable package on Github that you can be downloaded in the folder name [Executable Package](https://github.com/QuantFILab/Divfolio/tree/main/Executable%20Package). The size of the package is large 1.2 GB as it contains the R portable. You do not need to install R and RStudio on your local machine. Just download the whole folder and double click on **Divfolio.exe** to run the application locally.
+We offer the electron-executable package on Github that you can be downloaded in the folder name [Executable Package](https://github.com/QuantFILab/Divfolio/tree/main/Executable%20Package). The size of the package is large 1.2 GB as it contains the R portable. You do not need to install R and RStudio on your local machine. Just download the whole folder and double-click on **Divfolio.exe** to run the application locally. It may take time for setting up when you run it the first time. Sometimes you need to close the window and reopen it again. 
 
 
 ## Original Research Papers related to Divfolio
