@@ -138,4 +138,6 @@ The results show a comparison of the original portfolio in STEP4 and the diveste
 
 Looking at the last boxplots, they tell us that with this divestment schedule, the return dropped significantly whereas the environmental score improved a little. Therefore, this divestment strategy may not suit profit seekers. You can try a different types of portfolios or divestment schedules for comparison.
 
-## Examples 2: Uploeading CSV. file
+## Examples 2: Uploading CSV files
+
+For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in ) 
