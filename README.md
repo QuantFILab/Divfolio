@@ -84,13 +84,21 @@ To get the ESG data and Company's sector
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
-The results are in figure below. You can download the table to you local machine. The last table shows percentage of the improvment ESG score after divestment.
+The results are in figure below. You can download the table to you local machine. The last table shows percentage of the improvment ESG score after divestment. The smaller score indicates lower ESG risk.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_page.png?raw=true)
 
 ### STEP 3
 
+To get the historical data of the assets passed from STEP2
+1. Click on Carlendar icon
+2. Input statr date
+3. Input end date
+4. Click "submit" button
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_setdate.png?raw=true)
+
+You will get a table of the historical return calculated from the close price and the boxplots of the return that can be aarange by the companies historical risk profiles such as volatility and Sharpe ratio.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_page.png?raw=true)
 
