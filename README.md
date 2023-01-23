@@ -48,7 +48,9 @@ You don't have to run all steps. For example, if you want only ESG scores, you c
 ## Examples 1: Generate Portfolio on Application using Online Data
 
 Let set up the portfolio by divesting from big energy companies to best ESG scoring companies in   
-[Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/). 
+[Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/). We will invest in BAC, CRM, GOOGL,	INTC,	MSFT that have a good environment score. Then, we divest from COP, CVM, and XOM which have poor environmental score.
+
+![image](https://user-images.githubusercontent.com/117371327/213962901-340cf1f3-4404-4e05-8bf8-c5302ce1506e.png)
 
 ### STEP 1 
 To see the ESG score and past performance of the company (If you already have companies in mind, you can script this)
@@ -73,5 +75,7 @@ You need to add one by one the ticker. The result will be shown in STEP 2.
 
 
 ### STEP 2
+
+![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
 ## Examples 2: Uploeading CSV. file
