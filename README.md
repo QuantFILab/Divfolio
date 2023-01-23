@@ -17,7 +17,12 @@ The simplest way, just click on the link below
 
 [https://quantfilab.shinyapps.io/divfolioserveri/](https://quantfilab.shinyapps.io/divfolioserveri/)
 
+### By runing the code on Github via RStudio 
 
+
+### By downloading an exucunable package from the Github
+
+We offer the electron-exucunable package on the Github that you can be downloaded on the foulder name ""
 
 
 ## Original Research Papers related to Divfolio
