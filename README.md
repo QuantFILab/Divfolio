@@ -140,4 +140,4 @@ Looking at the last boxplots, they tell us that with this divestment schedule, t
 
 ## Examples 2: Uploading CSV files
 
-For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in ) 
+For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files)) 
