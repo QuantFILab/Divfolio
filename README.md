@@ -9,16 +9,14 @@ On the tab on the left, the <b> User Guide </b> provides detailed instructions o
 ## Original Research Papers related to Divfolio
 
 Divfolio is baed on the research results from two papers. Preprint versions of both papers are open access available on SSRN. First, the methodology paper explains all mathematical details in portfolio optimization, [Mechanisms to Incentivise Fossil Fuel Divestment and Implications on Portfolio Risk and Returns](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4131449). Secondly, the software paper explains how to use Divolio aloge with an example in FTSE100 divestment to improve ESG scores, [DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management](https://papers.ssrn.com/sol3/papers.cfm?abstract_id=4131449).
-
-
-## Where to find ticker?
+## Where to find the ticker?
 
 If you are interested in downloading historical data from Divfolio, you will need the Yahoo! Finance ticker. You may find the tickers [here](https://finance.yahoo.com/screener/new). Note that the ESG scores are available for certain stocks. The ESG scores are not available for others assets, but the historical data may be available.
 
 
 ## Workflow
 
-DivFolio App tool comprises two core components as will be detailed in the panels below. The first component involves a set of sequential STEPs that users undertake consisting of STEP 1 through to STEP 5, which must be performed sequentially. The second component involves a collection of three independent optional STEPs that can be performed individually. For the optional steps, so long as the user has the relevant data prepared in CSV format already, for instance as output from STEPS 1 to 5 in Component 1, then they can upload this directly into any of the STEPS in Component 2 instead of generating them again from the tool. For more details please see user guide on the application. 
+DivFolio App tool comprises two core components as will be detailed in the panels below. The first component involves a set of sequential STEPs that users undertake consisting of STEP 1 through STEP 5, which must be performed sequentially. The second component involves a collection of three independent optional STEPs that can be performed individually. For the optional steps, so long as the user has the relevant data prepared in CSV format already, for instance as output from STEPS 1 to 5 in Component 1, then they can upload this directly into any of the STEPS in Component 2 instead of generating them again from the tool. For more details please see the user guide on the application. 
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/daig.jpg?raw=true)
 
@@ -27,35 +25,35 @@ DivFolio App tool comprises two core components as will be detailed in the panel
 
 **STEP 1:** Accessing the ESG scores and some profiles of the individual company.
 
-**STEP 2:** Downloading ESG scores of the selected companies, and exporting to local machine in csv and png.
+**STEP 2:** Downloading ESG scores of the selected companies, and exporting to the local machine in CSV and png.
 
-**STEP 3:** Downloading historical returns of the selected companies, comparing the performances, and exporting to local machine in csv and png.
+**STEP 3:** Downloading historical returns of the selected companies, comparing the performances, and exporting to the local machine in CSV and png.
 
-**STEP 4:** Generating portfolio from the selected companies, rebalancing portfolio, summarising the performances and exporting to local machine in csv and png.
+**STEP 4:** Generating portfolio from the selected companies, rebalancing portfolio, summarising the performances, and exporting to the local machine in CSV and png.
 
-**STEP 5:** Generating divestment schedule, divesting portfolio, rebalancing portfolio, summarising and comparing the performances and exporting to local machine in csv and png.
+**STEP 5:** Generating divestment schedule, divesting portfolio, rebalancing portfolio, summarising and comparing the performances, and exporting to the local machine in CSV and png.
 
 
-**Option I:** For comparing more than two portfolios, generating divestment schedule, divesting portfolio, rebalancing portfolio, summarising and comparing the performances, and exporting to local machine in csv and png.
+**Option I:** For comparing more than two portfolios, generating divestment schedule, divesting portfolio, rebalancing portfolio, summarising and comparing the performances, and exporting to the local machine in CSV and png.
 
 **Option II:** Clustering portfolio according to their risk profile, and exporting to local machine png.
 
-**Option III:** Providing graph LASSO to portfolios over time to investigate covarience between assets during divestment, and exporting to local machine png.
+**Option III:** Providing graph LASSO to portfolios over time to investigate covariance between assets during divestment, and exporting to local machine png.
 
 You don't have to run all steps. For example, if you want only ESG scores, you can stop at STEP 2.
 
 
 ## Examples 1: Generate Portfolio on Application using Online Data
 
-Let set up the portfolio by divesting from big energy companies to best ESG scoring companies in   
-[Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/). We will invest in BAC, CRM, GOOGL,	INTC,	and MSFT that have a good environment score. Then, we divest from COP, CVM, and XOM which have poor environmental score.
+Let's set up the portfolio by divesting from big energy companies to the best ESG scoring companies in   
+[Yahoo! Finance](https://www.insidermonkey.com/blog/top-5-esg-companies-in-2022-1082219/). We will invest in BAC, CRM, GOOGL,	INTC,	and MSFT which have a good environment score. Then, we divest from COP, CVM, and XOM which have a poor environmental scores.
 
 
 ### STEP 1 Asset Performance Investigation
 To see the ESG score and past performance of the company (If you already have companies in mind, you can script this)
 1. Chick to the Gear icon to open the input window
-2. Tpye company's ticker in the box
-3. Click on "submit" button
+2. Type company's ticker in the box
+3. Click on the "submit" button
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_select.png?raw=true)
 
@@ -63,42 +61,42 @@ The results are shown below.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_page.png?raw=true)
 
-To pick company stocks to portfolio (Required)
-1. Click on Cart icon to open the input window.
-2. Tpye company's ticker.
-3. Chick "add" button.
+To pick company stocks to a portfolio (Required)
+1. Click on the Cart icon to open the input window.
+2. Type the company's ticker.
+3. Chick the "add" button.
 
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step1_port.png?raw=true)
 
-You need to add one by one the ticker. Here, input  BAC, CRM, GOOGL,	INTC,	MSFT, COP, CVM, and XOM. The result will be shown in STEP 2.
+You need to add them one by one the ticker. Here, input  BAC, CRM, GOOGL,	INTC,	MSFT, COP, CVM, and XOM. The result will be shown in STEP 2.
 
 ### STEP 2 Selecting Divestable and Investable Assets
 
-The tickers selected in STEP1 will be appear in the box of "Potential Assets". We need to assign a divestment status to each asset by drag and drop them to the box of "Investable Assets" and "Divestable Assets" like in the figure below.
+The tickers selected in STEP1 will appear in the box of "Potential Assets". We need to assign a divestment status to each asset by dragging and dropping them into the box of "Investable Assets" and "Divestable Assets" like in the figure below.
 
 To get the ESG data and Company's sector
 1. Drop tickers you want to invest in "Investable Assets" (If you want only ESG data, you can drop all assets to this box).
 2. Drop tickers you want to divest in "Divestable Assets".
-3. Click on "summary" button and Click on "update summary" when you make a change on the divestment status or add more assets to potential list.
+3. Click on the "summary" button and Click on "update summary" when you make a change to the divestment status or add more assets to the potential list.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_setup.png?raw=true)
 
-The results are in figure below. You can download the table to you local machine. The last table shows percentage of the improvment ESG score after divestment. The smaller score indicates lower ESG risk.
+The results are in the figure below. You can download the table to your local machine. The last table shows the percentage of the improvement in ESG score after divestment. The smaller score indicates lower ESG risk.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step2_page.png?raw=true)
 
 ### STEP 3 Batching Historical Data
 
 To get the historical data of the assets passed from STEP2
-1. Click on Carlendar icon
-2. Input statr date
+1. Click on the Carlendar icon
+2. Input start date
 3. Input end date
-4. Click "submit" button
+4. Click the "submit" button
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_setdate.png?raw=true)
 
-You will get a table of the historical return calculated from the close price and the boxplots of the return that can be aarange by the companies historical risk profiles such as volatility and Sharpe ratio.
+You will get a table of the historical return calculated from the close price and the boxplots of the return that can be arranged by the company's historical risk profiles such as volatility and Sharpe ratio.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step3_page.png?raw=true)
 
@@ -107,38 +105,37 @@ You will get a table of the historical return calculated from the close price an
 
 To generate portfolio weights
 
-1. Click on Carlendar icon
-2. Select type of portfolio (Here we use GMV with leverage 1.3)
-3. Switch on option to limit short position
-4. Select number of days each time rebalancing (Here we rebalance portfolio monthly)
-5. Select window of covaraince history (Usually equal to number of days each time rebalancing)
-6. Click on "submit" button
+1. Click on the List icon
+2. Select the type of portfolio (Here we use GMV with leverage 1.3)
+3. Switch on the option to limit the short position
+4. Select the number of days each time rebalancing (Here we rebalance the portfolio monthly)
+5. Select the window of covariance history (Usually equal to the number of days each time rebalancing)
+6. Click on the "submit" button
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step4_seteport.png?raw=true)
 
-Te results will shown the ESG score and risk profiles of portfolio as in figure below.
-
+Te results will shown the ESG score and risk profiles of portfolio as in the figure below.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step4_page.png?raw=true)
 
 
 ### STEP 5 Divestment
 
-To generate divestment schedule and divested portfolio
+To generate a divestment schedule and divested portfolio
 
-1. Click on Minus icon.
+1. Click on the Minus icon.
 2. Select the divestment schedule (Here, we use linear (gradually) divestment).
-3. Set the last date of divestment when the divestable assets will be divested completly.
+3. Set the last date of divestment when the divestable assets will be divested completely.
 4. Set the divestment schedule parameter
-5. Click on "preview" button to preview divestment schedule 
-6. If you are line the current schedule click "submit" to process
+5. Click on the "preview" button to preview the divestment schedule 
+6. If you like the current schedule click "submit" to process
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step5_setdiv.png?raw=true)
 
-THe results show a comparison of the original portfolio in STEP4 and the divested portfolio in STEP5
+The results show a comparison of the original portfolio in STEP4 and the divested portfolio in STEP5
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Step5_page.png?raw=true)
 
-Looking at the last boxplots, they tell us that with this divestment schedule the return dropped significaintly whereas the enivironment score improved a little. Therefore, this divestment strategy may not suit for profit seeker. You can try differnt typr of portfolio or divestment schedule for comparison.
+Looking at the last boxplots, they tell us that with this divestment schedule, the return dropped significantly whereas the environmental score improved a little. Therefore, this divestment strategy may not suit profit seekers. You can try a different types of portfolios or divestment schedules for comparison.
 
 ## Examples 2: Uploeading CSV. file
