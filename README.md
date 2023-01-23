@@ -147,18 +147,30 @@ For STEP 2 to STEP 5, if you already have CSV files in the given form (see in ap
 
 ## Examples 3: Using Multiple Comparison in Option I to Option III
 
-These options required CSV files, see example in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files). Here, we use a small portfolio in which the constituents selected from FTSE100 as an example.
+These options required CSV files, see example in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files). Here, we use a small portfolio in which the constituents selected from FTSE100 as an example. Here, we investigate the impact of the divestment schedule on the rsik profiles and stability of them. the comparison consists of the benmark portfolio (Passive Equal Weight), the linear (slow) divestment, the hyberbolic (Fast) divestment and the instant divestment.
 
 ### Option I  Multiple Portfolios Comparison
 
-First upload required files F5
+First, upload the required files F5, F1, and F2 and click on "submit".
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionI_setup.png?raw=true)
+
+The results are the comparison of the ESG scores and risk profiles of the input portfolios.
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionI_page.png?raw=true)
 
 ### Option II Stability Analysis via Clustering
 
+1. Upload the required files, F5 
+2. Upload the required files, F5 
+3. Set the window of the smoothing risk profiles (Here we set 20 days)
+4. Set the window of clustering (Here we set 20 days)
+5. Click on "submit".
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionII_setup.png?raw=true)
+
+The results are the smoothed rsik profiles and the clustering results.
+
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionII_page.png?raw=true)
 
 ### Option III  Graph Structure Correlation Analysis
