@@ -89,7 +89,7 @@ We recommend **R version 4.2.2** or later. The older R version may cause an erro
 
 ### By downloading an exucutable package from the Github
 
-We offer the electron-executable package on Github that you can be downloaded in the folder name [Executable Package](https://github.com/QuantFILab/Divfolio/tree/main/Executable%20Package). The size of the package is large 1.2 GB as it contains the R portable. You do not need to install R and RStudio on your local machine. Just download the whole folder and double-click on **Divfolio.exe** to run the application locally. It may take time for setting up when you run it the first time. Sometimes you need to close the window and reopen it again. 
+We offer the electron-executable package on Github that you can be downloaded in the folder name [ExecutablePackage](https://github.com/QuantFILab/Divfolio/tree/main/ExecutablePackage). The size of the package is large 1.2 GB as it contains the R portable. You do not need to install R and RStudio on your local machine. Just download the whole folder and double-click on **Divfolio.exe** to run the application locally. It may take time for setting up when you run it the first time. Sometimes you need to close the window and reopen it again. 
 
 
 ## Original Research Papers related to Divfolio
