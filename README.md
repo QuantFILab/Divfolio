@@ -249,12 +249,12 @@ The results are the comparison of the ESG scores and risk profiles of the input 
 Looking at the last panel in boxplots, the instant divestment yielded the most improvement (distribution) of the environmental score but it costs by dropping in return and other ESG scores both social and governance. If you mind the return and other scores rather than the E score, you shouldn't select this strategy. In contrast, if you mind the E score the hyperbolic divestment seems to be suited for you. The best divestment strategy depended on you final goal. 
 
 ### Option II Stability Analysis via Clustering
-
-1. Upload the required files, F5 
-2. Upload the required files, F2
-3. Set the window of the smoothing risk profiles (Here we set 20 days)
-4. Set the window of clustering (Here we set 20 days)
-5. Click on "submit".
+1. Chick on "chick" icon
+2. Upload the required files, F5 
+3. Upload the required files, F2
+4. Set the window of the smoothing risk profiles (Here we set 20 days)
+5. Set the window of clustering (Here we set 20 days)
+6. Click on "submit".
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/OptionII_setup.png?raw=true)
 
