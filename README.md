@@ -1,4 +1,6 @@
-# DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management 
+# DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management
+## Urgent!!! 07-05-2023: We are updating Application as the API endpoints have changed. Please use only the uploading file option until we finish fixing it by 12-05-2023. Thank you for your patience
+
 ## Table of Contents
 
   * [Divfolio](#divfolio)
