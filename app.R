@@ -1,11 +1,32 @@
-if (!require("pacman")) install.packages("pacman")
-library(pacman)
-pacman::p_load(remotes, httr, tidyverse, prvest,jsonlite,plotly,BatchGetSymbols,shinydashboard,
-               shiny, shinycustomloader, shinydashboardPlus, waiter, shinyWidgets, dashboardthemes,
-               quantmod, PerformanceAnalytics, reshape2, viridis, shinyjqui, DT, lubridate, robustbase,
-               shinyBS, cluster, huge, qgraph, magic, shinyFeedback, tmap)
-if (!require("shinypop")) remotes::install_github("dreamRs/shinypop", force = T)
+library(httr)
+library(tidyverse)
+library(rvest)
+library(jsonlite)
+library(plotly)
+library(BatchGetSymbols)
+library(shinydashboard)
+library(shiny)
+library(shinycustomloader)
+library(shinydashboardPlus)
+library(waiter)
+library(shinyWidgets)
+library(dashboardthemes)
+library(quantmod)
+library(PerformanceAnalytics)
+library(reshape2)
+library(viridis)
+library(shinyjqui)
+library(DT)
+library(lubridate)
+library(robustbase)
+library(shinyBS) 
+library(cluster)
+library(huge)
+library(qgraph)
+library(magic)
+library(shinyFeedback)
 library(shinypop)
+library(tmap)
 
 
 box <- shinydashboard::box
@@ -63,7 +84,7 @@ check <- function(ticker){
 }
 
 key_detail <- function(ticker){
-  url_req <- paste0("https://query1.finance.yahoo.com/v7/finance/quote?symbols=",toupper(ticker))
+  url_req <- paste0("https://query1.finance.yahoo.com/v6/finance/quote?symbols=",toupper(ticker))
   fin.res <- tryCatch(
     { res <- fromJSON(url_req)
     as.list(res$quoteResponse$result)},
@@ -757,13 +778,12 @@ div_schedule <- function(typesc,para,w,enddate = NULL){
   return(data.frame(Date,sch) %>% `colnames<-`(c('Date','Bound')))
 }
 
-
 div_preview <- function(typesc, para, enddate = NULL, w, found){
   Schedule <- div_schedule(typesc,para,w,enddate)
   Bound <- unlist(Schedule$Bound,use.names =  FALSE)
   divasset <- (found %>% dplyr::filter(Status == "Divest"))$Ticker
   divw <- w[,divasset]
-  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
+  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short','Date')) %>% melt(id.vars = 'Date') %>% `colnames<-`(c('Date','Position','Weight'))
   divestsum$Bound <- c(Schedule$Bound,-(Schedule$Bound))
   
   p <- ggplot(divestsum, aes(x = Date)) + 
@@ -780,7 +800,7 @@ div_preview <- function(typesc, para, enddate = NULL, w, found){
     labs(x = "Date",
          y = "Sum of Divestable Weights") +
     theme_bw() +
-    scale_x_discrete(breaks = everyother) +
+    #scale_x_discrete(breaks = everyother) +
     theme(text = element_text(family = 'Fira Sans'),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1),
           legend.position="top")
@@ -4395,5 +4415,5 @@ server <- function(input, output, session) {
 shinyApp(ui, server, options = list(launch.browser = T))
 
 
-
+#rsconnect::deployApp('D:/PhD Heriot-Watt/Publiplication/Portfolio Divestisfiacation/Package/ShinyApp/DivfolioServerI', account = "quantfilab")
 
