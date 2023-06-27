@@ -1,6 +1,6 @@
 # DivFolio: A Shiny Application for Portfolio Divestment in Green Finance Wealth Management
 
-$${\color{red} **Update!!** \\ 27\ June\ 2023,\ Yahoo\ Finance\ has\ modified\ the \ API., \ A new version of tool is curently being prepared. At present Beta \ 0.1.0 \ of\ Divfolio\ will still work, but the ESG feature will be unavailible until next release of Beta \ 0.1.1 \ of\ Divfolio. Release date 1 July 2023}$$
+$${\color{red} **Update!!** \\ 27\ June\ 2023,\ Yahoo\ Finance\ has\ modified\ the \ API., \ A \new \version \of \tool \is \curently \being \prepared. \At \present \Beta \ 0.1.0 \ of\ Divfolio\ will \still \work, \but \the \ESG \feature \will \be \unavailible \until \next \release \of \Beta \ 0.1.1 \ of\ Divfolio. \Release \date \1 \July \2023}$$
 
 $${\color{red} **Update!!** \\ 7\ May\ 2023,\ we\ updated\ a\ new\ version\ Beta \ 0.1.0 \ of\ Divfolio\ to\ reflect\ the\ change\ of\ Yahoo\ Finance\ API.}$$
 
