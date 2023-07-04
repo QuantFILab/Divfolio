@@ -84,10 +84,10 @@ check <- function(ticker){
 }
 
 key_detail <- function(ticker){
-  url_req <- paste0("https://query1.finance.yahoo.com/v6/finance/quote?symbols=",toupper(ticker))
+  url_req <- paste0("https://query1.finance.yahoo.com/v7/finance/options/",toupper(ticker))
   fin.res <- tryCatch(
     { res <- fromJSON(url_req)
-    as.list(res$quoteResponse$result)},
+    as.list(res$optionChain$result$quote)},
     error = function(cond){
       NULL  
     }
@@ -636,7 +636,10 @@ plot_efficient_fontier <- function(ef,w,wmat,seldate){
 plot_fundamental <- function(w,found){
   common <- intersect(colnames(w),found$Ticker)
   w <- w[,c('Date',common)]
+  #char_factor <- found[, sapply(found, class) == 'character', drop=FALSE] 
   num_factor <- found[, sapply(found, class) %in% c('numeric','integer'), drop=FALSE]
+  
+  #coverage_char <- apply(char_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
   coverage_num <- apply(num_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
   
   posw <- w[,-1]
@@ -649,14 +652,14 @@ plot_fundamental <- function(w,found){
     poswa <- rbind(poswa,sapply(1:nrow(posw), function(i) {x <- num_factor[,j]; y <- posw[i,];
     x <- x[!is.na(x)]; y <- y[!is.na(x)]; sum(x*y)/sum(y)}))
   }
-  poswa <- round(poswa,2) %>% `colnames<-`(w$Date) %>% `rownames<-`(names(coverage_num))
+  poswa <- round(poswa,2) %>% `colnames<-`(as.character(w$Date)) %>% `rownames<-`(names(coverage_num))
   
   negwa <- NULL
   for(j in 1:ncol(num_factor)){
     negwa <- rbind(negwa,sapply(1:nrow(negw), function(i) {x <- num_factor[,j]; y <- negw[i,];
     x <- x[!is.na(x)]; y <- y[!is.na(x)]; sum(x*y)/sum(y)}))
   }
-  negwa <- round(negwa,2) %>% `colnames<-`(w$Date) %>% `rownames<-`(names(coverage_num))
+  negwa <- round(negwa,2) %>% `colnames<-`(as.character(w$Date)) %>% `rownames<-`(names(coverage_num))
   
   meltpos <- melt(poswa) %>% `colnames<-`(c('Factor','Date','Score'))
   meltpos$Position <- 'Long'
@@ -689,6 +692,7 @@ plot_fundamental <- function(w,found){
   ppos <- ggplot(meltpos, aes(x= factor(0), y=Score, fill=Factor)) +
     geom_boxplot(alpha=0.7) +
     geom_violin(width=1.4, alpha=0.3) +
+    #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
     stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
     scale_fill_viridis(discrete = TRUE) +
     labs(x = " ",
@@ -906,50 +910,29 @@ div_weight <- function(w,Schedule,found){
 
 
 
-plot_div_Sch <- function(w,found, Schedule, div_w){
+plot_div_Sch_comp <- function(div_dynamic,found){
   
   divasset <- (found %>% dplyr::filter(Status == "Divest"))$Ticker
-  divw <- w[,divasset]
-  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
-  divestsum$Status <- 'Before-Divest'
-  
-  
-  divestsum$Bound <- c(Schedule$Bound,-(Schedule$Bound))
-  
+  divw <- div_dynamic[,c("Date", divasset,"PORTNAME")] %>% group_split(PORTNAME)
+  divw <- divw %>% lapply(sep_and_sum) %>% bind_rows()
   
   invasset <- (found %>% dplyr::filter(Status == "Invest"))$Ticker
-  invw <- w[,invasset]
-  investsum <- lapply(sep_pos_neg(invw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
-  investsum$Status <- 'Before-Divest'
+  invw <- div_dynamic[,c("Date", invasset,"PORTNAME")] %>% group_split(PORTNAME)
+  invw <- invw %>% lapply(sep_and_sum) %>% bind_rows()
   
   
-  divwaf <- div_w[,divasset]
-  divestwafsum <- lapply(sep_pos_neg(divwaf),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
-  divestwafsum$Status <- 'Divest'
+  divw$PORTNAME <- factor(divw$PORTNAME, levels = unique(div_dynamic$PORTNAME))
+  invw$PORTNAME <- factor(invw$PORTNAME, levels = unique(div_dynamic$PORTNAME))
   
   
-  invwaf <- div_w[,invasset]
-  investafsum <- lapply(sep_pos_neg(invwaf),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
-  investafsum$Status <- 'Divest'
-  
-  
-  melt_frame_div <- bind_rows(divestsum,divestwafsum)
-  melt_frame_inv <- bind_rows(investsum,investafsum)
-  
-  melt_frame_div$Status <- factor(melt_frame_div$Status, levels = c('Before-Divest','Divest'))
-  melt_frame_inv$Status <- factor(melt_frame_inv$Status, levels = c('Before-Divest','Divest'))
-  
-  
-  p <- ggplot(melt_frame_div, aes(x = Date)) + 
-    geom_bar(data = subset(melt_frame_div, Position == "Long"),
-             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
-    geom_bar(data = subset(melt_frame_div, Position == "Short"),
-             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
+  p <- ggplot(divw, aes(x = Date)) + 
+    geom_bar(data = divw %>% select(-Short), 
+             aes(y = Long, fill =PORTNAME), position = "dodge", stat = "identity", color="black") +
+    geom_bar(data = divw %>% select(-Long), 
+             aes(y = Short, fill =PORTNAME), position = "dodge", stat = "identity", color="black") + 
+    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
-    geom_line(data = subset(divestsum, Position == "Long"),
-              aes(y = Bound, group = 1), color="black", size = 0.7) +
-    geom_line(data = subset(divestsum, Position == "Short"),
-              aes(y = Bound, group = 1), color="black", size = 0.7) +
+    scale_fill_viridis(discrete = TRUE) +
     labs(x = "Date",
          y = "Sum of Weights") +
     theme_bw() +
@@ -960,21 +943,23 @@ plot_div_Sch <- function(w,found, Schedule, div_w){
   fig1 <- ggplotly(p)
   
   
-  p <- ggplot(melt_frame_inv %>% arrange(desc(Weight)), aes(x = Date)) + 
-    geom_bar(data = subset(melt_frame_inv, Position == "Long"),
-             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
-    geom_bar(data = subset(melt_frame_inv, Position == "Short"),
-             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.3) +
+  p <- ggplot(invw, aes(x = Date)) + 
+    geom_bar(data = invw %>% select(-Short), 
+             aes(y = Long, fill =PORTNAME), position = "dodge", stat = "identity", color="black") +
+    geom_bar(data = invw %>% select(-Long), 
+             aes(y = Short, fill =PORTNAME), position = "dodge", stat = "identity", color="black") + 
+    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
     geom_hline(yintercept = 0,colour = "grey90") +
+    scale_fill_viridis(discrete = TRUE) +
     labs(x = "Date",
          y = "Sum of Weights") +
     theme_bw() +
     scale_x_discrete(breaks = everyother) +
     theme(text = element_text(family = 'Fira Sans'),
-          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
-  
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   
   fig2 <- ggplotly(p)
+  
   
   return(list(fig1,fig2))
   
@@ -998,7 +983,7 @@ asset_weight_plot_div <- function(w,w_div,selcom){
     labs(x = "Date",
          y = "Weight") +
     theme_bw() +
-    scale_x_discrete(breaks = everyother) +
+    #scale_x_discrete(breaks = everyother) +
     theme(text = element_text(family = 'Fira Sans'),
           axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
   fig <- ggplotly(p)
@@ -1113,10 +1098,10 @@ plot_fundamental_div <- function(w,w_div,found){
   w <- w[,c('Date',common )]
   w_div <- w_div[,c('Date',common)]
   w_all <- rbind(w,w_div)
-
+  #char_factor <- found[, sapply(found, class) == 'character', drop=FALSE] 
   num_factor <- found[, sapply(found, class) %in% c('numeric','integer'), drop=FALSE]
   
- 
+  #coverage_char <- apply(char_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
   coverage_num <- apply(num_factor, 2, function(x) (1- sum(is.na(x))/length(x))*100)
   
   posw <- w_all[,-1]
@@ -1129,7 +1114,7 @@ plot_fundamental_div <- function(w,w_div,found){
     poswa <- rbind(poswa,sapply(1:nrow(posw), function(i) {x <- num_factor[,j]; y <- posw[i,];
     x <- x[!is.na(x)]; y <- y[!is.na(x)]; sum(x*y)/sum(y)}))
   }
-  poswa <- round(poswa,2) %>% `colnames<-`(rep(w$Date,2)) %>% `rownames<-`(names(coverage_num))
+  poswa <- round(poswa,2) %>% `colnames<-`(as.character(rep(w$Date,2))) %>% `rownames<-`(names(coverage_num))
   
   meltpos <- rbind(cbind(melt(poswa[,1:nrow(w)]), 'Before-Divest') %>% `colnames<-`(c('Factor','Date','Score', 'Status')), cbind(melt(poswa[,(nrow(w)+1):(nrow(w_all))]),'Divest') %>% `colnames<-`(c('Factor','Date','Score', 'Status'))) 
   meltpos$Position <- 'Long'
@@ -1139,7 +1124,7 @@ plot_fundamental_div <- function(w,w_div,found){
     negwa <- rbind(negwa,sapply(1:nrow(negw), function(i) {x <- num_factor[,j]; y <- negw[i,];
     x <- x[!is.na(x)]; y <- y[!is.na(x)]; sum(x*y)/sum(y)}))
   }
-  negwa <- round(negwa,2) %>% `colnames<-`(rep(w$Date,2)) %>% `rownames<-`(names(coverage_num))
+  negwa <- round(negwa,2) %>% `colnames<-`(as.character(rep(w$Date,2))) %>% `rownames<-`(names(coverage_num))
   
   meltneg <- rbind(cbind(melt(negwa[,1:nrow(w)]), 'Before-Divest') %>% `colnames<-`(c('Factor','Date','Score', 'Status')), cbind(melt(negwa[,(nrow(w)+1):(nrow(w_all))]),'Divest') %>% `colnames<-`(c('Factor','Date','Score', 'Status'))) 
   meltneg$Score <- gsub(NaN, 0, meltneg$Score)
@@ -1150,11 +1135,11 @@ plot_fundamental_div <- function(w,w_div,found){
   
   meltplogt$Status <- factor(meltplogt$Status, levels = c('Before-Divest','Divest'))
   
-  p <- ggplot(meltplogt, aes(x = Date)) + 
+  p <- ggplot(meltplogt, aes(x = as.character(Date))) + 
     geom_bar(data = subset(meltplogt, Position == "Long"), 
-             aes(y = Score, fill = Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.2, color="black") +
+             aes(y = Score, fill = Status), stat = "identity", position = position_dodge(), color="black") +
     geom_bar(data = subset(meltplogt, Position == "Short"), 
-             aes(y = (-1)*Score, fill = Status), stat = "identity", position = position_dodge(width = 0.4), color="black", width= 1.2, color="black") + 
+             aes(y = (-1)*Score, fill = Status), stat = "identity", position = position_dodge(), color="black") + 
     geom_hline(yintercept = 0,colour = "grey90") +
     facet_wrap(~Factor, scales = "free_y", ncol = 2, strip.position = 'right') +
     labs(x = "Date",
@@ -1173,6 +1158,7 @@ plot_fundamental_div <- function(w,w_div,found){
   ppos <- ggplot(meltpos, aes(x= Status, y=Score, fill=Factor, group = Status)) +
     geom_boxplot(alpha=0.7) +
     geom_violin(width=1.4, alpha=0.3) +
+    #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
     stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
     
     scale_fill_viridis(discrete = TRUE) +
@@ -1192,6 +1178,7 @@ plot_fundamental_div <- function(w,w_div,found){
   pneg <- ggplot(meltneg, aes(x= Status, y=Score, fill=Factor, group = Status)) +
     geom_boxplot(alpha=0.7) +
     geom_violin(width=1.4, alpha=0.3) +
+    #geom_jitter(position=position_jitter(width=0.3, height=0.2), aes(colour=Factor), alpha=0.6) +
     stat_summary(fun.y=mean, geom="point", shape= "*", size=0.8, color="white", fill="white") +
     
     scale_fill_viridis(discrete = TRUE) +
@@ -4048,7 +4035,7 @@ server <- function(input, output, session) {
     diff_summary(risk(),riskdiv(),shiny_plot_fundamental()[[4]],shiny_plot_fundamental_div()[[4]],as.numeric(input$ly.st5))})  
   observeEvent(input$sub.ly.st5, {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
-    output$plotdiftable <- DTtable(cbind(shiny_diff_summary()[[1]][,1],round(shiny_diff_summary()[[1]][,-1],6)))
+    output$plotdiftable <- DTtable(cbind(Date = shiny_diff_summary()[[1]][,1],round(shiny_diff_summary()[[1]][,-1],6)))
     output$plotdifboxplot <- renderPlotly(shiny_diff_summary()[[2]])}) #For update plot
   
   
