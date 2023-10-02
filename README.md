@@ -234,14 +234,14 @@ Looking at the last boxplots, they tell us that with this divestment schedule, t
 
 ## Examples 2: Uploading CSV files
 
-For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files)), you can upload those files without retrieving data online by Clicking on the "Check" icon and upload a file like in the figure below. the files need to be uploaded sequentially. For example, F2 can not be uploaded unless F1 was updated. For matching of files and STEPs please look at the diagram in **Workflow**.
+For STEP 2 to STEP 5, if you already have CSV files in the given form (see in application and examples in [Example Files for Github](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files%20for%20Github)), you can upload those files without retrieving data online by Clicking on the "Check" icon and upload a file like in the figure below. the files need to be uploaded sequentially. For example, F2 can not be uploaded unless F1 was updated. For matching of files and STEPs please look at the diagram in **Workflow**.
 
 ![alt text](https://github.com/QuantFILab/Divfolio/blob/main/Figures/Check.png?raw=true)
 
 
 ## Examples 3: Using Multiple Comparison in Option I to Option III
 
-These options required CSV files, see example in [Example Files](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files). Here, we use a small portfolio in which the constituents selected from FTSE100 as an example. Here, we investigate the impact of the divestment schedule on the rsik profiles and stability of them. the comparison consists of the benmark portfolio (Passive Equal Weight), the linear (slow) divestment, the hyberbolic (Fast) divestment and the instant divestment.
+These options required CSV files, see example in [Example Files for Github](https://github.com/QuantFILab/Divfolio/tree/main/Example%20Files). Here, we use a small portfolio in which the constituents selected from FTSE100 as an example. Here, we investigate the impact of the divestment schedule on the rsik profiles and stability of them. the comparison consists of the benmark portfolio (Passive Equal Weight), the linear (slow) divestment, the hyberbolic (Fast) divestment and the instant divestment.
 
 ### Option I  Multiple Portfolios Comparison
 
