@@ -1,0 +1,442 @@
+Company,Ticker,Sector,E,S,G,ESG,Status
+3M,MMM,Industrials,12.33,13.56,7.72,33.61,Invest
+A. O. Smith,AOS,Industrials,7.29,11.87,6.27,25.43,Invest
+Abbott,ABT,Health Care,3.03,13.59,8.36,24.98,Invest
+AbbVie,ABBV,Health Care,1.12,16.77,9.95,27.84,Invest
+Accenture,ACN,Information Technology,0.29,4.58,4.83,9.71,Invest
+Activision Blizzard,ATVI,Communication Services,0.15,12.48,6.31,18.94,Invest
+ADM,ADM,Consumer Staples,18.23,13.16,5.01,36.4,Invest
+Adobe Inc.,ADBE,Information Technology,1.89,5.93,4.64,12.46,Invest
+ADP,ADP,Industrials,1.07,6.96,5.94,13.97,Invest
+AES Corporation,AES,Utilities,16.48,11.2,6.47,34.15,Invest
+Aflac,AFL,Financials,0.47,7.26,9.57,17.3,Invest
+Agilent Technologies,A,Health Care,0.34,8.65,6.26,15.24,Invest
+Air Products and Chemicals,APD,Materials,5.94,1.28,3.59,10.81,Invest
+Akamai,AKAM,Information Technology,2.93,6.9,6.72,16.55,Invest
+Albemarle Corporation,ALB,Materials,15.53,5.54,7.73,28.8,Invest
+Alexandria Real Estate Equities,ARE,Real Estate,3.91,3.66,6.27,13.85,Invest
+Allegion,ALLE,Industrials,12.75,4.54,6.43,23.72,Invest
+Alliant Energy,LNT,Utilities,10.04,5.65,6.18,21.87,Invest
+Allstate,ALL,Financials,1.44,7.85,9.94,19.22,Invest
+Alphabet Inc. (Class A),GOOGL,Communication Services,1.66,11.1,11.39,24.14,Invest
+Altria,MO,Consumer Staples,4.66,12.98,6.35,23.99,Invest
+Amazon,AMZN,Consumer Discretionary,5.59,14.8,9.89,30.28,Invest
+Ameren,AEE,Utilities,14.11,9.93,5.49,29.53,Invest
+American Airlines Group,AAL,Industrials,11.53,12.31,5.26,29.1,Invest
+American Electric Power,AEP,Utilities,12.84,7.54,5.43,25.81,Invest
+American Express,AXP,Financials,0.05,8.37,9.95,18.38,Invest
+American International Group,AIG,Financials,1.87,9.67,13.79,25.32,Invest
+American Tower,AMT,Real Estate,2.36,3.56,5.02,10.94,Invest
+American Water Works,AWK,Utilities,9.04,7.58,5.27,21.89,Invest
+Ameriprise Financial,AMP,Financials,2.57,7.22,12.82,22.61,Invest
+Ametek,AME,Industrials,8.65,8.51,6.92,24.08,Invest
+Amgen,AMGN,Health Care,0.69,13.46,7.89,22.04,Invest
+Amphenol,APH,Information Technology,8.04,5.49,7.81,21.35,Invest
+Analog Devices,ADI,Information Technology,10.13,7.74,5.9,23.78,Invest
+Ansys,ANSS,Information Technology,0.86,7.32,4.86,13.05,Invest
+Aon,AON,Financials,0.06,10.44,12.5,23,Invest
+APA Corporation,APA,Energy,21.98,8.88,7.96,38.81,Invest
+Apple Inc.,AAPL,Information Technology,0.65,6.86,9.18,16.68,Invest
+Applied Materials,AMAT,Information Technology,3.84,2.62,5.1,11.56,Invest
+Aptiv,APTV,Consumer Discretionary,2.49,3.75,5.27,11.51,Invest
+Arch Capital Group,ACGL,Financials,1.47,7.31,11.98,20.75,Invest
+Arista Networks,ANET,Information Technology,0.4,8.88,7.11,16.4,Invest
+Arthur J. Gallagher & Co.,AJG,Financials,0.11,10.7,10.47,21.28,Invest
+Assurant,AIZ,Financials,1.63,11.58,11.27,24.48,Invest
+AT&T,T,Communication Services,2.27,13.15,6.66,22.07,Invest
+Atmos Energy,ATO,Utilities,14.83,13.42,6.54,34.79,Invest
+Autodesk,ADSK,Information Technology,3.41,8.19,4.44,16.05,Invest
+AutoZone,AZO,Consumer Discretionary,0.11,7.09,3.83,11.04,Invest
+AvalonBay Communities,AVB,Real Estate,2.95,3.02,4.56,10.53,Invest
+Avery Dennison,AVY,Materials,10.58,1.14,3.67,15.38,Invest
+Ball Corporation,BALL,Materials,5.92,1.11,3.79,10.81,Invest
+Bank of America,BAC,Financials,1.62,14.37,11.16,27.15,Invest
+"Bath & Body Works, Inc.",BBWI,Consumer Discretionary,2.59,8.43,4.48,15.5,Invest
+Baxter International,BAX,Health Care,2.83,13.6,7.31,23.74,Invest
+Becton Dickinson,BDX,Health Care,3.7,15.56,7.48,26.74,Invest
+Berkley,WRB,Financials,1.97,7.95,12.04,21.97,Invest
+Best Buy,BBY,Consumer Discretionary,2.22,7.19,4.75,14.15,Invest
+Bio-Rad,BIO,Health Care,1.44,8.25,7.19,16.87,Invest
+Bio-Techne,TECH,Health Care,56.89,56.41,48.85,55.17,Invest
+Biogen,BIIB,Health Care,0.02,13.22,7.81,21.05,Invest
+BlackRock,BLK,Financials,1.49,9.61,9.48,20.57,Invest
+Blackstone,BX,Financials,2.52,9.95,11.16,23.63,Invest
+BNY Mellon,BK,Financials,1.13,9.17,11.18,21.48,Invest
+Boeing,BA,Industrials,7.08,19.72,7.87,34.68,Invest
+Booking Holdings,BKNG,Consumer Discretionary,2.02,12.48,7.83,22.33,Invest
+BorgWarner,BWA,Consumer Discretionary,2.86,4.21,5.71,12.78,Invest
+Boston Properties,BXP,Real Estate,2.54,4.52,5.45,12.51,Invest
+Boston Scientific,BSX,Health Care,3,12.69,10.63,26.33,Invest
+Bristol Myers Squibb,BMY,Health Care,0.34,14.93,7.56,22.83,Invest
+Broadcom Inc.,AVGO,Information Technology,8.82,6.92,6.66,22.41,Invest
+Broadridge Financial Solutions,BR,Industrials,0.82,9.01,6.38,16.21,Invest
+Brown & Brown,BRO,Financials,0.16,10.56,10.71,21.43,Invest
+Brown–Forman,BF-B,Consumer Staples,7.18,9.42,5.4,22,Invest
+Bunge Limited,BG,Consumer Staples,15.25,13.57,5.27,34.09,Invest
+C.H. Robinson,CHRW,Industrials,5.15,9.29,5.63,20.07,Invest
+Cadence Design Systems,CDNS,Information Technology,1.41,6.06,4.72,12.19,Invest
+Camden Property Trust,CPT,Real Estate,4.47,4.13,7.34,15.94,Invest
+Campbell Soup Company,CPB,Consumer Staples,10.93,8.15,4.47,23.55,Invest
+Capital One,COF,Financials,0.07,13.33,9.22,22.62,Invest
+Cardinal Health,CAH,Health Care,1.51,5.9,4.86,12.28,Invest
+CarMax,KMX,Consumer Discretionary,0.09,8.02,3.99,12.1,Invest
+Carnival,CCL,Consumer Discretionary,10.01,9.86,3.82,23.69,Invest
+Caterpillar Inc.,CAT,Industrials,7.18,18.52,8.47,34.18,Invest
+Cboe Global Markets,CBOE,Financials,2.73,7.58,10.64,20.95,Invest
+CBRE Group,CBRE,Real Estate,1.27,2.4,3.17,6.84,Invest
+CDW,CDW,Information Technology,2.4,3.29,3.54,9.23,Invest
+Celanese,CE,Materials,15.09,7.71,6.47,29.27,Invest
+Centene Corporation,CNC,Health Care,0.09,13.28,7.22,20.61,Invest
+CenterPoint Energy,CNP,Utilities,10.58,9.56,5.42,25.56,Invest
+CF Industries,CF,Materials,16.82,7.73,5.49,30.03,Invest
+Charles Schwab Corporation,SCHW,Financials,2.08,10.14,11.79,24.01,Invest
+Charter Communications,CHTR,Communication Services,5.57,13.1,7.86,26.53,Invest
+Chevron Corporation,CVX,Energy,18.61,8.71,10.29,37.61,Invest
+Chipotle Mexican Grill,CMG,Consumer Discretionary,5.5,13.45,4.69,23.64,Invest
+Chubb Limited,CB,Financials,1.67,11.59,10.58,23.85,Invest
+Church & Dwight,CHD,Consumer Staples,6.53,6.63,6.62,19.79,Invest
+Cigna,CI,Health Care,0.02,5.99,5.65,11.65,Invest
+Cincinnati Financial,CINF,Financials,1.82,10.97,12.83,25.62,Invest
+Cintas,CTAS,Industrials,3.21,9.17,5.88,18.25,Invest
+Cisco,CSCO,Information Technology,0.03,5.59,6.45,12.07,Invest
+Citigroup,C,Financials,1.75,13.11,11.82,26.68,Invest
+Citizens Financial Group,CFG,Financials,1.96,10.15,11.35,23.46,Invest
+Clorox,CLX,Consumer Staples,6.33,9.2,5.61,21.14,Invest
+CME Group,CME,Financials,2.13,6.21,6.24,14.59,Invest
+CMS Energy,CMS,Utilities,9.8,5.78,5.7,21.29,Invest
+Coca-Cola Company (The),KO,Consumer Staples,7.88,9.72,4.95,22.56,Invest
+Cognizant,CTSH,Information Technology,1.11,7.64,5.63,14.38,Invest
+Colgate-Palmolive,CL,Consumer Staples,6.06,9.35,6.72,22.12,Invest
+Comcast,CMCSA,Communication Services,4.56,12.11,8.09,24.76,Invest
+Comerica,CMA,Financials,2.31,10.99,12.66,25.97,Invest
+Conagra Brands,CAG,Consumer Staples,10.96,15.89,4.88,31.73,Invest
+ConocoPhillips,COP,Energy,17.29,9.71,7.87,34.86,Invest
+Consolidated Edison,ED,Utilities,7.46,9.34,6.29,23.09,Invest
+Constellation Brands,STZ,Consumer Staples,10.35,10.04,5.4,25.79,Invest
+CooperCompanies,COO,Health Care,2.7,10.76,6.03,19.5,Invest
+Copart,CPRT,Industrials,1.61,11.03,5.41,18.05,Invest
+Corning Inc.,GLW,Information Technology,7.3,5.24,6.87,19.42,Invest
+CoStar Group,CSGP,Real Estate,5.45,13.12,8.38,26.94,Invest
+Costco,COST,Consumer Staples,7.26,11.21,5.72,24.19,Invest
+Coterra,CTRA,Energy,24.13,13.11,8.78,46.02,Invest
+Crown Castle,CCI,Real Estate,5.21,2.92,5.06,13.2,Invest
+CSX,CSX,Industrials,7.45,9.19,3.44,20.09,Invest
+Cummins,CMI,Industrials,5.8,7.5,6.06,19.36,Invest
+CVS Health,CVS,Health Care,0.03,16.39,6.44,22.86,Invest
+D.R. Horton,DHI,Consumer Discretionary,9.35,6.66,5.74,21.74,Invest
+Danaher Corporation,DHR,Health Care,1.35,5.16,5.22,11.73,Invest
+Darden Restaurants,DRI,Consumer Discretionary,8.43,15,4.57,27.99,Invest
+DaVita Inc.,DVA,Health Care,0.07,14.08,8.42,22.56,Invest
+John Deere,DE,Industrials,3.19,6.9,6.55,16.64,Invest
+Delta Air Lines,DAL,Industrials,9.52,11.46,5.15,26.13,Invest
+Dentsply Sirona,XRAY,Health Care,2.21,6.86,6.71,15.78,Invest
+Devon Energy,DVN,Energy,20.71,8.15,7.83,36.69,Invest
+Dexcom,DXCM,Health Care,5.39,10.24,8.08,23.7,Invest
+Digital Realty,DLR,Real Estate,2.8,2.81,7,12.61,Invest
+Discover Financial,DFS,Financials,0.13,11.87,10.58,22.57,Invest
+Disney,DIS,Communication Services,0.06,7.92,6.9,14.88,Invest
+Dollar General,DG,Consumer Staples,3.27,8.56,5.53,17.36,Invest
+Dollar Tree,DLTR,Consumer Staples,3.4,7.41,4.06,14.87,Invest
+Dominion Energy,D,Utilities,11.11,8.55,5.73,25.38,Invest
+Domino's,DPZ,Consumer Discretionary,7.73,16.68,6.62,31.02,Invest
+Dover Corporation,DOV,Industrials,7.12,12.38,5.77,25.27,Invest
+DTE Energy,DTE,Utilities,15.28,10.04,4.77,30.09,Invest
+Duke Energy,DUK,Utilities,14.49,8.57,4.56,27.63,Invest
+DuPont,DD,Materials,13.44,8.12,7.39,28.95,Invest
+DXC Technology,DXC,Information Technology,1.26,9.69,5.13,16.08,Invest
+Eastman Chemical Company,EMN,Materials,11.98,5.42,7.2,24.6,Invest
+Eaton Corporation,ETN,Industrials,5.37,6.76,5.72,17.85,Invest
+eBay,EBAY,Consumer Discretionary,0.93,9.33,6.84,17.11,Invest
+Ecolab,ECL,Materials,9.48,8.44,6.17,24.09,Invest
+Edison International,EIX,Utilities,10.73,11.2,5.5,27.43,Invest
+Edwards Lifesciences,EW,Health Care,2.86,8.85,7.63,19.33,Invest
+Electronic Arts,EA,Communication Services,0.13,5.52,4.72,10.36,Invest
+Elevance Health,ELV,Health Care,49.44,51.49,48.7,49.33,Invest
+Eli Lilly and Company,LLY,Health Care,3.43,17.4,11.56,32.4,Invest
+Emerson Electric,EMR,Industrials,10.13,12.34,7,29.47,Invest
+Entergy,ETR,Utilities,16.31,6.85,6.41,29.57,Invest
+EOG Resources,EOG,Energy,20.39,8.13,7.73,36.25,Invest
+EQT,EQT,Energy,19.03,10.08,7.54,36.64,Invest
+Equifax,EFX,Industrials,0.16,18.63,6.98,25.76,Invest
+Equinix,EQIX,Real Estate,2.63,3.51,5.65,11.79,Invest
+Equity Residential,EQR,Real Estate,2.89,3.06,5.21,11.16,Invest
+Essex Property Trust,ESS,Real Estate,3.5,2.69,6.13,12.33,Invest
+Est<U+00E9>e Lauder Companies (The),EL,Consumer Staples,6.88,11.34,7.68,25.91,Invest
+Etsy,ETSY,Consumer Discretionary,63.4,62.86,62.1,64.51,Invest
+Eversource,ES,Utilities,4.8,8.16,5.77,18.73,Invest
+Exelon,EXC,Utilities,8.83,8.97,6.59,24.39,Invest
+Expedia Group,EXPE,Consumer Discretionary,2.11,13.79,9.81,25.7,Invest
+Expeditors International,EXPD,Industrials,3.83,7.35,4.64,15.82,Invest
+Extra Space Storage,EXR,Real Estate,3.81,4.28,5.99,14.08,Invest
+ExxonMobil,XOM,Energy,18.55,9.82,8.1,36.47,Invest
+"F5, Inc.",FFIV,Information Technology,1.26,12.49,5.42,19.18,Invest
+FactSet,FDS,Financials,2.94,10.88,6.61,20.44,Invest
+Fastenal,FAST,Industrials,10.69,8.66,7.05,26.4,Invest
+Federal Realty,FRT,Real Estate,2.27,4.34,5.82,12.42,Invest
+FedEx,FDX,Industrials,5.29,9.32,5.84,20.45,Invest
+Fifth Third Bank,FITB,Financials,1.41,8.68,7.36,17.44,Invest
+FirstEnergy,FE,Utilities,12.96,9.72,6.84,29.51,Invest
+FIS,FIS,Financials,1.27,11.14,5.68,18.08,Invest
+Fleetcor,FLT,Financials,2.88,9.08,6.16,18.11,Invest
+FMC Corporation,FMC,Materials,16.18,9.09,7.47,32.74,Invest
+Ford Motor Company,F,Consumer Discretionary,9.27,11.34,9.35,29.95,Invest
+Fortinet,FTNT,Information Technology,1.23,12.19,5.71,19.13,Invest
+Fortive,FTV,Industrials,16.09,13.97,4.7,34.76,Invest
+Franklin Templeton,BEN,Financials,1.12,9.88,7.18,18.18,Invest
+Freeport-McMoRan,FCX,Materials,16.56,10.15,5.22,31.94,Invest
+Garmin,GRMN,Consumer Discretionary,5.4,7.86,5.28,18.54,Invest
+Gartner,IT,Information Technology,0.13,15.44,6.2,21.78,Invest
+Gen Digital,GEN,Information Technology,0.7,9.47,4.81,14.98,Invest
+General Dynamics,GD,Industrials,8.48,19.52,6.87,34.88,Invest
+General Electric,GE,Industrials,14.09,15.04,11.58,40.71,Invest
+General Mills,GIS,Consumer Staples,8.45,8.94,4.13,21.51,Invest
+General Motors,GM,Consumer Discretionary,10.28,12.92,7.69,30.89,Invest
+Genuine Parts Company,GPC,Consumer Discretionary,3.62,5.23,3.78,12.62,Invest
+Gilead Sciences,GILD,Health Care,0.03,14.04,8.01,22.08,Invest
+Globe Life,GL,Financials,1.58,8.16,10.51,20.25,Invest
+Global Payments,GPN,Financials,1.25,10.98,6.8,19.03,Invest
+Goldman Sachs,GS,Financials,1.25,12.67,12.24,26.16,Invest
+Halliburton,HAL,Energy,8.89,8.59,6.32,23.8,Invest
+Hartford (The),HIG,Financials,1.5,5.99,8.67,16.17,Invest
+Hasbro,HAS,Consumer Discretionary,0.04,2.88,4.2,7.11,Invest
+HCA Healthcare,HCA,Health Care,3.5,17.34,7.4,28.24,Invest
+Healthpeak,PEAK,Real Estate,3.01,2.22,4.49,9.73,Invest
+Henry Schein,HSIC,Health Care,2.14,5.59,5.64,13.37,Invest
+Hershey's,HSY,Consumer Staples,11.3,10.89,5.24,27.43,Invest
+Hess Corporation,HES,Energy,22.11,7.2,6.75,36.05,Invest
+Hewlett Packard Enterprise,HPE,Information Technology,0.76,4.92,6.25,11.94,Invest
+Hilton Worldwide,HLT,Consumer Discretionary,7,6.77,3.67,17.44,Invest
+Hologic,HOLX,Health Care,4.79,13.27,10.18,28.24,Invest
+Home Depot (The),HD,Consumer Discretionary,3.4,5.51,3.63,12.54,Invest
+Honeywell,HON,Industrials,10.58,10.19,8.54,29.31,Invest
+Hormel Foods,HRL,Consumer Staples,13.23,10.68,6,29.91,Invest
+Host Hotels & Resorts,HST,Real Estate,3.25,5.64,5.05,13.94,Invest
+HP Inc.,HPQ,Information Technology,0.11,5,5.82,10.93,Invest
+Humana,HUM,Health Care,0.01,16.43,5.94,22.37,Invest
+Huntington Bancshares,HBAN,Financials,1.96,10.79,7.63,20.38,Invest
+Huntington Ingalls Industries,HII,Industrials,47.02,46.57,51.34,45.74,Invest
+IBM,IBM,Information Technology,0.47,6.67,7.64,14.77,Invest
+IDEX Corporation,IEX,Industrials,8.1,13,5.72,26.82,Invest
+Idexx Laboratories,IDXX,Health Care,3.3,7.1,9.05,19.45,Invest
+Illinois Tool Works,ITW,Industrials,4.31,9.07,6.22,19.6,Invest
+Illumina,ILMN,Health Care,0.98,3.72,6.21,10.9,Invest
+Incyte,INCY,Health Care,1.45,15.55,7.11,24.12,Invest
+Ingersoll Rand,IR,Industrials,3.64,11.22,5.83,20.68,Invest
+Intel,INTC,Information Technology,4.36,5.94,6.96,17.26,Invest
+Intercontinental Exchange,ICE,Financials,1.68,7.98,6.68,16.34,Invest
+International Flavors & Fragrances,IFF,Materials,10.39,5.42,6.5,22.31,Invest
+International Paper,IP,Materials,14.26,4.5,4.95,23.71,Invest
+Interpublic Group of Companies (The),IPG,Communication Services,0.04,5.11,5.28,10.43,Invest
+Intuit,INTU,Information Technology,0.97,10.52,4.7,16.2,Invest
+Intuitive Surgical,ISRG,Health Care,4.37,9.78,9.6,23.74,Invest
+Invesco,IVZ,Financials,0.7,9.87,9.76,20.33,Invest
+IQVIA,IQV,Health Care,1.3,10.62,7.22,19.14,Invest
+Iron Mountain,IRM,Real Estate,5,3.74,6,14.74,Invest
+J.B. Hunt,JBHT,Industrials,3,6.01,4.86,13.86,Invest
+Jack Henry & Associates,JKHY,Financials,0.78,9.45,5.22,15.45,Invest
+Jacobs Solutions,J,Industrials,5.29,11.46,5.62,22.37,Invest
+Johnson & Johnson,JNJ,Health Care,0.74,15.79,8.55,25.08,Invest
+Johnson Controls,JCI,Industrials,4.89,4.55,5.25,14.7,Invest
+JPMorgan Chase,JPM,Financials,1.11,16.18,11.73,29.02,Invest
+Juniper Networks,JNPR,Information Technology,1.66,8.52,6.41,16.59,Invest
+Kellogg's,K,Consumer Staples,7.4,14.87,4.58,26.84,Invest
+KeyCorp,KEY,Financials,1.89,11.08,10.17,23.14,Invest
+Keysight,KEYS,Information Technology,2.03,2.24,5.04,9.31,Invest
+Kimberly-Clark,KMB,Consumer Staples,8.05,7.77,6.23,22.05,Invest
+Kimco Realty,KIM,Real Estate,3.7,2.91,5.53,12.14,Invest
+Kinder Morgan,KMI,Energy,7.75,7.32,3.48,18.55,Invest
+KLA Corporation,KLAC,Information Technology,7.13,4.76,4.91,16.79,Invest
+Kraft Heinz,KHC,Consumer Staples,14.38,14.29,6.63,35.3,Invest
+Kroger,KR,Consumer Staples,6.51,9.43,5.46,21.39,Invest
+LabCorp,LH,Health Care,0.13,11.55,7.13,18.81,Invest
+Lam Research,LRCX,Information Technology,4.5,3.97,4.98,13.45,Invest
+Las Vegas Sands,LVS,Consumer Discretionary,1.28,7.76,8.65,17.69,Invest
+Leidos,LDOS,Industrials,1.29,4.99,5.39,11.67,Invest
+Lennar,LEN,Consumer Discretionary,8.89,8.77,5.47,23.11,Invest
+LKQ Corporation,LKQ,Consumer Discretionary,3.27,4,3.27,10.54,Invest
+Lockheed Martin,LMT,Industrials,5.27,15.9,7.2,28.36,Invest
+Loews Corporation,L,Financials,0.59,4.25,11.63,16.48,Invest
+Lowe's,LOW,Consumer Discretionary,3.7,4.63,3.15,11.49,Invest
+LyondellBasell,LYB,Materials,16.64,2.13,5.82,24.59,Invest
+M&T Bank,MTB,Financials,2.2,12.77,11.19,26.16,Invest
+Marathon Oil,MRO,Energy,23.91,10.14,7.96,42.01,Invest
+Marathon Petroleum,MPC,Energy,15.91,7.01,5.79,28.7,Invest
+Marriott International,MAR,Consumer Discretionary,8.75,9.05,4.09,21.89,Invest
+Marsh McLennan,MMC,Financials,0.06,7.9,11.49,19.45,Invest
+Martin Marietta Materials,MLM,Materials,18.55,4.53,8.74,31.82,Invest
+Masco,MAS,Industrials,9.44,5.8,7.21,22.44,Invest
+Mastercard,MA,Financials,0.32,8.1,8.57,16.98,Invest
+McCormick & Company,MKC,Consumer Staples,10.07,11.3,5.21,26.58,Invest
+McDonald's,MCD,Consumer Discretionary,4.18,14.3,6.32,24.79,Invest
+McKesson,MCK,Health Care,2.29,7.37,5.52,15.17,Invest
+Medtronic,MDT,Health Care,2.39,12.63,7.63,22.66,Invest
+Merck & Co.,MRK,Health Care,0.79,11.47,9.57,21.84,Invest
+Meta Platforms,META,Communication Services,1.02,21.01,10.51,32.54,Invest
+MetLife,MET,Financials,0.73,4.82,9.41,14.95,Invest
+Mettler Toledo,MTD,Health Care,1,7.41,4.91,13.32,Invest
+MGM Resorts,MGM,Consumer Discretionary,2,12.97,10.53,25.49,Invest
+Microchip Technology,MCHP,Information Technology,14.83,8.75,7.4,30.98,Invest
+Micron Technology,MU,Information Technology,6.6,5.07,5.77,17.44,Invest
+Microsoft,MSFT,Information Technology,1.53,8.39,5.33,15.24,Invest
+Mid-America Apartment Communities,MAA,Real Estate,5.5,3.74,5.4,14.64,Invest
+Mohawk Industries,MHK,Consumer Discretionary,5.61,4.19,4.36,14.17,Invest
+Molson Coors Beverage Company,TAP,Consumer Staples,6.96,8.67,5.57,21.21,Invest
+Mondelez International,MDLZ,Consumer Staples,9.46,9.08,5.18,23.78,Invest
+Monster Beverage,MNST,Consumer Staples,12.43,10.58,5.03,28.03,Invest
+Moody's Corporation,MCO,Financials,0.02,5.23,5.25,10.5,Invest
+Morgan Stanley,MS,Financials,0.72,11.76,9.73,22.22,Invest
+Mosaic Company (The),MOS,Materials,14.35,11.05,8.66,34.06,Invest
+Motorola Solutions,MSI,Information Technology,2.21,6.7,5.39,14.31,Invest
+MSCI,MSCI,Financials,1.65,6.77,7.59,16.01,Invest
+"Nasdaq, Inc.",NDAQ,Financials,1.81,4.56,5.28,11.65,Invest
+NetApp,NTAP,Information Technology,2.58,6.93,5.98,15.49,Invest
+Netflix,NFLX,Communication Services,0.09,6.83,9.34,16.25,Invest
+Newmont,NEM,Materials,6.92,8.24,5.16,20.33,Invest
+News Corp (Class A),NWSA,Communication Services,0.02,4.58,7.02,11.61,Invest
+NextEra Energy,NEE,Utilities,14.05,7.64,5.83,27.53,Invest
+"Nike, Inc.",NKE,Consumer Discretionary,3.04,6.99,6.92,16.95,Invest
+NiSource,NI,Utilities,14.08,10.25,5.18,29.51,Invest
+Nordson Corporation,NDSN,Industrials,9.26,11.8,5.59,26.66,Invest
+Norfolk Southern Railway,NSC,Industrials,8.05,11.36,3.32,22.73,Invest
+Northern Trust,NTRS,Financials,1.87,11.83,10.17,23.86,Invest
+Northrop Grumman,NOC,Industrials,7.47,14.87,5.05,27.4,Invest
+Norwegian Cruise Line Holdings,NCLH,Consumer Discretionary,11.98,10.12,4.12,26.22,Invest
+NRG Energy,NRG,Utilities,17.08,9.42,5.67,32.16,Invest
+Nucor,NUE,Materials,9.66,13.33,8.95,31.94,Invest
+Nvidia,NVDA,Information Technology,2.26,5.16,6.03,13.45,Invest
+"NVR, Inc.",NVR,Consumer Discretionary,7.21,7.82,5.3,20.33,Invest
+NXP Semiconductors,NXPI,Information Technology,8.67,7.39,5.55,21.6,Invest
+O'Reilly Auto Parts,ORLY,Consumer Discretionary,0.16,8.89,3.98,13.03,Invest
+Occidental Petroleum,OXY,Energy,24.61,12.04,6.59,43.23,Invest
+Omnicom Group,OMC,Communication Services,0.09,9.33,6.88,16.3,Invest
+ON Semiconductor,ON,Information Technology,14.8,6.36,5.42,26.59,Invest
+ONEOK,OKE,Energy,11.78,11.01,3.31,26.1,Invest
+Oracle Corporation,ORCL,Information Technology,0.52,7.71,5.69,13.92,Invest
+Paccar,PCAR,Industrials,8.36,10.99,8.42,27.77,Invest
+Packaging Corporation of America,PKG,Materials,11.65,1.35,3.76,16.75,Invest
+Palo Alto Networks,PANW,Information Technology,0.7,7.62,5.6,13.92,Invest
+Parker Hannifin,PH,Industrials,9.2,13.68,6.24,29.13,Invest
+Paychex,PAYX,Industrials,1.17,9.81,6.51,17.48,Invest
+PayPal,PYPL,Financials,0.71,9.92,5.36,15.99,Invest
+Pentair,PNR,Industrials,6.66,10.01,6.07,22.74,Invest
+PepsiCo,PEP,Consumer Staples,4.91,6.55,4.48,15.94,Invest
+Pfizer,PFE,Health Care,2.83,12.85,9.66,25.34,Invest
+PG&E Corporation,PCG,Utilities,8.41,20.65,6.2,35.26,Invest
+Philip Morris International,PM,Consumer Staples,3.57,10.73,9.49,23.79,Invest
+Phillips 66,PSX,Energy,16.39,7,5.96,29.35,Invest
+Pinnacle West,PNW,Utilities,14.86,10.23,5.97,31.06,Invest
+Pioneer Natural Resources,PXD,Energy,18.67,8.97,9.1,36.74,Invest
+PNC Financial Services,PNC,Financials,1.73,11.75,8.86,22.34,Invest
+PPG Industries,PPG,Materials,9.32,7.69,7.32,24.33,Invest
+PPL Corporation,PPL,Utilities,19.71,8.31,5.81,33.84,Invest
+Principal Financial Group,PFG,Financials,0.68,6.65,9.88,17.22,Invest
+Procter & Gamble,PG,Consumer Staples,9.54,9.6,7.47,26.61,Invest
+Progressive Corporation,PGR,Financials,1.67,8.36,10.85,20.87,Invest
+Prologis,PLD,Real Estate,2.5,1.74,4.27,8.51,Invest
+Prudential Financial,PRU,Financials,1.03,6.57,8.6,16.21,Invest
+Public Service Enterprise Group,PEG,Utilities,11.56,9.28,5.46,26.31,Invest
+PTC,PTC,Information Technology,4.92,8.61,5.4,18.93,Invest
+Public Storage,PSA,Real Estate,4.51,2.55,5.24,12.3,Invest
+PulteGroup,PHM,Consumer Discretionary,8.73,7.28,4.86,20.87,Invest
+Qorvo,QRVO,Information Technology,13.12,8.5,7.46,29.08,Invest
+Quanta Services,PWR,Industrials,12.4,15.73,9.05,37.18,Invest
+Qualcomm,QCOM,Information Technology,4.83,4.05,7.71,16.59,Invest
+Quest Diagnostics,DGX,Health Care,0.13,12.67,8.18,20.98,Invest
+Ralph Lauren Corporation,RL,Consumer Discretionary,1.14,6.79,5.28,13.21,Invest
+Raymond James,RJF,Financials,1.18,10.38,12.43,23.99,Invest
+RTX Corporation,RTX,Industrials,7.99,13.09,8.1,29.17,Invest
+Realty Income,O,Real Estate,4.41,5.32,5.74,15.47,Invest
+Regency Centers,REG,Real Estate,3.56,2.86,4.45,10.88,Invest
+Regeneron,REGN,Health Care,0.38,10.75,7.03,18.15,Invest
+Regions Financial Corporation,RF,Financials,1.6,7.03,7.44,16.08,Invest
+Republic Services,RSG,Industrials,11.3,6.02,3.66,20.98,Invest
+ResMed,RMD,Health Care,3.36,12.41,10.63,26.41,Invest
+Robert Half,RHI,Industrials,0.1,7.37,3.46,10.93,Invest
+Rockwell Automation,ROK,Industrials,5.37,6.64,5.65,17.67,Invest
+"Rollins, Inc.",ROL,Industrials,1.76,11.18,7.34,20.28,Invest
+Roper Technologies,ROP,Information Technology,4.62,12.71,5.56,22.9,Invest
+Ross Stores,ROST,Consumer Discretionary,1.8,8.45,5.68,15.93,Invest
+Royal Caribbean Group,RCL,Consumer Discretionary,9.14,8.04,3.79,20.97,Invest
+S&P Global,SPGI,Financials,0,6.16,8.15,14.31,Invest
+Salesforce,CRM,Information Technology,2.34,6.39,4.46,13.18,Invest
+SBA Communications,SBAC,Real Estate,3.11,3.23,5.23,11.58,Invest
+Schlumberger,SLB,Energy,7.41,8.76,5.76,21.93,Invest
+Seagate Technology,STX,Information Technology,1.59,3.8,5.26,10.66,Invest
+Sealed Air,SEE,Materials,15.83,1.52,3.23,20.57,Invest
+Sempra Energy,SRE,Utilities,12.09,7.14,5.5,24.72,Invest
+ServiceNow,NOW,Information Technology,1.41,8.39,6.26,16.05,Invest
+Sherwin-Williams,SHW,Materials,12.93,8.99,6.72,28.63,Invest
+Simon Property Group,SPG,Real Estate,3.83,3.99,6.38,14.21,Invest
+Skyworks Solutions,SWKS,Information Technology,11.63,8.93,7.21,27.76,Invest
+J.M. Smucker Company (The),SJM,Consumer Staples,12.36,12.44,6.16,30.97,Invest
+Snap-on,SNA,Industrials,9.33,13.91,7.59,30.83,Invest
+Southern Company,SO,Utilities,14.79,11,7.3,33.09,Invest
+Southwest Airlines,LUV,Industrials,11.29,14.89,6.21,32.39,Invest
+Stanley Black & Decker,SWK,Industrials,5.83,12.51,7.59,25.93,Invest
+Starbucks,SBUX,Consumer Discretionary,6.11,14.5,4.21,24.83,Invest
+State Street Corporation,STT,Financials,1.96,11.2,9.11,22.27,Invest
+Steel Dynamics,STLD,Materials,9.82,14.36,8.21,32.39,Invest
+Stryker Corporation,SYK,Health Care,3.72,13.96,10.84,28.52,Invest
+Synchrony Financial,SYF,Financials,0.13,9.89,7.19,17.22,Invest
+Synopsys,SNPS,Information Technology,3.18,6.2,4.07,13.45,Invest
+Sysco,SYY,Consumer Staples,2.79,4.7,4.57,12.06,Invest
+T-Mobile US,TMUS,Communication Services,5.03,13.35,7.69,26.07,Invest
+T. Rowe Price,TROW,Financials,2.36,9.3,5.39,17.05,Invest
+"Tapestry, Inc.",TPR,Consumer Discretionary,1.23,7.2,4.91,13.33,Invest
+Targa Resources,TRGP,Energy,15.33,14.52,4.13,33.98,Invest
+Target Corporation,TGT,Consumer Staples,2.04,7.63,5.06,14.72,Invest
+TE Connectivity,TEL,Information Technology,6.42,4.87,4.64,15.93,Invest
+Teleflex,TFX,Health Care,4.83,16.12,8.67,29.63,Invest
+Teradyne,TER,Information Technology,6.27,4.95,4.64,15.86,Invest
+"Tesla, Inc.",TSLA,Consumer Discretionary,2.78,16.16,9.61,28.54,Invest
+Texas Instruments,TXN,Information Technology,8.84,5.06,6.03,19.93,Invest
+Textron,TXT,Industrials,11.05,16.23,6.53,33.81,Invest
+Thermo Fisher Scientific,TMO,Health Care,1.47,5.6,6.46,13.52,Invest
+TJX Companies,TJX,Consumer Discretionary,1.89,7.42,5.12,14.43,Invest
+Tractor Supply,TSCO,Consumer Discretionary,3.04,6.78,4.14,13.96,Invest
+Trane Technologies,TT,Industrials,7.11,3.84,5.16,16.12,Invest
+TransDigm Group,TDG,Industrials,12.84,17.85,8.4,39.09,Invest
+Travelers Companies (The),TRV,Financials,0.99,9.45,10.08,20.52,Invest
+Trimble Inc.,TRMB,Information Technology,3.17,3.72,6.09,12.98,Invest
+Truist,TFC,Financials,2.01,13.02,10.39,25.42,Invest
+Tyson Foods,TSN,Consumer Staples,14.31,12.39,9.97,36.67,Invest
+U.S. Bank,USB,Financials,1.39,13.19,12.45,27.04,Invest
+"UDR, Inc.",UDR,Real Estate,3.15,4,5.21,12.36,Invest
+Ulta Beauty,ULTA,Consumer Discretionary,3.83,7.2,4.29,15.33,Invest
+Union Pacific Corporation,UNP,Industrials,9.43,12.14,3.69,25.26,Invest
+United Airlines Holdings,UAL,Industrials,10.9,12.95,4.96,28.81,Invest
+United Parcel Service,UPS,Industrials,4.58,9.55,5.38,19.5,Invest
+United Rentals,URI,Industrials,5.89,6.57,5.99,18.45,Invest
+UnitedHealth Group,UNH,Health Care,0.03,11.62,5.89,17.54,Invest
+Universal Health Services,UHS,Health Care,3.7,20.68,8.6,32.98,Invest
+Valero Energy,VLO,Energy,18.18,7.23,4.65,30.05,Invest
+Ventas,VTR,Real Estate,2.75,4.28,5.73,12.75,Invest
+Verisign,VRSN,Information Technology,4.74,10.77,5.93,21.44,Invest
+Verisk,VRSK,Industrials,0.11,13.5,5.7,19.3,Invest
+Verizon,VZ,Communication Services,3.88,8.92,5.69,18.48,Invest
+Vertex Pharmaceuticals,VRTX,Health Care,0.75,15.4,6.67,22.82,Invest
+VF Corporation,VFC,Consumer Discretionary,0.9,6.91,5.07,12.89,Invest
+Visa Inc.,V,Financials,0.71,7.84,7.52,16.07,Invest
+Vulcan Materials Company,VMC,Materials,15.61,4.56,8.85,29.02,Invest
+Wabtec,WAB,Industrials,4.52,11.69,7.04,23.25,Invest
+Walgreens Boots Alliance,WBA,Consumer Staples,2.03,11.52,4.73,18.29,Invest
+Walmart,WMT,Consumer Staples,4.4,13.92,6.31,24.63,Invest
+Waste Management,WM,Industrials,8.22,5.24,3.28,16.73,Invest
+Waters Corporation,WAT,Health Care,1.37,9.4,6.24,17.01,Invest
+WEC Energy Group,WEC,Utilities,14.68,7.4,5.27,27.36,Invest
+Wells Fargo,WFC,Financials,1.94,15.4,15.51,32.84,Invest
+Welltower,WELL,Real Estate,3.87,3.22,4.92,12.01,Invest
+Western Digital,WDC,Information Technology,1.48,3.91,6.05,11.43,Invest
+WestRock,WRK,Materials,56.02,58.81,61.85,58.45,Invest
+Weyerhaeuser,WY,Real Estate,10.48,3.29,3.78,17.56,Invest
+Whirlpool Corporation,WHR,Consumer Discretionary,4.76,7.08,3.96,15.8,Invest
+Williams Companies,WMB,Energy,9.98,10.43,3.08,23.5,Invest
+Willis Towers Watson,WTW,Financials,0.13,8.68,9.79,18.61,Invest
+W. W. Grainger,GWW,Industrials,3.41,5.48,5.72,14.6,Invest
+Wynn Resorts,WYNN,Consumer Discretionary,3.55,11.98,10.96,26.49,Invest
+Xcel Energy,XEL,Utilities,12.87,6.75,4.18,23.8,Invest
+Xylem Inc.,XYL,Industrials,3.56,7.4,5.08,16.04,Invest
+Yum! Brands,YUM,Consumer Discretionary,4.46,11.65,4.44,20.55,Invest
+Zimmer Biomet,ZBH,Health Care,4.46,14.6,8.24,27.3,Invest
+Zions Bancorporation,ZION,Financials,34.33,59.06,51.4,48.73,Invest
+Zoetis,ZTS,Health Care,1.38,8.15,8.95,18.47,Invest
