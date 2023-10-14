@@ -170,7 +170,7 @@ sep_and_sum <- function(data){
 #
 multipywtoreturn <- function(w,return_mat){
   rebdate <- w$Date
-  returnmat <- lapply(1:(length(rebdate)), function(i) {if(i < length(rebdate)){return_mat %>% dplyr::filter((Date >= rebdate[i]) & (Date < rebdate[i+1]))}else{return_mat %>% dplyr::filter(Date >= rebdate[i])}})
+  returnmat <- lapply(1:(length(rebdate)), function(i) {if(i < length(rebdate)){return_mat %>% dplyr::filter((as.Date(Date) >= as.Date(rebdate[i])) & (as.Date(Date) < as.Date(rebdate[i+1])))}else{return_mat %>% dplyr::filter(as.Date(Date) >= as.Date(rebdate[i]))}})
   returnmat <- returnmat %>% lapply(function(m) {m[is.na(m)] <- 0; ifelse(length(m[m == 0]) == 0, m <- m, m[m == 0] <- rnorm(length(m[m == 0]),0.0001,0.0001)); m})                                                                                    
   wm <- lapply(seq_along(rebdate), function(i) apply(returnmat[[i]][,-1],1, function(x) x*w[i,-1]) %>% bind_rows()) 
   names(wm) <- rebdate
@@ -2811,7 +2811,7 @@ SR <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else (mean(portreturn[i:(i-tau+1)]) - 0)/sqrt(((1/(tau-1))*sum((portreturn[i:(i-tau+1)]-mean(portreturn[i:(i-tau+1)]))^2*((portreturn[i:(i-tau+1)]- 0) < 0)))))
   x <- x[!is.na(x)]
   x[abs(x) > 5] <- NA
-  return(x[!is.na(x)])
+  return(x)
 }
 
 # The `agg.perf` function aggregates various performance metrics for portfolio returns over a specified time window (tau).
@@ -2833,7 +2833,7 @@ agg.perf <- function(Port_Return,tau,date){
   Arg_Cumsum <- pmrcum(Port_Return, tau)
   Arg_Sd <- prisk(Port_Return, tau)
   Arg_Sharpe <- sharpe(Port_Return, tau)
-  Arg_VaR <- pVaR(Port_Return, tau, 0.05)
+  Arg_VaR <- pVaR(Port_Return, tau, 0.05) %>% as.vector()
   Arg_MDD <- MDD(Port_Return,tau)
   Arg_SR <- SR(Port_Return,tau)
   dat <- as.data.frame(list(return = Arg_Return, cumsum = Arg_Cumsum, sd = Arg_Sd, sharpe = Arg_Sharpe, var = Arg_VaR, mdd = Arg_MDD, sortino = Arg_SR))
@@ -3508,7 +3508,7 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
                                          width = 13
                                        ),
                                        box(
-                                         title = h4("Seleacting Assets from World Major Indices"),
+                                         title = h4("Selecting Assets from World Major Indices"),
                                          pickerInput(
                                            inputId = "selindex",
                                            label = "Select Index", 
@@ -5151,74 +5151,77 @@ server <- function(input, output, session) {
         type <- input$type
         tau <- as.integer(input$tau)
         reb <- as.integer(input$reb)
-        lim <- as.integer(input$limselect) * as.numeric(input$shortlim)
+        lim <- as.integer(input$limselect)*as.numeric(input$shortlim)
         filew <- NULL
         one <- as.matrix(rep(1, ncol(x)-1))
+        first <- head(x[-(1:tau),],1)$Date
+        last <- tail(x[-(1:tau),],1)$Date
         
         # Compute 'rebdate', a sequence of dates at which rebalancing occurs.
         rebdate <- x[seq(reb, nrow(x), reb),]$Date
+
         
         # Compute 'returnmat', a list of matrices representing return data for each rebalancing period.
         # Perform various transformations on the 'returnmat' data to handle NA and zero values.
-        returnmat <- lapply(seq_along(rebdate), function(i) {
-          rowre <- which(x$Date == as.Date(rebdate[i]))
-          x[(rowre - tau):(rowre - 1), -1]
-        }) %>% lapply(function(m) {m[is.na(m)] <- 0; m}) %>% lapply(function(m) {
-          ifelse(length(m[m == 0]) == 0, m <- m, m[m == 0] <- rnorm(length(m[m == 0]), 0.0001, 0.0001))
-          m
-        })
+        returnmat <- lapply(seq_along(rebdate), function(i) {rowre <- which(x$Date == as.Date(rebdate[i])); x[(rowre-tau):(rowre-1),-1]}) %>%
+          lapply(function(m) {m[is.na(m)] <- 0; m}) %>% lapply(function(m) {ifelse(length(m[m == 0]) == 0, m <- m,m[m == 0] <- rnorm(length(m[m == 0]),0.0001,0.0001)); m}) 
         
-        # Compute 'covmat' and 'invcov', lists of covariance matrices and their inverses for each period in 'returnmat'.
-        # Perform various transformations on the covariance matrices to handle numerical instability and update the progress bar accordingly.
-        covmat <- vector("list", length = length(returnmat))
-        invcov <- vector("list", length = length(returnmat))
-        for(j in 1:length(returnmat)) {
-          covmat[[j]] <- cov(returnmat[[j]])
-          if(log10(kappa(covmat[[j]])) >= 5) {
-            covmat[[j]] <- as.matrix(covOGK(returnmat[[j]], sigmamu = s_mad)$cov)
-            dimnames(covmat[[j]]) <- list(colnames(x)[-1], colnames(x)[-1])
-            s <- as.matrix(solve(as.matrix(covmat[[j]], tol = 1E-1000)))
-            s[lower.tri(s)] <- t(s)[lower.tri(s)]
-            invcov[[j]] <- s
-          } else {
-            s <- as.matrix(solve(as.matrix(covmat[[j]], tol = 1E-1000)))
-            s[lower.tri(s)] <- t(s)[lower.tri(s)]
-            invcov[[j]] <- s
+        if(!(as.character(type) %in% c("0","1"))){
+          covmat <- vector("list", length = length(returnmat))
+          invcov <- vector("list", length = length(returnmat))
+          
+          for(j in 1:length(returnmat)){
+            covmat[[j]] <- cov(returnmat[[j]])
+            if(log10(kappa(covmat[[j]])) >= 5){
+              covmat[[j]] <- as.matrix(covOGK(returnmat[[j]],sigmamu = s_mad)$cov)  
+              dimnames(covmat[[j]]) <- list(colnames(x)[-1],colnames(x)[-1])
+              s <- as.matrix(solve(as.matrix(covmat[[j]],tol = 1E-1000)))
+              s[lower.tri(s)] <- t(s)[lower.tri(s)]
+              invcov[[j]] <- s
+            }else{
+              s <- as.matrix(solve(as.matrix(covmat[[j]],tol = 1E-1000)))
+              s[lower.tri(s)] <- t(s)[lower.tri(s)]
+              invcov[[j]] <- s
+            }
+            title <- ifelse(j == length(returnmat),"Done","Calculating, please wait")
+            updateProgressBar(id = 'pb', value = j, total = length(returnmat), title = title)
           }
-          title <- ifelse(j == length(returnmat), "Done", "Calculating, please wait")
-          updateProgressBar(id = 'pb', value = j, total = length(returnmat), title = title)
+        }else{
+          covmat <- NULL
         }
         
-        # Based on the user-selected 'type', compute the weights 'w' for each asset in each rebalancing period.
-        # Perform various transformations on 'w' based on the user-selected limit 'lim' and column names.
-        # If 'filew' is not NULL, use it as the value of 'w' instead.
-        if(is.null(filew)) {
-          # Computing 'w' using a switch-case structure based on the value of 'type'.
-          # ... (Refer to original code for specific calculations.)
+        
+        if(is.null(filew)){
+          switch(as.character(type),
+                 "0" = {w <- matrix(rep(1/ncol(x[,-1]),(ncol(x[,-1])*length(rebdate))),length(rebdate),ncol(x[,-1])) %>% `colnames<-`(colnames(x[,-1])) %>% as.data.frame(check.names = FALSE); covmat <- NULL},
+                 "1" = {w <- lapply(returnmat, function(y) {m <- apply(y,2,mean); m <- m+ifelse(min(m) >= 0,0,-min(m)+0.001); m/sum(m)}) %>% bind_rows() %>% as.data.frame(check.names = FALSE); covmat <- NULL},
+                 "2" = {w <- lapply(invcov, function(y) {numer <- t(one)%*%y;  numer/sum(numer)}) %>% lapply(as.data.frame, check.names = FALSE) %>% bind_rows()},
+                 "3" = {w <- sapply(seq_along(invcov), function(i) {mu <- matrix(apply(returnmat[[i]] ,2,mean)); numer <- t(mu)%*%invcov[[i]];
+                 numer/sum(numer)}) %>% t() %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(colnames(x)[-1])},
+                 "4" = {w <- lapply(covmat, function(y) {ec <- eigen(y); as.matrix(apply(ec$vectors,2,function(n) n/sum(n)))%*%matrix(ec$values/sum(ec$values))}) %>%
+                   lapply(function(m) as.data.frame(t(m), check.names = FALSE)) %>% bind_rows() %>% `colnames<-`(colnames(x)[-1]) }
+          )
           
-          if(lim != 0) {w <- apply(w, 1, box_constrain, Short_Limit = lim) %>% t() %>% data.frame(check.names = FALSE)}
+          if(lim != 0){w <- apply(w,1,box_constrain, Short_Limit = lim) %>% t() %>% data.frame(check.names = FALSE)}
           
-          w <- cbind(rebdate, w) %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(c('Date', colnames(w)))
-        } else {
+          w <- cbind(rebdate,w) %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(c('Date',colnames(w)))
+        }else{
           w <- filew
-          w[, 2:ncol(w)] <- round(w[, 2:ncol(w)], 6)
+          w[,2:ncol(w)] <- round(w[,2:ncol(w)],6)
         }
-        
-        # Compute 'Weightset', a list containing the computed weights 'w' and additional information related to returns and covariance matrices.
-        Weightset <- list(w, returnmat, covmat, rebdate)
-      } else {
-        # If 'input$file3' is not NULL, compute 'Weightset' using previously computed weights 'file3_Weight' and additional information.
-        Weightset <- list(file3_Weight, multipywtoreturn(file3_Weight, file2_Historical), NULL, file3_Weight$Date)
+        Weightset <- list(w,returnmat,covmat,rebdate)
+      }else{
+        Weightset <-  list(file3_Weight, multipywtoreturn(file3_Weight,file2_Historical),NULL,file3_Weight$Date)
       }
-      
-      # Assign the first element of 'Weightset' to 'file3_Weight' in the global environment and round its numerical values to six decimal places.
-      file3_Weight <<- Weightset[[1]]
-      file3_Weight[, 2:ncol(file3_Weight)] <<- round(file3_Weight[, 2:ncol(file3_Weight)], 6)
-      
-      # Return 'Weightset'.
-      list(file3_Weight, Weightset[[2]], Weightset[[3]], Weightset[[4]])
-    }
+      file3_Weight <<- Weightset[[1]];
+      file3_Weight[,2:ncol(file3_Weight)] <<- round(file3_Weight[,2:ncol(file3_Weight)],6);
+      list(file3_Weight,Weightset[[2]],Weightset[[3]],Weightset[[4]])}})
+  
+  observeEvent(input$reb, {
+    output$textnum <- renderText({ifelse(is.null(input$reb), "Select Rebalancing Frequency", paste0("Number of Rebalancing Iterations is now ", ceiling(nrow(file2_Historical)/as.integer(input$reb))))
+    })
   })
+  
   
   
   # Observe 'input$reb' and update 'output$textnum' to display the number of rebalancing iterations.
