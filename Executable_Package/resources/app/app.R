@@ -53,9 +53,8 @@ pop.call <- function(id.pop, text){
 }
 
 multipywtoreturn <- function(w,return_mat){
-  
   rebdate <- w$Date
-  returnmat <- lapply(1:(length(rebdate)), function(i) {if(i < length(rebdate)){return_mat %>% dplyr::filter((Date >= rebdate[i]) & (Date < rebdate[i+1]))}else{return_mat %>% dplyr::filter(Date >= rebdate[i])}})
+  returnmat <- lapply(1:(length(rebdate)), function(i) {if(i < length(rebdate)){return_mat %>% dplyr::filter((as.Date(Date) >= as.Date(rebdate[i])) & (as.Date(Date) < as.Date(rebdate[i+1])))}else{return_mat %>% dplyr::filter(as.Date(Date) >= as.Date(rebdate[i]))}})
   returnmat <- returnmat %>% lapply(function(m) {m[is.na(m)] <- 0; ifelse(length(m[m == 0]) == 0, m <- m, m[m == 0] <- rnorm(length(m[m == 0]),0.0001,0.0001)); m})                                                                                    
   wm <- lapply(seq_along(rebdate), function(i) apply(returnmat[[i]][,-1],1, function(x) x*w[i,-1]) %>% bind_rows()) 
   names(wm) <- rebdate
@@ -63,7 +62,7 @@ multipywtoreturn <- function(w,return_mat){
 }
 
 round_tab <- function(x){
-  x[, sapply(x, class) %in% c('numeric','integer')] <- as.data.frame(apply(x[, sapply(x, class) %in% c('numeric','integer')],2,round,6))
+  x[, sapply(x, class) %in% c('numeric','integer')] <- as.data.frame(apply(x[, sapply(x, class) %in% c('numeric','integer')],2,round,6), check.names = FALSE)
   return(x)
 }
 everyother <- function(x){
@@ -95,11 +94,7 @@ key_detail <- function(ticker){
   return(fin.res)
 }
 
-modules_data <- function(ticker, module){
-  url_req <- paste0("https://query1.finance.yahoo.com/v10/finance/quoteSummary/",toupper(ticker),"?modules=", module)
-  res <- fromJSON(url_req)
-  return(as.list(res$quoteSummary$result[[1]]))
-}
+
 
 
 hist_esg <- function(ticker){
@@ -115,16 +110,23 @@ hist_esg <- function(ticker){
 }
 
 current_esg <- function(ticker){
-  url_req <- paste0("https://query1.finance.yahoo.com/v10/finance/quoteSummary/",toupper(ticker),"?modules=esgScores")
+  url_req <- paste0("https://query2.finance.yahoo.com/v1/finance/esgChart?symbol=",toupper(ticker))
   esgScores <- tryCatch(
     { res <- fromJSON(url_req)
-    esgScores <- res$quoteSummary$result$esgScores %>% as.list()},
+    esgScores <- c(
+      tail(res$esgChart$result$symbolSeries$environmentScore[[1]],1),
+      tail(res$esgChart$result$symbolSeries$socialScore[[1]],1),
+      tail(res$esgChart$result$symbolSeries$governanceScore[[1]],1),
+      tail(res$esgChart$result$symbolSeries$esgScore[[1]],1)
+    )},
     error = function(cond){
       NULL  
     }
   )
   return(esgScores)
 }
+
+
 
 plot_hist_esg <- function(ticker){
   data_plot <- hist_esg(ticker)[[1]]
@@ -137,52 +139,43 @@ get_stock_profile <- function(ticker){
   re <- rep('-',14)
   ticker <- toupper(ticker)
   comp_data <- key_detail(ticker)
-  esg_data <- current_esg(ticker) 
-  prof <- tryCatch(
-    {modules_data(ticker,'assetProfile')},
-    error = function(cond){
-      NULL
-    })
+  esg_data <- get_esg_summary(ticker) 
+  prof <-  get_sector(ticker) 
   comn <- comp_data$longName
-  
   if(identical(comn, character(0))||(comn == "")||(is.na(comn))){re <- rep('-',14); re[1] <- 'Unavailable'; re[5] <- 'black'}else{
     if(is.null(prof)){
       sector <- NA
       subsector <- NA
     }else{
-      sector <- prof$sector
-      subsector <- prof$industry
+      sector <- prof[2]
+      subsector <- prof[3]
     }
-    market <- paste0(comp_data$exchange, "currency in ",comp_data$currency)
+    market <- paste0(comp_data$exchange, " currency in ",comp_data$currency)
     esg <- rep("-",7)
     com_name <- paste0(comn," (", comp_data$symbol,")")
     esg[2] <- "black"
-      if(!is.null(esg_data)){
-        esg[3] <- as.integer(esg_data$totalEsg$fmt)
-        esg[4] <- as.integer(esg_data$environmentScore$fmt)
-        esg[5] <- as.integer(esg_data$socialScore$fmt)
-        esg[6] <- as.integer(esg_data$governanceScore$fmt)
-        esg[1] <- esg_data$esgPerformance
-        esg[7] <- paste0(esg_data$percentile$fmt,"th percentile")
-        if(esg[1] == "OUT_PERF"){
-          esg[2] <- "red"
-            esg[1] <- 'High'
-        }
-        if(esg[1] == "AVG_PERF"){
-          esg[2] <- "yellow"
-            esg[1] <- "Medium"
-        }
-        if(esg[1] == "UNDER_PERF"){
-          esg[2] <- "green"
-            esg[1] <- "Low"
-        }
-        if(esg[1] == "LAG_PERF"){
-          esg[2] <- "blue"
-            esg[1] <- "Negligible"
-        }
-      }else{
-        esg <- rep("-",7)
+    if(!is.null(esg_data)){
+      esg[3] <- as.numeric(esg_data$ESG)
+      esg[4] <- as.numeric(esg_data$E)
+      esg[5] <- as.numeric(esg_data$S)
+      esg[6] <- as.numeric(esg_data$G)
+      esg[1] <- esg_data$Lev
+      esg[7] <- paste0(esg_data$Perc,"th percentile")
+      if(esg[1] == "High"){
+        esg[2] <- "red"
       }
+      if(esg[1] == "Medium"){
+        esg[2] <- "yellow"
+      }
+      if(esg[1] == "Low"){
+        esg[2] <- "green"
+      }
+      if(esg[1] == "Negligible"){
+        esg[2] <- "blue"
+      }
+    }else{
+      esg <- rep("-",7)
+    }
     re <- c(com_name,sector,subsector,esg,comp_data$marketCap,comp_data$trailingPE,comp_data$trailingAnnualDividendRate, market)
   }
   
@@ -190,37 +183,23 @@ get_stock_profile <- function(ticker){
 }
 
 get_esg_profile <- function(ticker){
-  ticker <- toupper(ticker)
-  comp_data <- key_detail(ticker)
-  if(length(comp_data) == 0){
-    fin <- rep(NA,9)
-  }else{
-    esg_data <- current_esg(ticker) 
-    prof <- tryCatch(
-      {modules_data(ticker,'assetProfile')},
-      error = function(cond){
-        NULL
-      })
-    comn <- comp_data$longName
-    if(is.null(prof)){
-      sector <- NA  
-      subsector <- NA
-    }else{
-      sector <- prof$sector
-      subsector <- prof$industry
-    }
-    esg <- rep("-",5)
-    com_name <- paste0(comn," (", comp_data$symbol,")")
-    if(!is.null(esg_data)){
-      esg[2] <- as.integer(esg_data$totalEsg$fmt)
-      esg[3] <- as.integer(esg_data$environmentScore$fmt)
-      esg[4] <- as.integer(esg_data$socialScore$fmt)
-      esg[5] <- as.integer(esg_data$governanceScore$fmt)
-      esg[1] <- gsub("OUT_PERF","High", esg_data$esgPerformance) %>% gsub("AVG_PERF","Medium", .) %>% gsub("UNDER_PERF","Low", .) %>% gsub("LAG_PERF", "Negligible",.)
-    }
-    fin <- c(com_name,ticker,sector,subsector,esg)
+  esg.score <- current_esg(ticker)
+  if(is.null(esg.score)){
+    esg.score <- rep(NA,4)
   }
-  return(fin)
+  key <- key_detail(ticker) 
+  data <- get_sector(ticker)
+  Sys.sleep(1)
+  return(
+    as.data.frame(list("Name" = data[1],
+               "Ticker" = ticker,
+               "Sector" = data[2],
+               "Subsector" = data[3],
+               "ESG" = esg.score[4],
+               "Enironment"= esg.score[1],
+               "Social"= esg.score[2],
+               "Governance"= esg.score[3]))
+  )
 }
 
 get_data <-function(ticker){
@@ -229,6 +208,59 @@ get_data <-function(ticker){
   df <- data.frame(Date=index(get(tick_name)),coredata(get(tick_name)))
   colnames(df) <- c("Date", "Open", "High", "Low", "Close", "Volume", "Adjusted")
   return(df)
+}
+
+get_sector <- function(ticker){
+  #url <- paste0("https://query1.finance.yahoo.com/v1/finance/search?q=",toupper(ticker))
+  #data <- fromJSON(url)
+  #return(c(data$quotes$sector[1], data$quotes$industry[1]))
+  url <- paste0("https://finance.yahoo.com/quote/",toupper(ticker),"/profile?p=",toupper(ticker))
+  page <- read_html(url)
+  return(
+    c(name = page %>% html_nodes(xpath = '//*[@id="Col1-0-Profile-Proxy"]/section/div[1]/div/h3') %>% html_text(),
+      sector = page %>% html_nodes(xpath = '//*[@id="Col1-0-Profile-Proxy"]/section/div[1]/div/div/p[2]/span[2]') %>% html_text(),
+      subsector = page %>% html_nodes(xpath = '//*[@id="Col1-0-Profile-Proxy"]/section/div[1]/div/div/p[2]/span[4]') %>% html_text()
+    )
+  )
+}
+
+
+get_esg_summary <- function(ticker) {
+  # Construct the URL
+  url <- paste0("https://finance.yahoo.com/quote/", toupper(ticker), "/sustainability?p=", toupper(ticker))
+  
+  # Handle potential errors in reading the HTML
+  page <- tryCatch(read_html(url), error = function(e) return(NULL))
+  if(is.null(page)) stop("Error reading the HTML page")
+  
+  # Helper function to extract score
+  extract_score <- function(xpath) {
+    score <- page %>% 
+      html_nodes(xpath=xpath) %>% 
+      html_text() %>% 
+      as.numeric()
+    
+    if(length(score) == 0 || is.na(score)) return(NA) 
+    return(score)
+  }
+  
+  # Extracting the different scores and level
+  esg.score <- extract_score('//*[@id="Col1-0-Sustainability-Proxy"]/section/div[1]/div/div[1]/div/div[2]/div[1]')
+  e.score <- extract_score('//*[@id="Col1-0-Sustainability-Proxy"]/section/div[1]/div/div[2]/div/div[2]/div[1]')
+  s.score <- extract_score('//*[@id="Col1-0-Sustainability-Proxy"]/section/div[1]/div/div[3]/div/div[2]/div[1]')
+  g.score <- extract_score('//*[@id="Col1-0-Sustainability-Proxy"]/section/div[1]/div/div[4]/div/div[2]/div[1]')
+  
+  perc <- page %>% 
+    html_nodes(xpath='//*[@id="Col1-0-Sustainability-Proxy"]/section/div[1]/div/div[1]/div/div[2]/div[2]/span/span') %>% 
+    html_text()
+  perc <- as.numeric(gsub("\\D", "", perc))
+  
+  lev <- page %>% 
+    html_nodes(xpath='//*[@id="Col1-0-Sustainability-Proxy"]/section/div[1]/div/div[1]/div/div[3]/div/span') %>% 
+    html_text() 
+  
+  # Constructing the data frame
+  as.data.frame(list('ESG' = esg.score, 'E' = e.score, 'S' = s.score, 'G' = g.score, 'Perc' = perc, 'Lev' = lev))
 }
 
 candlestick_plot <- function(df,ticker){
@@ -434,18 +466,18 @@ allocation <- function(x,type,tau,reb,lim = 0, filew){
   
   if(is.null(filew)){
     switch(as.character(type),
-           "0" = {w <- matrix(rep(1/ncol(x[,-1]),(ncol(x[,-1])*length(rebdate))),length(rebdate),ncol(x[,-1])) %>% `colnames<-`(colnames(x[,-1])) %>% as.data.frame(); covmat <- NULL},
-           "1" = {w <- lapply(returnmat, function(y) {m <- apply(y,2,mean); m <- m+ifelse(min(m) >= 0,0,-min(m)+0.001); m/sum(m)}) %>% bind_rows() %>% as.data.frame(); covmat <- NULL},
-           "2" = {w <- lapply(invcov, function(y) {numer <- t(one)%*%y;  numer/sum(numer)}) %>% lapply(as.data.frame) %>% bind_rows()},
+           "0" = {w <- matrix(rep(1/ncol(x[,-1]),(ncol(x[,-1])*length(rebdate))),length(rebdate),ncol(x[,-1])) %>% `colnames<-`(colnames(x[,-1])) %>% as.data.frame(check.names = FALSE); covmat <- NULL},
+           "1" = {w <- lapply(returnmat, function(y) {m <- apply(y,2,mean); m <- m+ifelse(min(m) >= 0,0,-min(m)+0.001); m/sum(m)}) %>% bind_rows() %>% as.data.frame(check.names = FALSE); covmat <- NULL},
+           "2" = {w <- lapply(invcov, function(y) {numer <- t(one)%*%y;  numer/sum(numer)}) %>% lapply(as.data.frame, check.names = FALSE) %>% bind_rows()},
            "3" = {w <- sapply(seq_along(invcov), function(i) {mu <- matrix(apply(returnmat[[i]] ,2,mean)); numer <- t(mu)%*%invcov[[i]];
-           numer/sum(numer)}) %>% t() %>% as.data.frame() %>% `colnames<-`(colnames(x)[-1])},
+           numer/sum(numer)}) %>% t() %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(colnames(x)[-1])},
            "4" = {w <- lapply(covmat, function(y) {ec <- eigen(y); as.matrix(apply(ec$vectors,2,function(n) n/sum(n)))%*%matrix(ec$values/sum(ec$values))}) %>%
-             lapply(function(m) as.data.frame(t(m))) %>% bind_rows() %>% `colnames<-`(colnames(x)[-1]) }
+             lapply(function(m) as.data.frame(t(m), check.names = FALSE)) %>% bind_rows() %>% `colnames<-`(colnames(x)[-1]) }
     )
     
     if(lim != 0){w <- apply(w,1,box_constrain, Short_Limit = lim) %>% t() %>% data.frame()}
     
-    w <- cbind(rebdate,w) %>% as.data.frame() %>% `colnames<-`(c('Date',colnames(w)))
+    w <- cbind(rebdate,w) %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(c('Date',colnames(w)))
   }else{
     w <- filew
     w[,2:ncol(w)] <- round(w[,2:ncol(w)],6)
@@ -613,23 +645,28 @@ efficient_fontier <- function(x,y){
 
 
 plot_efficient_fontier <- function(ef,w,wmat,seldate){
+  
   wmat$Date <- as.character(wmat$Date)
   wmatsub <- subset(wmat, Date %in% seldate) %>% `colnames<-`(c('exeff','sdeff','Date'))
-  efsub <- subset(ef, Date %in% seldate)
+  efsub <- subset(ef, Date %in% seldate) %>% `colnames<-`(c('exeff','sdeff','Date'))
   
   p <- ggplot(efsub,aes(x = sdeff,y = exeff, colour = Date)) +
     geom_point() +
     scale_colour_viridis_d()+
+    #scale_fill_viridis(discrete = FALSE) +
     geom_point(data = wmatsub, shape = 8, size =4) +
+    #aes(shape = Date)
+    #geom_point(aes(x =sqrt(vartan),y= extan), colour="black", size =4) +
     labs(x = "Standard Deviation",
          y = "Expected Return",
          colour = 'Portfolio'
+         #shape = 'Portfolio'
     ) +
     theme_bw() +
     theme(text = element_text(family = 'Fira Sans'),
           axis.text.x = element_text(vjust = 0.5, hjust=1))
   fig <- ggplotly(p)
-  return(p)
+  return(fig)
 }
 
 
@@ -786,8 +823,8 @@ div_preview <- function(typesc, para, enddate = NULL, w, found){
   Schedule <- div_schedule(typesc,para,w,enddate)
   Bound <- unlist(Schedule$Bound,use.names =  FALSE)
   divasset <- (found %>% dplyr::filter(Status == "Divest"))$Ticker
-  divw <- w[,divasset]
-  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short','Date')) %>% melt(id.vars = 'Date') %>% `colnames<-`(c('Date','Position','Weight'))
+  divw <- w[,divasset, drop = F]
+  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short','Date')) %>% melt(id.vars = 'Date') %>% `colnames<-`(c('Date','Position','Weight'))
   divestsum$Bound <- c(Schedule$Bound,-(Schedule$Bound))
   
   p <- ggplot(divestsum, aes(x = Date)) + 
@@ -819,8 +856,8 @@ plot_indiv <- function(w,found){
   invw <- w[,invasset]
   divw <- w[,divsset]
   
-  investsum <- lapply(sep_pos_neg(invw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
-  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame() %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
+  investsum <- lapply(sep_pos_neg(invw),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
+  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short')) %>% melt() %>% `colnames<-`(c('Date','Position','Weight'))
   investsum$Status <- "Invest"
   divestsum$Status <- "Divest"
   sumall <- rbind(investsum,divestsum)
@@ -863,15 +900,16 @@ div_weight <- function(w,Schedule,found){
   
   for(k in 1:nrow(w)){
     
-    Invest <- w[,Invest_List][k,]
-    Divest <- w[,Divest_List][k,]
+    Invest <- w[,Invest_List, drop = F][k,]
+    Divest <- w[,Divest_List, drop = F][k, ,drop = F]
     
     Long_Divest <- Divest[which(Divest >= 0)] 
     Short_Divest <- Divest[which(Divest < 0)]
     if(length(Short_Divest)==0){Short_Divest <- NULL}
     
+    #Sum
     Long_Divest_Sum <- if (length(Long_Divest)==0) {0} else sum(Long_Divest)
-
+    #Prevent Long only Port
     Short_Divest_Sum <- if (length(Short_Divest)==0) {0} else -sum(Short_Divest)
     
     if((Long_Divest_Sum > Bound[k]) || (Short_Divest_Sum > Bound[k])){
@@ -890,6 +928,7 @@ div_weight <- function(w,Schedule,found){
       Excess_Short <- if (length(Short_Divest)==0) {0} else -sum(Short_Divest) + sum(Short_Divest_Scale)
       New_Invest <- Invest + (Invest/sum(Invest))*(Excess_Long - Excess_Short)
       
+      if(length(Short_Divest_Scale) == 0){Short_Divest_Scale <- 0}
       List_of_Weight <- list(New_Invest,
                              Long_Divest_Scale, Short_Divest_Scale)
       
@@ -898,15 +937,16 @@ div_weight <- function(w,Schedule,found){
       
       Weight_Divest <- Combine_Weight[,colnames(w)[-1]]
     }else{
-      Weight_Divest <- w[k,-1]
+      Weight_Divest <- w[k,-1, drop = F]
     }
     
     final_frame <- rbind(final_frame, Weight_Divest)
   }
   Date <- w$Date
   
-  return(as.data.frame(cbind(Date,final_frame)))
+  return(as.data.frame(cbind(Date,final_frame), check.names = FALSE))
 }
+
 
 
 
@@ -1093,10 +1133,11 @@ plot_performance_table_div <- function(pertab,pertabdiv){
 }
 
 
+
 plot_fundamental_div <- function(w,w_div,found){
   common <- intersect(colnames(w),found$Ticker)
-  w <- w[,c('Date',common )]
-  w_div <- w_div[,c('Date',common)]
+  w <- w[,c('Date',common ), drop = F]
+  w_div <- w_div[,c('Date',common), drop = F]
   w_all <- rbind(w,w_div)
   #char_factor <- found[, sapply(found, class) == 'character', drop=FALSE] 
   num_factor <- found[, sapply(found, class) %in% c('numeric','integer'), drop=FALSE]
@@ -1206,6 +1247,7 @@ plot_fundamental_div <- function(w,w_div,found){
   
   return(list(fig,figpos,figneg,tabfig))
 }
+
 
 
 diff_summary <- function(pertab,pertabdiv,tabfig,tabfigdiv,ly){
@@ -1517,7 +1559,82 @@ compareplot <- function(hist_return,div_dynamic, found){
   return(list(pertab,tabfn,fig1,fig2,fig,figpos,figneg))
 }
 
-###############
+
+plot_div_Sch <- function(w,found, Schedule, div_w){
+  
+  divasset <- (found %>% dplyr::filter(Status == "Divest"))$Ticker
+  divw <- w[,divasset, drop = F]
+  divestsum <- lapply(sep_pos_neg(divw),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short', 'Date')) %>% melt(id.vars = 'Date') %>% `colnames<-`(c('Date','Position','Weight'))
+  divestsum$Status <- 'Before-Divest'
+  
+  
+  divestsum$Bound <- c(Schedule$Bound,-(Schedule$Bound))
+  
+  
+  invasset <- (found %>% dplyr::filter(Status == "Invest"))$Ticker
+  invw <- w[,invasset]
+  investsum <- lapply(sep_pos_neg(invw),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short','Date')) %>% melt(id.vars = "Date") %>% `colnames<-`(c('Date','Position','Weight'))
+  investsum$Status <- 'Before-Divest'
+  
+  
+  divwaf <- div_w[,divasset, drop = F]
+  divestwafsum <- lapply(sep_pos_neg(divwaf),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short','Date')) %>% melt(id.vars = "Date") %>% `colnames<-`(c('Date','Position','Weight'))
+  divestwafsum$Status <- 'Divest'
+  
+  
+  invwaf <- div_w[,invasset, drop = F]
+  investafsum <- lapply(sep_pos_neg(invwaf),rowSums) %>% bind_cols() %>% as.data.frame(check.names = FALSE) %>% cbind(w$Date) %>% `colnames<-`(c('Long','Short','Date')) %>% melt(id.vars = "Date") %>% `colnames<-`(c('Date','Position','Weight'))
+  investafsum$Status <- 'Divest'
+  
+  
+  melt_frame_div <- bind_rows(divestsum,divestwafsum)
+  melt_frame_inv <- bind_rows(investsum,investafsum)
+  
+  melt_frame_div$Status <- factor(melt_frame_div$Status, levels = c('Before-Divest','Divest'))
+  melt_frame_inv$Status <- factor(melt_frame_inv$Status, levels = c('Before-Divest','Divest'))
+  
+  
+  p <- ggplot(melt_frame_div, aes(x = as.character(Date))) + 
+    geom_bar(data = subset(melt_frame_div, Position == "Long"),
+             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(), color="black") +
+    geom_bar(data = subset(melt_frame_div, Position == "Short"),
+             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(), color="black") +
+    geom_hline(yintercept = 0,colour = "grey90") +
+    geom_line(data = subset(divestsum, Position == "Long"),
+              aes(y = Bound, group = 1), color="black", size = 0.7) +
+    geom_line(data = subset(divestsum, Position == "Short"),
+              aes(y = Bound, group = 1), color="black", size = 0.7) +
+    labs(x = "Date",
+         y = "Sum of Weights") +
+    theme_bw() +
+    
+    theme(text = element_text(family = 'Fira Sans'),
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1))
+  
+  fig1 <- ggplotly(p)
+  
+  p <- ggplot(melt_frame_inv %>% arrange(desc(Weight)), aes(x = Date)) + 
+    geom_bar(data = subset(melt_frame_inv, Position == "Long"),
+             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(), color="black") +
+    geom_bar(data = subset(melt_frame_inv, Position == "Short"),
+             aes(y = Weight, fill =Status), stat = "identity", position = position_dodge(), color="black") +
+    #scale_fill_manual(values = scales::viridis_pal()(10)[c(3,9)]) +
+    geom_hline(yintercept = 0,colour = "grey90") +
+    labs(x = "Date",
+         y = "Sum of Weights") +
+    theme_bw() +
+    #scale_x_discrete(breaks = everyother) +
+    theme(text = element_text(family = 'Fira Sans'),
+          axis.text.x = element_text(angle = 90, vjust = 0.5, hjust=1)) 
+  
+  
+  fig2 <- ggplotly(p)
+  
+  
+  return(list(fig1,fig2))
+  
+}
+
 
 diff_summary_mul <- function(pertab,tabfn,ben.port,ly){
   name.port <- unique(pertab$Port)
@@ -1621,7 +1738,7 @@ SR <- function(portreturn,tau){
   x <- sapply(seq_along(portreturn), function(i) if (i < tau) NA else (mean(portreturn[i:(i-tau+1)]) - 0)/sqrt(((1/(tau-1))*sum((portreturn[i:(i-tau+1)]-mean(portreturn[i:(i-tau+1)]))^2*((portreturn[i:(i-tau+1)]- 0) < 0)))))
   x <- x[!is.na(x)]
   x[abs(x) > 5] <- NA
-  return(x[!is.na(x)])
+  return(x)
 }
 
 agg.perf <- function(Port_Return,tau,date){
@@ -1630,7 +1747,7 @@ agg.perf <- function(Port_Return,tau,date){
   Arg_Cumsum <- pmrcum(Port_Return, tau)
   Arg_Sd <- prisk(Port_Return, tau)
   Arg_Sharpe <- sharpe(Port_Return, tau)
-  Arg_VaR <- pVaR(Port_Return, tau, 0.05)
+  Arg_VaR <- pVaR(Port_Return, tau, 0.05) %>% as.vector()
   Arg_MDD <- MDD(Port_Return,tau)
   Arg_SR <- SR(Port_Return,tau)
   dat <- as.data.frame(list(return = Arg_Return, cumsum = Arg_Cumsum, sd = Arg_Sd, sharpe = Arg_Sharpe, var = Arg_VaR, mdd = Arg_MDD, sortino = Arg_SR))
@@ -1651,7 +1768,7 @@ Annual_Best_Cluster <- function(X, sept){
     }) 
     Final_Tab <- rbind(Final_Tab,Tab_Sil)
   }
-  Final_Tab <- as.data.frame(Final_Tab) %>%'rownames<-'(ben.date) %>%'colnames<-'(1:(ncol(X)-2))
+  Final_Tab <- as.data.frame(Final_Tab, check.names = FALSE) %>%'rownames<-'(ben.date) %>%'colnames<-'(1:(ncol(X)-2))
   Final_Tab[Final_Tab == "NULL"] <- 0
   Max_Sil <- apply(Final_Tab,1,function(x) max(unlist(x)))
   Final_Tab$Best <- names(Final_Tab)[apply(Final_Tab, 1, function(i) which(i %in% Max_Sil)[1])]
@@ -1669,7 +1786,7 @@ Matrix_Cluster <- function(X,Perf,Best_Cluster_Year, sept){
     Final_Tab <- rbind(Final_Tab,Tab_Clus)
   }
   rownames(Final_Tab) <- ben.date
-  meltmap <- as.data.frame(Final_Tab) %>% rownames_to_column('Date') %>% melt(id.vars='Date')
+  meltmap <- as.data.frame(Final_Tab, check.names = FALSE) %>% rownames_to_column('Date') %>% melt(id.vars='Date')
   meltmap$Performance <- Perf 
   return(meltmap)
 }
@@ -1838,6 +1955,35 @@ map_index <- function(index_choice_input){
   return(list(p,tack))
 }
 
+NA_heatmap <- function(df){
+  dfn <- df[,-1]
+  dfn  <- dfn  %>%
+    mutate_all(~ifelse(is.na(.), 0, 1))
+  return(plot_ly(x = colnames(df[,-1]), y = df[,1], z = as.matrix(dfn), type = "heatmap",
+                 colors = c("0" = "#440154FF", "1" = "#20A486FF")))
+}
+
+
+NA_handle <- function(df, method){
+  df <- column_to_rownames(df, "Date")
+  if(method == 0){
+    df_clean <- na.omit(df)
+  }else if(method == 1) {
+    df[is.na(df)] <- 0
+    df_clean <- df
+  }else{
+    df_clean <- df
+    for (col_name in names(df_clean)) {
+      df_clean[[col_name]] <- na.approx(df[[col_name]], rule = 2)
+    }
+  }
+  return(rownames_to_column(df_clean,'Date')) 
+}
+
+as.data.frame <- function(x, ...) {
+  base::as.data.frame(x, check.names = FALSE, ...)
+}
+
 
 
 
@@ -1853,7 +1999,7 @@ rebalancedate <- NULL
 ticker_rec <- "AAP"
 Carbon <- c(29884383.57/21, 16488511.67/15, 6951694.12/24, 3572568.61/45, 2566298.00/13, 2539331.17/24, 1384162.29/41, 618047.76/48, 390973.88/24, 337598.75/39, 147601.10/38)
 Sector <- c('Utilities','Energy','Basic Materials','Industrials','Communication Services','Consumer Defensive','Consumer Cyclical','Technology','Real Estate','Healthcare','Financial Services')
-carbon_table <- as.data.frame(Carbon,Sector)
+carbon_table <- as.data.frame(Carbon,Sector, check.names = FALSE)
 
 file1_Status <- NULL
 file2_Historical <- NULL
@@ -2210,7 +2356,7 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
                                          width = 13
                                        ),
                                        box(
-                                         title = h4("Seleacting Assets from World Major Indices"),
+                                         title = h4("Selecting Assets from World Major Indices"),
                                          #                        HTML('<!-- TradingView Widget BEGIN -->
                                          # <div class="tradingview-widget-container">
                                          #   <div class="tradingview-widget-container__widget"></div>
@@ -2318,6 +2464,14 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
                                                         )
                                        ),
                                        h4("Table of Attributes"),
+                                       h6("*Please remove assets with NA before operating STEP 4, otherwise some functions may not work properly"),
+                                       actionBttn(
+                                         inputId = "subremove",
+                                         label = "remove NA rows",
+                                         style = "pill", 
+                                         color = "success",
+                                         size = "xs"
+                                       ),
                                        hr(),
                                        withLoader(DT::dataTableOutput("ui_esg_table", width = "auto", height = "auto")),
                                        h4("Comparison of Attributes Before-After Divestment in Percentage"),
@@ -2376,6 +2530,7 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
                                          tags$li(HTML("<b>Table of Historical Relative Return</b> shows the return uploaded from <b>CSV File of Historical Data</b> or the relative returns where the data is downloaded from the network. the ralative return is calculated by the adjust closing price by
                                     $$Re = \\frac{P_{t+1} - P_{t}}{P_{t}}$$ where $P_{t+1}$ and $P_{t}$ are the adjusted closing prices at time $t+1$ and $t$, respectively.")),
                                          tags$li(HTML("<b>Table of Assets Performance</b> displays the average of asset performances over the selected period.")),
+                                         tags$li(HTML("<b>Missing Data Handling</b> displays the average of missing returns over the selected period")),
                                          tags$li(HTML("<b>Distribution of Asset Returns</b> displays the distribution of the returns of the assets over the selected period. Users can select the picker option 
                                     <b>Arranging Plot by</b> to sort the assets according to the interesting performance.")),
                                          tags$br(""),
@@ -2393,6 +2548,23 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
                                        h4("Table of Assets Performance"),
                                        hr(),
                                        withLoader(DT::dataTableOutput("reportreturn", width = "auto", height = "auto")),
+                                       h4("Missing Data Handling"),
+                                       hr(),
+                                       h6("NA element is represented by 0 and Non-NA element is represented by 1"),
+                                       h6("Please process to eliminate missing data before go to next step"),
+                                       pickerInput(
+                                         inputId = "selmethod",
+                                         label = "Select NA handling method", 
+                                         choices = list('Delete NA rows' = 0, 'Replace NA by 0' = 1, 'Linear Interpolation' = 2)
+                                       ),
+                                       actionBttn(
+                                         inputId = "subnahandle",
+                                         label = "NA clean",
+                                         style = "pill", 
+                                         color = "success",
+                                         size = "xs"
+                                       ),
+                                       withLoader(plotlyOutput("naheatmap", width = "auto", height = "auto")),
                                        h4("Distribution of Asset Returns"),
                                        hr(),
                                        pickerInput(
@@ -3320,6 +3492,7 @@ Marupanthorn, Pasin and Sklibosios Nikitopoulos, Christina and Ofosu-Hene, Eric 
 
 server <- function(input, output, session) {
   
+  ########Panel A###############
   data_yahoo  <- eventReactive(input$submit, {get_data(input$ticker)})
   data_stock <- eventReactive(input$submit, {get_stock_profile(input$ticker)})
   candel_stock <- eventReactive(input$submit, {candlestick_plot(data_yahoo(),input$ticker)})
@@ -3328,7 +3501,10 @@ server <- function(input, output, session) {
     main_port <<- unique(c(main_port,toupper(as.character(input$ticker_sel))))
     main_port})
   
-
+  
+  
+  #####Render
+  
   output$lev_esg <- renderValueBox({
     valueBox(
       value = tags$p(data_stock()[4], style = "font-size: 70%;"),
@@ -3366,16 +3542,23 @@ server <- function(input, output, session) {
     )})
   
   
+  #######Panel B; File 1######### 
   table_esg <- eventReactive(input$subesg, {
     port <- unique(c(as.character(input$source),as.character(input$divt)));
-    tab_esg <- sapply(seq_along(port), function(i) get_esg_profile(port[i])) %>% t() %>% data.frame() %>% `colnames<-`(c("Name","Ticker","Sector","Subsector","ESG Level","ESG","Enironment","Social","Governance"));
-    for(i in 6:9){tab_esg[,i] <- as.numeric(tab_esg[,i])};
+    tab_esg <- sapply(seq_along(port), function(i) unlist(get_esg_profile(port[i]))) %>% t() %>% data.frame();
+    tab_esg$ESG <- as.numeric(tab_esg$ESG)
+    tab_esg$Enironment <- as.numeric(tab_esg$Enironment)
+    tab_esg$Social <- as.numeric(tab_esg$Social)
+    tab_esg$Governance <- as.numeric(tab_esg$Governance)
     tab_esg$Status <- ifelse((port %in% as.character(input$source)),"Invest","Divest");
     file1_Status <<- tab_esg;
     output$ui_esg_table <- DTtable(file1_Status)
     file1_Status
   })
   
+  
+  
+  #######Panel B; File 2######### 
   
   
   observeEvent(input$subup, {
@@ -3388,10 +3571,11 @@ server <- function(input, output, session) {
       port <- unique(c(as.character(input$source),as.character(input$divt)))
       port_up <- setdiff(port,file1_Status$Ticker)
       if(length(port_up) != 0){
-        tab_esg <- sapply(seq_along(port_up), function(i) get_esg_profile(port_up[i])) %>% t() %>% data.frame() %>% `colnames<-`(c("Name","Ticker","Sector","Subsector","ESG Level","ESG","Enironment","Social","Governance"))
-        for(i in 6:9){
-          tab_esg[,i] <- as.numeric(tab_esg[,i])
-        }
+        tab_esg <- sapply(seq_along(port_up), function(i) unlist(get_esg_profile(port_up[i]))) %>% t() %>% data.frame()
+        tab_esg$ESG <- as.numeric(tab_esg$ESG)
+        tab_esg$Enironment <- as.numeric(tab_esg$Enironment)
+        tab_esg$Social <- as.numeric(tab_esg$Social)
+        tab_esg$Governance <- as.numeric(tab_esg$Governance)
         tab_esg$Status <- ifelse((port_up %in% as.character(input$source)),"Invest","Divest")
         file1_Status <<- rbind(file1_Status,tab_esg) %>% subset(Ticker %in% port)
       }else{
@@ -3489,6 +3673,7 @@ server <- function(input, output, session) {
       plottab <- file2_Historical
       output$tab_return <- DTtable(round_tab(plottab))
       output$reportreturn <-  DTtable(return_summary_update(file2_Historical))
+      output$naheatmap <- renderPlotly(NA_heatmap(file2_Historical))
     }
     
   }, ignoreNULL = FALSE)
@@ -3519,12 +3704,14 @@ server <- function(input, output, session) {
   })
   
   output$tab_return <- DTtable(NULL);
+  
   observeEvent(input$subtime,{
     shiny::validate(need(!is.null(file1_Status)," "))
     plottab <- batch();
     plottab[,2:ncol(plottab)] <- round(plottab[,2:ncol(plottab)],6);
     output$tab_return <- DTtable(plottab);
-    output$reportreturn <-  DTtable(return_summary_update(batch()))})
+    output$reportreturn <-  DTtable(return_summary_update(batch()))
+    output$naheatmap <- renderPlotly(NA_heatmap(file2_Historical))})
   
   
   
@@ -3570,9 +3757,24 @@ server <- function(input, output, session) {
         
       }})
   
-
+  
+  observeEvent(input$subremove, {
+    if(is.null(file1_Status)){
+      noty("Require Table of Attributes", type = 'warning')
+    }else{
+      file1_Status <<- na.omit(file1_Status)
+      output$ui_esg_table <- DTtable(file1_Status)
+      output$ui_esg_table_com  <- DTtable(round(plotstart(file1_Status),2) %>% rownames_to_column('Status'))
+      updateOrderInput(session,inputId = "source", items = (file1_Status %>% dplyr::filter(Status == "Invest") %>% drop_na())$Ticker, item_class = 'info')
+      updateOrderInput(session,inputId = "divt", items =  (file1_Status %>% dplyr::filter(Status == "Divest") %>% drop_na())$Ticker, item_class = 'info')
+      
+    }})
+  
+  #####Render Radar Chart
   output$candel <- renderPlotly(candel_stock())
-
+  
+  
+  #####Render Boxlot of Assset Returns
   
   observeEvent(input$file2,{
     updatePickerInput(session, "rankby", choices =list("Ticker","Return", "Volatility", "Sharpe", "MDD", "Sortino", "Return.cumulative", "VaR"))
@@ -3593,6 +3795,7 @@ server <- function(input, output, session) {
   })
   
   
+  ############################Panel B: File 3####################################
   
   observeEvent(input$file3, {
     File <- input$file3
@@ -3629,7 +3832,8 @@ server <- function(input, output, session) {
     }
   }, ignoreNULL = FALSE)
   
-
+  
+  ###Calculate Weight
   get_weight <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     if(is.null(file1_Status)||is.null(file2_Historical)){
@@ -3643,9 +3847,8 @@ server <- function(input, output, session) {
         reb <- as.integer(input$reb)
         lim <- as.integer(input$limselect)*as.numeric(input$shortlim)
         filew <- NULL
-        #One Column Matrix
+        
         one <- as.matrix(rep(1,ncol(x)-1))
-        # Set Date
         first <- head(x[-(1:tau),],1)$Date
         last <- tail(x[-(1:tau),],1)$Date
         
@@ -3654,47 +3857,53 @@ server <- function(input, output, session) {
         returnmat <- lapply(seq_along(rebdate), function(i) {rowre <- which(x$Date == as.Date(rebdate[i])); x[(rowre-tau):(rowre-1),-1]}) %>%
           lapply(function(m) {m[is.na(m)] <- 0; m}) %>% lapply(function(m) {ifelse(length(m[m == 0]) == 0, m <- m,m[m == 0] <- rnorm(length(m[m == 0]),0.0001,0.0001)); m}) 
         
-        covmat <- vector("list", length = length(returnmat))
-        invcov <- vector("list", length = length(returnmat))
-        for(j in 1:length(returnmat)){
-          covmat[[j]] <- cov(returnmat[[j]])
-          if(log10(kappa(covmat[[j]])) >= 5){
-            covmat[[j]] <- as.matrix(covOGK(returnmat[[j]],sigmamu = s_mad)$cov)  
-            dimnames(covmat[[j]]) <- list(colnames(x)[-1],colnames(x)[-1])
-            s <- as.matrix(solve(as.matrix(covmat[[j]],tol = 1E-1000)))
-            s[lower.tri(s)] <- t(s)[lower.tri(s)]
-            invcov[[j]] <- s
-          }else{
-            s <- as.matrix(solve(as.matrix(covmat[[j]],tol = 1E-1000)))
-            s[lower.tri(s)] <- t(s)[lower.tri(s)]
-            invcov[[j]] <- s
+        if(!(as.character(type) %in% c("0","1"))){
+          covmat <- vector("list", length = length(returnmat))
+          invcov <- vector("list", length = length(returnmat))
+          
+          for(j in 1:length(returnmat)){
+            covmat[[j]] <- cov(returnmat[[j]])
+            if(log10(kappa(covmat[[j]])) >= 5){
+              covmat[[j]] <- as.matrix(covOGK(returnmat[[j]],sigmamu = s_mad)$cov)  
+              dimnames(covmat[[j]]) <- list(colnames(x)[-1],colnames(x)[-1])
+              s <- as.matrix(solve(as.matrix(covmat[[j]],tol = 1E-1000)))
+              s[lower.tri(s)] <- t(s)[lower.tri(s)]
+              invcov[[j]] <- s
+            }else{
+              s <- as.matrix(solve(as.matrix(covmat[[j]],tol = 1E-1000)))
+              s[lower.tri(s)] <- t(s)[lower.tri(s)]
+              invcov[[j]] <- s
+            }
+            title <- ifelse(j == length(returnmat),"Done","Calculating, please wait")
+            updateProgressBar(id = 'pb', value = j, total = length(returnmat), title = title)
           }
-          title <- ifelse(j == length(returnmat),"Done","Calculating, please wait")
-          updateProgressBar(id = 'pb', value = j, total = length(returnmat), title = title)
+        }else{
+          covmat <- NULL
         }
         
         
         if(is.null(filew)){
           switch(as.character(type),
-                 "0" = {w <- matrix(rep(1/ncol(x[,-1]),(ncol(x[,-1])*length(rebdate))),length(rebdate),ncol(x[,-1])) %>% `colnames<-`(colnames(x[,-1])) %>% as.data.frame(); covmat <- NULL},
-                 "1" = {w <- lapply(returnmat, function(y) {m <- apply(y,2,mean); m <- m+ifelse(min(m) >= 0,0,-min(m)+0.001); m/sum(m)}) %>% bind_rows() %>% as.data.frame(); covmat <- NULL},
-                 "2" = {w <- lapply(invcov, function(y) {numer <- t(one)%*%y;  numer/sum(numer)}) %>% lapply(as.data.frame) %>% bind_rows()},
+                 "0" = {w <- matrix(rep(1/ncol(x[,-1]),(ncol(x[,-1])*length(rebdate))),length(rebdate),ncol(x[,-1])) %>% `colnames<-`(colnames(x[,-1])) %>% as.data.frame(check.names = FALSE); covmat <- NULL},
+                 "1" = {w <- lapply(returnmat, function(y) {m <- apply(y,2,mean); m <- m+ifelse(min(m) >= 0,0,-min(m)+0.001); m/sum(m)}) %>% bind_rows() %>% as.data.frame(check.names = FALSE); covmat <- NULL},
+                 "2" = {w <- lapply(invcov, function(y) {numer <- t(one)%*%y;  numer/sum(numer)}) %>% lapply(as.data.frame, check.names = FALSE) %>% bind_rows()},
                  "3" = {w <- sapply(seq_along(invcov), function(i) {mu <- matrix(apply(returnmat[[i]] ,2,mean)); numer <- t(mu)%*%invcov[[i]];
-                 numer/sum(numer)}) %>% t() %>% as.data.frame() %>% `colnames<-`(colnames(x)[-1])},
+                 numer/sum(numer)}) %>% t() %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(colnames(x)[-1])},
                  "4" = {w <- lapply(covmat, function(y) {ec <- eigen(y); as.matrix(apply(ec$vectors,2,function(n) n/sum(n)))%*%matrix(ec$values/sum(ec$values))}) %>%
-                   lapply(function(m) as.data.frame(t(m))) %>% bind_rows() %>% `colnames<-`(colnames(x)[-1]) }
+                   lapply(function(m) as.data.frame(t(m), check.names = FALSE)) %>% bind_rows() %>% `colnames<-`(colnames(x)[-1]) }
           )
           
-          if(lim != 0){w <- apply(w,1,box_constrain, Short_Limit = lim) %>% t() %>% data.frame()}
+          if(lim != 0){w <- apply(w,1,box_constrain, Short_Limit = lim) %>% t() %>% data.frame(check.names = FALSE)}
           
-          w <- cbind(rebdate,w) %>% as.data.frame() %>% `colnames<-`(c('Date',colnames(w)))
+          w <- cbind(rebdate,w) %>% as.data.frame(check.names = FALSE) %>% `colnames<-`(c('Date',colnames(w)))
         }else{
           w <- filew
           w[,2:ncol(w)] <- round(w[,2:ncol(w)],6)
         }
-        Weightset <- list(w,returnmat,covmat,rebdate)}else{
-          Weightset <-  list(file3_Weight, multipywtoreturn(file3_Weight,file2_Historical),NULL,file3_Weight$Date)
-        }
+        Weightset <- list(w,returnmat,covmat,rebdate)
+      }else{
+        Weightset <-  list(file3_Weight, multipywtoreturn(file3_Weight,file2_Historical),NULL,file3_Weight$Date)
+      }
       file3_Weight <<- Weightset[[1]];
       file3_Weight[,2:ncol(file3_Weight)] <<- round(file3_Weight[,2:ncol(file3_Weight)],6);
       list(file3_Weight,Weightset[[2]],Weightset[[3]],Weightset[[4]])}})
@@ -3704,7 +3913,7 @@ server <- function(input, output, session) {
     })
   })
   
-
+  
   
   output$weight <- DTtable(NULL) #For render
   
@@ -3715,22 +3924,22 @@ server <- function(input, output, session) {
   }) #For update
   
   
-  output$plotw3 <- renderPlotly(NULL)  #For render
+  output$plotw3 <- renderPlotly(NULL) 
   
-
   shiny_asset_weight_plot <- eventReactive(input$selcom, asset_weight_plot(get_weight()[[1]],as.character(input$selcom)))
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     updatePickerInput(session, "selcom", choices = colnames(get_weight()[[1]])[-1])
-  }) 
+  }) #For update choice
   observeEvent(input$selcom, output$plotw3 <- renderPlotly(shiny_asset_weight_plot())) #For update plot
+  
   
   output$plotw3F <- renderPlotly(NULL)  #For render
   output$plotw3Fshort <- renderPlotly(NULL)  #For render
   output$plotw3Flong <- renderPlotly(NULL)  #For render
   output$plotw3Ftab <- renderDT(NULL)  #For render
   
-
+  
   shiny_plot_fundamental <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     plot_fundamental(get_weight()[[1]],file1_Status)})
@@ -3743,8 +3952,10 @@ server <- function(input, output, session) {
   }) #For update plot
   
   
+  ###Render Asset Weight Plot (Dummy)
   output$plotw3port <- renderPlotly(NULL)  #For render
-
+  
+  ###Render Asset Weight Plot
   shiny_plot_portfolio_weight <- eventReactive(list(input$subweight,input$file3), plot_portfolio_weight(get_weight()[[1]],file1_Status,as.character(input$selcat),as.Date(input$seldate)))
   observeEvent(list(input$subweight,input$file3), {
     output$plotw3Ftab <- DTtable(shiny_plot_fundamental()[[4]])
@@ -3755,23 +3966,27 @@ server <- function(input, output, session) {
   observeEvent(input$seldate, output$plotw3port  <- renderPlotly(plot_portfolio_weight(get_weight()[[1]],file1_Status,as.character(input$selcat),as.Date(input$seldate)))) #For update plot
   
   
+  ###Calculate Risk Profiles
   
   risk <- eventReactive(list(input$subweight,input$file3),{
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     all_performance_table(file2_Historical, file3_Weight)})
   
-
+  ###Render Risk Profiles (Dummy)
   output$plotw3risk <- DTtable(NULL)  #For render
-
+  
+  ###Render Risk Profiles
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     output$plotw3risk <- DTtable({tabr <- risk();
     tabr[,sapply(tabr, class) %in% c('numeric','integer')] <- round(tabr[,sapply(tabr, class) %in% c('numeric','integer')],6);
     tabr})}) #For update plot
   
-
+  
+  ###Render Risk Profiles Plot (Dummy)
   output$plotw3riskplot <- renderPlotly(NULL)  #For render
   
+  ###Render Risk Profiles Plot
   shiny_plot_performance_table <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     plot_performance_table(risk())})
@@ -3779,10 +3994,11 @@ server <- function(input, output, session) {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     output$plotw3riskplot <- renderPlotly(shiny_plot_performance_table())}) #For update plot
   
-
+  
+  ###Render Radar Plot (Dummy)
   output$radar <- renderPlotly(NULL)  #For render
-
- 
+  
+  ###Render Risk Profiles Plot
   shiny_plot_radar <- eventReactive(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     plot_radar(risk())})
@@ -3791,8 +4007,10 @@ server <- function(input, output, session) {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     output$radar <- renderPlotly(plot_radar(risk()))}) #For update plot
   
+  ###Render Efficiency Frontier (Dummy)
   output$eff <- renderPlotly(NULL)  #For render
-
+  
+  ###Render Efficiency Frontier
   shiny_efficient_fontier <- eventReactive(input$subeff, efficient_fontier(file2_Historical,file3_Weight))
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
@@ -3800,6 +4018,8 @@ server <- function(input, output, session) {
   observeEvent(input$subeff , output$eff <- renderPlotly(plot_efficient_fontier(shiny_efficient_fontier()[[1]],file2_Historical,shiny_efficient_fontier()[[2]],input$seldateeff)))
   observeEvent(input$seldateff, output$eff  <- renderPlotly(plot_efficient_fontier(shiny_efficient_fontier()[[1]],file2_Historical,shiny_efficient_fontier()[[2]],input$seldateeff))) #For update plot
   
+  
+  ############################Panel B: File 4####################################
   
   observeEvent(input$file4, {
     File <- input$file4
@@ -3833,21 +4053,28 @@ server <- function(input, output, session) {
       noty(text ="Require Uploading Files in Step 2, 3 and 4 before", type = "warning")
     }else{
       file4_Schedule <<- div_schedule(as.integer(input$rate), c(as.numeric(input$m),as.numeric(input$a)),file3_Weight,as.Date(input$lastdate))}})
-
+  
+  
+  ###Update End Date Selection
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     updatePickerInput(session, "lastdate", choices = as.character(unlist(get_weight()[[1]]$Date)[-1], use.names = FALSE))}) #For update choice
-
+  
+  ###Render Divestment Schedule (Dummy)
   output$plot4divtab <- DTtable(NULL)  #For render
   
+  ###Render Divestment Schedule
   
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((!is.null(file3_Weight)),""))
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$plot4divtab <- DTtable({file4_Schedule})}) #For update plot
   
+  ###Render Divestment Table (Dummy)
   output$plot4divtabsum <- DTtable(NULL)  #For render
- 
+  
+  
+  ###Render Divestment Preview
   output$plot4divpreview <- DTtable(NULL) 
   observeEvent(input$subdivpreview,{ 
     shiny::validate(need((!is.null(file3_Weight)),""))
@@ -3855,68 +4082,12 @@ server <- function(input, output, session) {
     output$plot4divpreview <- renderPlotly(div_preview(as.integer(input$rate), c(as.numeric(input$m),as.numeric(input$a)),as.Date(input$lastdate),file3_Weight, file1_Status))
   })
   
+  ###Render Divestment Table
   shiny_div_weight <- eventReactive(list(input$subdiv,input$file4),{ 
     shiny::validate(need((!is.null(file3_Weight)),""))
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     updateProgressBar(id = 'pb2', value = 0, total = 100, title = "Processing")
-    w <- file3_Weight
-    Schedule <- file4_Schedule
-    found <- file1_Status
-    Invest_List <- found %>% dplyr::filter(Status == 'Invest') %>% .$Ticker
-    
-    Divest_List <- found %>% dplyr::filter(Status == 'Divest') %>% .$Ticker
-    
-    Bound <- unlist(Schedule$Bound,use.names =  FALSE)
-    
-    final_frame <- c()
-    
-    for(k in 1:nrow(w)){
-      
-      Invest <- w[,Invest_List][k,]
-      Divest <- w[,Divest_List][k,]
-      
-      Long_Divest <- Divest[which(Divest >= 0)] 
-      Short_Divest <- Divest[which(Divest < 0)]
-      if(length(Short_Divest)==0){Short_Divest <- NULL}
-      
-      #Sum
-      Long_Divest_Sum <- if (length(Long_Divest)==0) {0} else sum(Long_Divest)
-      #Prevent Long only Port
-      Short_Divest_Sum <- if (length(Short_Divest)==0) {0} else -sum(Short_Divest)
-      
-      if((Long_Divest_Sum > Bound[k]) || (Short_Divest_Sum > Bound[k])){
-        if(Long_Divest_Sum > Bound[k]){
-          Long_Divest_Scale <- (Long_Divest/Long_Divest_Sum)*Bound[k]
-        }else{
-          Long_Divest_Scale <- Long_Divest
-        }
-        if(Short_Divest_Sum  > Bound[k]){
-          Short_Divest_Scale <- (Short_Divest/Short_Divest_Sum)*Bound[k]
-        }else{
-          Short_Divest_Scale <- Short_Divest
-        }
-        
-        Excess_Long <- if (length(Long_Divest)==0) {0} else sum(Long_Divest) - sum(Long_Divest_Scale)
-        Excess_Short <- if (length(Short_Divest)==0) {0} else -sum(Short_Divest) + sum(Short_Divest_Scale)
-        New_Invest <- Invest + (Invest/sum(Invest))*(Excess_Long - Excess_Short)
-        
-        List_of_Weight <- list(New_Invest,
-                               Long_Divest_Scale, Short_Divest_Scale)
-        
-        Combine_Weight <- Filter(Negate(is.null), List_of_Weight) %>% 
-          bind_cols()
-        
-        Weight_Divest <- Combine_Weight[,colnames(w)[-1]]
-      }else{
-        Weight_Divest <- w[k,-1]
-      }
-      
-      final_frame <- rbind(final_frame, Weight_Divest)
-      title <- ifelse(k == nrow(w),"Done","Calculating, please wait")
-      updateProgressBar(id = 'pb2', value = k, total = nrow(w), title = title)
-    }
-    Date <- w$Date
-    as.data.frame(cbind(Date,final_frame))
+    div_weight(w = file3_Weight,Schedule = file4_Schedule, found = file1_Status)
   })
   
   observeEvent(list(input$subdiv,input$file4),{
@@ -3925,11 +4096,16 @@ server <- function(input, output, session) {
     output$plot4divtabsum <- DTtable({tab <- shiny_div_weight(); file5_Weight_Div <<- tab;
     tab[,2:ncol(tab)] <- round(tab[,2:ncol(tab)],6); tab})}) #For update plot
   
-
+  
+  
+  
+  #input$test1 | input$test2
+  
+  ###Render In-Div Sum (Dummy)
   output$plotw3InDiv1 <- renderPlotly(NULL)  #For render
   output$plotw3InDiv2 <- renderPlotly(NULL)  #For render
   
-
+  ###Render In-Div Sum
   shiny_plot_div_Sch <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_div_Sch(file3_Weight,file1_Status,file4_Schedule, file5_Weight_Div)})
@@ -3941,18 +4117,22 @@ server <- function(input, output, session) {
     output$plotw3InDiv2 <- renderPlotly(shiny_plot_div_Sch()[[2]])}) #For update plot
   
   
-  output$plotw3div <- renderPlotly(NULL) 
-
+  
+  ###
+  ###Render Asset Weight Plot (Dummy)
+  output$plotw3div <- renderPlotly(NULL)  #For render
+  
+  ###Render Asset Weight Plot
   shiny_asset_weight_plot_div <- eventReactive(input$selcomdiv, asset_weight_plot_div(file3_Weight,file5_Weight_Div,as.character(input$selcomdiv)))
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     updatePickerInput(session, "selcomdiv", choices = colnames(shiny_div_weight())[-1])}) #For update choice
   observeEvent(input$selcomdiv, output$plotw3div <- renderPlotly(shiny_asset_weight_plot_div())) #For update plot
   
-
+  ###Render Asset Weight Plot (Dummy)
   output$plotw3portdiv <- renderPlotly(NULL)  #For render
   
- 
+  ###Render Asset Weight Plot
   shiny_plot_portfolio_weight_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_portfolio_weight_div(file3_Weight,shiny_div_weight(),file1_Status,as.character(input$selcatdiv),as.Date(input$seldatediv))
@@ -3966,41 +4146,49 @@ server <- function(input, output, session) {
   observeEvent(input$seldatediv, output$plotw3portdiv  <- renderPlotly(plot_portfolio_weight_div(file3_Weight, shiny_div_weight(),file1_Status,as.character(input$selcatdiv),as.Date(input$seldatediv)))) #For update plot
   
   
+  ###Calculate Risk Profiles
   
   riskdiv <- eventReactive(list(input$subdiv,input$file4),{
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     all_performance_table(file2_Historical, shiny_div_weight())})
-
+  
+  ###Render Risk Profiles (Dummy)
   output$plotw3riskdiv <- DTtable(NULL)  #For render
   
+  ###Render Risk Profiles
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$plotw3riskdiv <- DTtable({tabr <- riskdiv();
     tabr[,sapply(tabr, class) %in% c('numeric','integer')] <- round(tabr[,sapply(tabr, class) %in% c('numeric','integer')],6);
     tabr})}) #For update plot
-
+  
+  
+  ###Render Risk Profiles Plot (Dummy)
   output$plotw3riskplotdiv <- renderPlotly(NULL)  #For render
   
-
+  ###Render Risk Profiles Plot
   shiny_plot_performance_table_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_performance_table_div(risk(),riskdiv())})
   observeEvent(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     output$plotw3riskplotdiv <- renderPlotly(shiny_plot_performance_table_div())}) #For update plot
-
+  
+  ###Render Fundamental (Dummy)
+  ###Render Asset Weight Plot
   shiny_asset_weight_plot <- eventReactive(input$selcom, asset_weight_plot(get_weight()[[1]],as.character(input$selcom)))
   observeEvent(list(input$subweight,input$file3), {
     shiny::validate(need((input$subweight >= 1)||(!is.null(input$file3)), "Data is needed"))
     updatePickerInput(session, "selcom", choices = colnames(get_weight()[[1]])[-1])}) #For update choice
   observeEvent(input$selcom, output$plotw3 <- renderPlotly(shiny_asset_weight_plot())) #For update plot
   
-
+  ###Render Fundamental (Dummy)
   output$plotw3Fdiv <- renderPlotly(NULL)  #For render
   output$plotw3Fshortdiv <- renderPlotly(NULL)  #For render
   output$plotw3Flongdiv <- renderPlotly(NULL)  #For render
   output$plotw3Ftabdiv <- renderDT(NULL)  #For render
-
+  
+  ###Render Fundamental
   shiny_plot_fundamental_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_fundamental_div(file3_Weight, file5_Weight_Div, file1_Status)})
@@ -4012,9 +4200,14 @@ server <- function(input, output, session) {
                  output$plotw3Ftabdiv <- DTtable(shiny_plot_fundamental_div()[[4]])
                }) #For update plot
   
-
+  
+  
+  
+  
+  ###Render Radar Plot (Dummy)
   output$radardiv <- renderPlotly(NULL)  #For render
- 
+  
+  ###Render Risk Profiles Plot
   shiny_plot_radar_div <- eventReactive(list(input$subdiv,input$file4), {
     shiny::validate(need((input$subdiv >= 1)||(!is.null(input$file4)),"data required to be uploaded"))
     plot_radar(risk(),riskdiv())})
@@ -4038,6 +4231,18 @@ server <- function(input, output, session) {
     output$plotdiftable <- DTtable(cbind(Date = shiny_diff_summary()[[1]][,1],round(shiny_diff_summary()[[1]][,-1],6)))
     output$plotdifboxplot <- renderPlotly(shiny_diff_summary()[[2]])}) #For update plot
   
+  
+  # output$tablefile <- renderTable({
+  #   File <- input$fileticker
+  #   shiny::validate(
+  #     need(File != "", "No data has been uploaded")
+  #   )
+  #   read.csv(File$datapath, header = TRUE, check.names = FALSE)
+  # })
+  
+  
+  ################################################################################
+  ########################File 5 Optional#########################################
   
   output$div_dynamic <- DTtable(NULL)
   output$hist_return  <- DTtable(NULL)
@@ -4103,7 +4308,7 @@ server <- function(input, output, session) {
     shiny::validate(
       need(File != "", "No data has been uploaded")
     )
-
+    #change name
     
     f8 <- read.csv(File$datapath, header = TRUE, check.names = FALSE)
     cons <- req.cons.file(f8,c("Date"))
@@ -4127,22 +4332,28 @@ server <- function(input, output, session) {
   }, ignoreNULL = FALSE)
   
   
+  ###Render Different Table (Dummy)
   output$plotcom1 <- renderPlotly(NULL)  #For render
- 
+  
+  
+  ###Render Different Table 
   observeEvent(input$subcomp, updatePickerInput(session, "selcomcom", choices = colnames(file6_Div_Dynamic)[-c(1,ncol(file6_Div_Dynamic))])) #For update choice
   observeEvent(input$subcomp, output$plotcom1 <- renderPlotly(multicomp(file6_Div_Dynamic,as.character(input$selcomcom)))) #For update plot
   
   
+  
+  ###Render Different Table (Dummy)
   output$plotcom2 <- renderPlotly(NULL)  #For render
   output$plotcom3 <- renderPlotly(NULL)  #For render
   
-
+  ###Render Different Table 
   shiny_plot_div_Sch_comp <- eventReactive(input$subcomp, plot_div_Sch_comp(file6_Div_Dynamic,file7_Attribute)) 
   observeEvent(input$subcomp, output$plotcom2 <- renderPlotly(shiny_plot_div_Sch_comp()[[1]])) #For update plot
   observeEvent(input$subcomp, output$plotcom3 <- renderPlotly(shiny_plot_div_Sch_comp()[[2]])) #For update plot
   
   
-
+  
+  ###Render Different Table (Dummy)
   output$plotcom4 <- renderPlotly(NULL)  #For render
   output$plotcom5 <- renderPlotly(NULL)  #For render
   output$plotcom6 <- renderPlotly(NULL)  #For render
@@ -4160,13 +4371,18 @@ server <- function(input, output, session) {
   observeEvent(input$subcomp, output$tab1 <- DTtable(round_tab(shiny_compareplot()[[1]])))
   observeEvent(input$subcomp, output$tab2 <- DTtable(round_tab(shiny_compareplot()[[2]])))
   
- 
+  ####BoxPlot
+  #output$tabben.op1 <- DTtable(NULL)
+  #output$plotben.op1 <- renderPlotly(NULL)
   observeEvent(input$subcomp, updatePickerInput(session, inputId = 'selben.op1', choices = unique(file6_Div_Dynamic$PORTNAME)))
   shiny_diff_summary_mul <- eventReactive(input$submul, {diff_summary_mul(shiny_compareplot()[[1]],shiny_compareplot()[[2]],as.character(input$selben.op1), as.numeric(input$ly.opt1)) })
   observeEvent(input$submul, output$tabben.op1 <- DTtable(round_tab(shiny_diff_summary_mul()[[1]]))) #For update plot
   observeEvent(input$submul, output$plotben.op1 <- renderPlotly(shiny_diff_summary_mul()[[2]])) #For update plot
   
-
+  ##############################Option II#################################
+  
+  ####Input File
+  #output$tab.op3 <- DTtable(NULL)
   
   observeEvent(input$file6.op2, {
     File <- input$file6.op2
@@ -4241,7 +4457,11 @@ server <- function(input, output, session) {
   }) #For update plot
   
   
- 
+  
+  ##############################Option III#################################
+  
+  ####Input File
+  #output$tab.op3 <- DTtable(NULL)
   
   observeEvent(input$file6.op3, {
     File <- input$file6.op3
@@ -4298,6 +4518,7 @@ server <- function(input, output, session) {
       file7_Attribute  <<- read.csv(File$datapath, header = TRUE, check.names = FALSE)
       output$tab.op3.1 <- DTtable(round_tab(file7_Attribute))
     }
+    #change name
     
   }, ignoreNULL = FALSE)
   
@@ -4327,6 +4548,10 @@ server <- function(input, output, session) {
     }
   }, ignoreNULL = FALSE)
   
+  ####Plot Network
+  #output$op3.1 <- renderPlot(NULL)
+  #output$op3.2 <- renderPlot(NULL)
+  #output$op3.3 <- renderPlot(NULL)
   shiny_get.graph.1 <-  eventReactive(input$subgdate1, {
     updateProgressBar(id = 'pbg1', value = 0, total = 100, title = "Processing")
     div_dynamic <- file6_Div_Dynamic
@@ -4367,6 +4592,7 @@ server <- function(input, output, session) {
     }
   })
   
+  
   shiny_get.graph.3 <-  eventReactive(input$subgdate3, {
     updateProgressBar(id = 'pbg3', value = 0, total = 100, title = "Processing")
     div_dynamic <- file6_Div_Dynamic
@@ -4390,12 +4616,27 @@ server <- function(input, output, session) {
   observeEvent(input$subgdate1, output$op3.1 <- renderPlot(shiny_get.graph.1())) #For update plot
   observeEvent(input$subgdate2, output$op3.2 <- renderPlot(shiny_get.graph.2())) #For update plot
   observeEvent(input$subgdate3, output$op3.3 <- renderPlot(shiny_get.graph.3())) #For update plot
+  
+  ######New
+  
   shiny_index_map <- eventReactive(input$selindex, map_index(input$selindex))
   observeEvent(input$selindex, output$map <- renderPlot(shiny_index_map()[[1]]))
   
   observeEvent(input$subindex, {
     updateOrderInput(session,inputId = "source", items = (shiny_index_map()[[2]]), item_class = 'info')
   })
+  
+  
+  observeEvent(input$subnahandle,{
+    shiny::validate(need(!is.null(file1_Status)," "))
+    file2_Historical <<- NA_handle(file2_Historical, as.integer(input$selmethod))
+    output$tab_return <- DTtable(file2_Historical);
+    output$reportreturn <-  DTtable(return_summary_update(file2_Historical))
+    output$naheatmap <- renderPlotly(NA_heatmap(file2_Historical))}
+  )
+  
+  
+  output$naheatmap <- renderPlotly(NULL) 
   
 }
 
