@@ -4808,7 +4808,7 @@ server <- function(input, output, session) {
     
     # Check the number of columns in the uploaded file and perform corresponding actions
     if (ncol(tick) == 1) { # If the uploaded file has one column
-      tick$inv <- rep(1, nrow(tick)) # Create a new column 'inv' and assign 1 to all rows
+      tick$inv <- rep("Invest", nrow(tick)) # Create a new column 'inv' and assign 1 to all rows
       
     } else if (ncol(tick) == 2) { # If the uploaded file has two columns
       tick <- tick # Keep tick as it is
@@ -4818,10 +4818,10 @@ server <- function(input, output, session) {
     }
     
     # Assign values from the first column of tick where the second column is 1 to the global variable inv_asset
-    inv_asset <<- as.character(tick[, 1][tick[, 2] == 1])
+    inv_asset <<- as.character(tick[, 1][tick[, 2] == "Invest"])
     
     # Assign values from the first column of tick where the second column is 0 to the global variable div_asset
-    div_asset <<- as.character(tick[, 1][tick[, 2] == 0])
+    div_asset <<- as.character(tick[, 1][tick[, 2] == "Divest"])
     
     # Update the 'source' OrderInput with the values in inv_asset and assign 'info' class to the items
     updateOrderInput(session, inputId = "source", items =  inv_asset, item_class = 'info')

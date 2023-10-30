@@ -3600,14 +3600,14 @@ server <- function(input, output, session) {
     )
     tick <- read.csv(File$datapath, header = TRUE, check.names = FALSE)
     if(ncol(tick) == 1){
-      tick$inv <- rep(1,nrow(tick))
+      tick$inv <- rep("Invest",nrow(tick))
     }else if(ncol(tick) == 2){
       tick <- tick
     }else{
       tick <- NULL
     }
-    inv_asset <<- as.character(tick[,1][tick[,2] == 1])
-    div_asset <<- as.character(tick[,1][tick[,2] == 0])
+    inv_asset <<- as.character(tick[,1][tick[,2] == "Invest"])
+    div_asset <<- as.character(tick[,1][tick[,2] == "Divest"])
     updateOrderInput(session,inputId = "source", items =  inv_asset, item_class = 'info')
     updateOrderInput(session,inputId = "divt", items =  div_asset, item_class = 'info')
   })
